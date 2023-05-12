@@ -46,12 +46,14 @@ def process_wav(path: str, chunk_size: int, stft_params: dict):
 
 
 def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pyaudio.Stream, client: socket.socket):
+    client.sendall("START,".encode())
     for i in range(len(audio_frames) - 1):
         out_stream.write(audio_frames[i].tobytes(), exception_on_underflow=False)
         print("Sending frame " + str(i) + " of " + str(len(audio_frames) - 1))
         message = np.array2string(stft_audio_frames[i], precision=3, separator=',', suppress_small=True)
         print("MESSAGGIO" + message)
         client.sendall(message.encode())
+    client.sendall(",END".encode())
 
 
 def normalize(frame: np.array, type: str):
