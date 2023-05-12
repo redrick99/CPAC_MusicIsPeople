@@ -16,7 +16,7 @@ def read_wav_file(path: str):
 
 def process_wav(path: str, chunk_size: int, stft_params: dict):
     sr, audio_array = read_wav_file(path)
-    mono_audio_array = (audio_array[:, 0] + audio_array[:, 1]) / 2.0
+    mono_audio_array = audio_array # (audio_array[:, 0] + audio_array[:, 1]) / 2.0
     audio_frames = []
     stft_audio_frames = []
     stft_audio_array = np.abs(librosa.stft(mono_audio_array, n_fft=int(chunk_size), hop_length=int(chunk_size / 2),
@@ -47,11 +47,11 @@ def process_wav(path: str, chunk_size: int, stft_params: dict):
 
 def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pyaudio.Stream, client: socket.socket):
     for i in range(len(audio_frames) - 1):
+        out_stream.write(audio_frames[i].tobytes(), exception_on_underflow=False)
         print("Sending frame " + str(i) + " of " + str(len(audio_frames) - 1))
         message = np.array2string(stft_audio_frames[i], precision=3, separator=',', suppress_small=True)
         print("MESSAGGIO" + message)
         client.sendall(message.encode())
-        out_stream.write(audio_frames[i].tobytes(), exception_on_underflow=False)
 
 
 def normalize(frame: np.array, min: float, max: float):
