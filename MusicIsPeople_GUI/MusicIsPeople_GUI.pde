@@ -1,6 +1,8 @@
 import processing.net.*;
 import java.util.Scanner;
 import java.util.Arrays;
+import javax.sound.sampled.*;
+import processing.sound.*;
 Client myClient;
 import com.jogamp.opengl.GLProfile;
 {
@@ -8,6 +10,7 @@ import com.jogamp.opengl.GLProfile;
 }
 
 
+FloatControl control;
 
 final color BACKGROUND = #2C302E;
 final color BLUE = #75B9BE;
@@ -16,7 +19,6 @@ final color GREEN = #457604;
 final color RED = #FF5C5C;
 final color GRAY = #212E2F;
 final color AZURE = #84B7BD;
-
 
 int cols, rows;
 int scl = 8;
@@ -44,16 +46,35 @@ void setup() {
   rows = h / scl;
   terrain = new float[cols][rows];
   logo = loadImage("./GUI_resources/LogoMIP-iPad.jpg");
+
+  Line.Info lineInfo = new Line.Info(SourceDataLine.class);
+  Line line = null;
+  try {
+    line = AudioSystem.getLine(lineInfo);
+    line.open();
+    
+    // Get the volume control for the line
+    control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+  } catch (LineUnavailableException ex) {
+    ex.printStackTrace();
+  }
 }
 
 void draw(){
+
+  // Get the current volume level as a float value between 0.0 and 1.0
+  float volume = getSystemVolume();
+
+  // Define the speed of the propagation, is update every time the function draw() is called
   flying -= 0.05;
   
+  // If the client is not writing anything on the buffer it is not necessary to read from it
   if(myClient.available() > 0){
     receiveMessageHandler(myClient.readString());
   }
+  // Define the amplitude of the waveform
   for(int i = 0; i < cols; i++){
-      terrain[i][0] = 500*amplitude[i];
+      terrain[i][0] = 500*volume*amplitude[i];
       terrain[i][0] += 10*sin(flying);
   }
   
@@ -79,6 +100,7 @@ void draw(){
   }
 }
 
+// Reader of the messages from the server
 void receiveMessageHandler(String fromServerMessage) {
   String inputString = fromServerMessage; // input string containing float values
   inputString = inputString.replaceAll("\\[|\\]|\\s", ""); // remove square brackets and spaces
@@ -87,11 +109,34 @@ void receiveMessageHandler(String fromServerMessage) {
     amplitude[i] = float(stringArray[i]); // convert each string to a float and store it in the array
   }
 }
-
+// Function to shift each line backwards
 void propagate(){
   for(int y = rows-1; y > 0; y--) {
     for(int x = 0; x < cols; x++) {
       terrain[x][y] = terrain[x][y-1];
     }
   }
+}
+
+// Get the info about the current level of the volume of the computer
+float getSystemVolume() {
+  Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+  for (Mixer.Info info : mixerInfo) {
+    Mixer mixer = AudioSystem.getMixer(info);
+    if (mixer.isLineSupported(Port.Info.SPEAKER)) {
+      try {
+        mixer.open();
+        Port port = (Port)mixer.getLine(Port.Info.SPEAKER);
+        port.open();
+        FloatControl volumeControl = (FloatControl)port.getControl(FloatControl.Type.VOLUME);
+        float volume = volumeControl.getValue() / volumeControl.getMaximum();
+        port.close();
+        mixer.close();
+        return volume;
+      } catch (LineUnavailableException ex) {
+        ex.printStackTrace();
+      }
+    }
+  }
+  return 0;
 }
