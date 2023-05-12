@@ -10,20 +10,20 @@ np.set_printoptions(threshold=sys.maxsize, suppress=True)
 
 def read_wav_file(path: str):
     sr, wav_array = read(path)
-    wav_array_float32 = wav_array.astype(dtype=np.float32, order='C') / 32768.0
+    wav_array_float32 = to_float32(wav_array)
     return sr, wav_array_float32
 
 
 def process_wav(path: str, chunk_size: int, stft_params: dict):
     sr, audio_array = read_wav_file(path)
-    mono_audio_array = audio_array # (audio_array[:, 0] + audio_array[:, 1]) / 2.0
+    mono_audio_array = (audio_array[:, 0] + audio_array[:, 1]) / 2.0
+    mono_audio_array = normalize(mono_audio_array, "peak")
     audio_frames = []
     stft_audio_frames = []
     stft_audio_array = np.abs(librosa.stft(mono_audio_array, n_fft=int(chunk_size), hop_length=int(chunk_size / 2),
                                            win_length=int(chunk_size / 2)), dtype=np.float32, order='C')
     print(stft_audio_array.shape)
-    stft_audio_array = normalize(stft_audio_array, np.min(stft_audio_array), np.max(stft_audio_array))
-    # stft_audio_array = librosa.amplitude_to_db(stft_audio_array, ref=np.max)
+    stft_audio_array = normalize(stft_audio_array, "minmax")
     counter = 0
 
     while len(audio_array) > 0:
@@ -54,5 +54,24 @@ def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pya
         client.sendall(message.encode())
 
 
-def normalize(frame: np.array, min: float, max: float):
-    return (frame - min) / (max - min)
+def normalize(frame: np.array, type: str):
+    _min = np.min(np.abs(frame))
+    _max = np.max(np.abs(frame))
+    if type == "minmax":
+        return (frame - _min) / (_max - _min)
+    if type == "peak":
+        return frame / _max
+    if type == "mean":
+        return frame - np.mean(frame)
+
+
+def to_float32(array: np.array):
+    array_float32 = array.astype(dtype=np.float32, order='C')
+    if array.dtype == np.int32:
+        return array_float32 / 2147483392.0
+    if array.dtype == np.int16:
+        return array_float32 / 32768.0
+    if array.dtype == np.int8:
+        return array_float32 / 255.0
+    if array.dtype == np.float32:
+        return array
