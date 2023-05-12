@@ -88,7 +88,7 @@ dispatcher.set_default_handler(default_handler)
 server = BlockingOSCUDPServer((server_ip, server_port), dispatcher)
 
 print("Waiting for controller...")
-audio_frames, stft_audio_frames = process_wav("./resources/noise.wav", chunk_size, None)
+audio_frames, stft_audio_frames = process_wav("./resources/TroppoFra16Bit.wav", chunk_size, None)
 print("Playing...")
 play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
 print("Starting Server...")
