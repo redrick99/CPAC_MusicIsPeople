@@ -29,7 +29,7 @@ def play(note_sequences):
     if not isinstance(note_sequences, list):
         note_sequences = [note_sequences]
     for ns in note_sequences:
-        mm.play_sequence(ns, synth=mm.fluidsynth, sf2_path=SF2_PATH)
+        mm.play_sequence(ns, synth=mm.fluidsynth, sf2_path=SF2_PATH, sample_rate=44100.0)
 
 
 # Spherical linear interpolation.
@@ -72,11 +72,15 @@ def fix_instruments_for_concatenation(note_sequences):
                 note.instrument = 9
 
 
+def to_midi(note_sequence, filename):
+  mm.sequence_proto_to_midi_file(note_sequence, filename)
+
+
 def generate_sequence(model):
     chords = cp.choose_chords()
     print(chords)
 
-    num_bars = 48  # @param {type:"slider", min:4, max:64, step:4}
+    num_bars = 24  # @param {type:"slider", min:4, max:64, step:4}
     temperature = 0.1  # @param {type:"slider", min:0.01, max:1.5, step:0.01}
 
     z1 = np.random.normal(size=[Z_SIZE])
@@ -105,6 +109,9 @@ model = TrainedModel(
 # %% CHOOSE CHORDS AND RUN
 start_time = time.time()
 [prog_interp_ns, chords] = generate_sequence(model)
+to_midi(prog_interp_ns, "prova.mid")
 print(time.time()-start_time)
-play(prog_interp_ns)
-mm.plot_sequence(prog_interp_ns)
+print(prog_interp_ns)
+
+#play(prog_interp_ns)
+#mm.plot_sequence(prog_interp_ns)
