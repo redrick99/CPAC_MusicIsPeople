@@ -1,11 +1,13 @@
-import time
+#%%
 import pyaudio
 import socket
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 from pythonosc.udp_client import SimpleUDPClient
 from audio_handling import *
+import neural_network.neural_network as nn
 
+#%%
 client_controller_ip = "127.0.0.1"
 client_controller_port = 12345
 client_controller = SimpleUDPClient(client_controller_ip, client_controller_port)  # Create controller client
@@ -56,7 +58,10 @@ def feedback_handler(address, fixed_args, *args):
     liked_the_song = args[0]
     radar_value_x = args[1]
     radar_value_y = args[2]
-    # TODO feed values into neural network and get a file
+
+
+    mid = nn.create_song(liked=liked_the_song)  # TODO ADDING STRING VA
+    wav = nn.create_wav(mid)
 
     out_stream = fixed_args[0]
     client_connection = fixed_args[1]
@@ -76,6 +81,7 @@ out_stream = pa.open(
     output=True
 )
 
+nn.initialized_model()
 print("Connecting to visualizer...")
 conn, address = client_visualizer.accept()
 print("Connected to visualizer")

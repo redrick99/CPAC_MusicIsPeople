@@ -15,11 +15,11 @@ notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 happy_chords = [["Imaj7", "IVmaj7", "V7", "IVmaj7"], ["Imaj7", "IVmaj7", "V7", "VIm"], ["Imaj7", "V7", "VIm", "IVmaj7"], ["Imaj7", "V7", "VIm", "IVmaj7"], [
     "Imaj7", "VIm", "IVmaj7", "V7"], ["IV", "Imaj7", "V7", "VIm7"], ["IV", "V7", "Imaj7", "VIm6"], ["IV", "VIm", "Imaj7", "V7"]]
 sad_chords = [["VIm", "IVmaj7", "Imaj7", "V7"], ["VIm", "IVmaj7", "Imaj7", "V9"], ["Imaj7", "VII", "VIm", "V7"], [
-    "Imaj7", "VIm", "IIIm", "VIIb5"], ["Imaj7", "VII", "VIm", "IVmaj7"], ["Imaj7", "VIm", "IIIm", "IVmaj7"]]
+    "Imaj7", "VIm", "IIIm", "VII"], ["Imaj7", "VII", "VIm", "IVmaj7"], ["Imaj7", "VIm", "IIIm", "IVmaj7"]]
 dance_chords = [["Imaj7", "IVmaj7", "V7", "IVmaj7"], ["Imaj7", "IV6", "V7", "VIm6"], ["Imaj7", "VIm", "IVmaj7", "V7"], [
     "IIm7", "V7", "Imaj7", "Imaj7"], ["IVmaj7", "V7", "Imaj7", "VIm6"], ["V7", "VIm7", "IV7", "V7"], ["VIm", "IVmaj7", "Imaj7", "V7"]]
-not_dance_chords = [["I7", "VIIb5", "VIm7", "V7"], ["I6", "VIm7", "III7", "VIIb5"], [
-    "Imaj7", "VII", "VIm", "IV7"], ["VIm", "IVmaj7", "Imaj7", "V9"], ["VIm", "IVmaj7", "Imaj7", "V7b9"], ["IV", "Imaj7", "V7", "VIm7"]]
+not_dance_chords = [["I7", "VII", "VIm7", "V7"], ["I6", "VIm7", "III7", "VII"], [
+    "Imaj7", "VII", "VIm", "IV7"], ["VIm", "IVmaj7", "Imaj7", "V9"], ["VIm", "IVmaj7", "Imaj7", "V79"], ["IV", "Imaj7", "V7", "VIm7"]]
 
 
 def build_scale(key):
@@ -29,19 +29,22 @@ def build_scale(key):
     return major_scale
 
 
-def choose_chords():
-    mood = input("Scegli l'umore della tua canzone:")
+def choose_chords(va_value,key: str):
 
-    if mood == 'happy':
+    if va_value is None:
+        va_value = random.choice(['happy','sad','excited','relaxed'])
+    #TODO type EXCITED,DELIGHTED,HAPPY,CONTENT,RELAXED,CALM,TIRED,BORED,DEPRESSED,FRUSTRATED,ANGTY,TENSE
+    if va_value == 'happy':
         chords = random.choice(happy_chords)
-    elif mood == 'sad':
+    elif va_value == 'sad':
         chords = random.choice(sad_chords)
-    elif mood == 'dancable':
+    elif va_value == 'excited':
         chords = random.choice(dance_chords)
-    elif mood == 'not dancable':
+    elif va_value == 'relaxed':
         chords = random.choice(not_dance_chords)
 
-    key = input("Scegli la tonalità:")
+    if key is None:
+        key =random.choice(notes)
     scale = build_scale(key)
     new_chords = []
     for seq in chords:
@@ -57,4 +60,4 @@ def choose_chords():
 
         new_chords.append(scale[gradi[removed]]+removed_element)
 
-    return new_chords
+    return new_chords,key
