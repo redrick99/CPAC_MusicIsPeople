@@ -11,3 +11,4 @@ tensorflow-probability
 tf-slim
 librosa
 note-seq
+pretty_midi
