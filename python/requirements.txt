@@ -11,4 +11,5 @@ tensorflow-probability
 tf-slim
 librosa
 note-seq
+pyfluidsynth
 pretty_midi
