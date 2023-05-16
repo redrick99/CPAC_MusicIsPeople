@@ -32,7 +32,6 @@ float flying = 0;
 float[][] terrain;
 float[] amplitude = new float[1025];
 
-PImage logo;
 float logoLength = 975;
 float logoHeight = 100;
 float rumor;
@@ -65,8 +64,6 @@ void setup() {
   cols = w /scl;
   rows = h / scl;
   terrain = new float[cols][rows];
-  logo = loadImage("./GUI_resources/LogoMIP-iPad.jpg");
-
   Line.Info lineInfo = new Line.Info(SourceDataLine.class);
   Line line = null;
   try {
@@ -196,19 +193,17 @@ void mainPage(){
 void loadingPage() {
   background(BACKGROUND);
 
-  // Draw the loading text
-  // image(logo, width/2 - logoLength/2, 50, logoLength, logoHeight);
-  
+  // Draw the logo
   fill(YELLOW, 70);
   stroke(YELLOW);
   rect(width/2 - logoLength/2, 50, logoLength, logoHeight);
-  
-  
   textSize(textSize);
   textAlign(CENTER, CENTER);
   textFont(font);
   fill(YELLOW);
   text("Music Is People", width/2 - logoLength/2, 50, logoLength, logoHeight);
+  
+  // Draw the loading text
   fill(AZURE);
   textSize(30);
   text("...loading...", width/2, height/2 - dotSpacing);
