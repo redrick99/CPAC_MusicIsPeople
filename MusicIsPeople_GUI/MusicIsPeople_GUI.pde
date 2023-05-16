@@ -36,7 +36,7 @@ PImage logo;
 float logoLength = 975;
 float logoHeight = 100;
 float rumor;
-int count=0;
+int count=1;
 Boolean active = false;
 
 float xOff = 0;
@@ -44,18 +44,23 @@ float yOff = 0;
 float xInc = 0.02;
 float yInc = 0.02;
 float scale = 100;
-int numDots = 3;         // Number of dots to display
+int numLines = 25;         // Number of dots to display
 int dotSize = 20;        // Size of the dots
-int dotSpacing = 50;     // Spacing between the dots
-int dotColor = color(255, 255, 255);  // Color of the dots
+int dotSpacing = 10;     // Spacing between the dots
+int dotColor = color(AZURE);  // Color of the dots
 int textColor = color(255);           // Color of the loading text
 int textSize = 50;       // Size of the loading text
+float base = 5;  // Set the base of the rectangle
+float yH = 20;  // Set the height of the rectangle
+PFont font;
 
 void setup() {
   size(1500, 900, P3D);
   myClient = new Client(this, "127.0.0.1", 54321);
   activeClient = new Client(this, "127.0.0.1", 13524);
   surface.setResizable(true);
+  
+  font = createFont("Monospaced", 50);
 
   cols = w /scl;
   rows = h / scl;
@@ -161,8 +166,16 @@ void mainPage(){
     propagate();
 
     background(BACKGROUND);
-    image(logo, width/2 - logoLength/2, 50, logoLength, logoHeight);
-    stroke(255);
+    fill(YELLOW, 70);
+    stroke(YELLOW);
+    rect(width/2 - logoLength/2, 50, logoLength, logoHeight);
+    
+    
+    textSize(textSize);
+    textAlign(CENTER, CENTER);
+    textFont(font);
+    fill(YELLOW);
+    text("Music Is People", width/2 - logoLength/2, 50, logoLength, logoHeight);    stroke(255);
     noFill();
 
     // Create the blue structure
@@ -180,46 +193,43 @@ void mainPage(){
     }
 }
 
-void loadingPage(){
-
+void loadingPage() {
   background(BACKGROUND);
 
-  // Loop through all pixels in the window
-  loadPixels();
-  for (int x = 0; x < width; x++) {
-    for (int y = 0; y < height; y++) {
-
-      // Calculate the noise value for this pixel
-      float noiseVal = noise(xOff*x*xInc, yOff*y*yInc);
-      noiseVal = pow(noiseVal, 1);  // Adjust the noise curve
-
-      // Map the noise value to a color and set the pixel color
-      float colorVal = map(noiseVal, 0, 1, 0, 255);
-      int pixelColor = color(
-        map(colorVal, 0, 255, 0, 170),
-        map(colorVal, 0, 255, 0, 190),
-        map(colorVal, 0, 255, 0, 108)
-      );
-      pixels[x + y * width] = pixelColor;
-    }
-  }
-  updatePixels();
-
-  // Increment the noise offset values to move the noise over time
-  xOff += 0.01;
-  yOff += 0.01;
-
   // Draw the loading text
-  image(logo, width/2 - logoLength/2, 50, logoLength, logoHeight);
-  fill(textColor);
+  // image(logo, width/2 - logoLength/2, 50, logoLength, logoHeight);
+  
+  fill(YELLOW, 70);
+  stroke(YELLOW);
+  rect(width/2 - logoLength/2, 50, logoLength, logoHeight);
+  
+  
   textSize(textSize);
   textAlign(CENTER, CENTER);
-  text("Loading", width/2, height/2 - dotSpacing);
+  textFont(font);
+  fill(YELLOW);
+  text("Music Is People", width/2 - logoLength/2, 50, logoLength, logoHeight);
+  fill(AZURE);
+  textSize(30);
+  text("...loading...", width/2, height/2 - dotSpacing);
 
-  // Draw the dots
-    for (int i = 0; i < numDots; i++) {
-      int dotX = width/2 - (numDots-1)*dotSpacing/2 + i*dotSpacing;
-      fill(dotColor);
-      ellipse(dotX, height/2 + dotSpacing, dotSize, dotSize);
-    }
+  // Calculate the base opacity for fade-in fade-out effect
+  int baseOpacity = 200;
+
+  // Calculate the animation parameters
+  float phaseOffset = 0.02;
+  float light = 200.0;
+
+  // Draw the lines
+  for (int i = 0; i < numLines; i++) {
+    int dotX = width/2 - (numLines-1)*dotSpacing/2 + i*dotSpacing;
+    float phase = -phaseOffset * dotX;
+    int opacity = int(baseOpacity + sin(phase + frameCount * 0.05) * light);
+
+    // Set the color and opacity for the line
+    stroke(AZURE, opacity);
+    
+    // Draw the line
+    line(dotX, height/2 + 5*dotSpacing, dotX, height/2 + 7*dotSpacing + yH);
+  }
 }
