@@ -1,14 +1,16 @@
+import processing.net.*;
 import java.util.Scanner;
 import java.util.Arrays;
 import javax.sound.sampled.*;
 import processing.sound.*;
-import processing.net.*;
+Client myClient;
+Client activeClient;
 import com.jogamp.opengl.GLProfile;
 {
   GLProfile.initSingleton();
 }
 
-Client myClient;
+
 FloatControl control;
 
 final color BACKGROUND = #2C302E;
@@ -30,29 +32,44 @@ float flying = 0;
 float[][] terrain;
 float[] amplitude = new float[1025];
 
-PImage logo;
 float logoLength = 975;
 float logoHeight = 100;
 float rumor;
-int count=0;
-Boolean active = true;
+int count=1;
+Boolean active = false;
+
+float xOff = 0;
+float yOff = 0;
+float xInc = 0.02;
+float yInc = 0.02;
+float scale = 100;
+int numLines = 25;         // Number of dots to display
+int dotSize = 20;        // Size of the dots
+int dotSpacing = 10;     // Spacing between the dots
+int dotColor = color(AZURE);  // Color of the dots
+int textColor = color(255);           // Color of the loading text
+int textSize = 50;       // Size of the loading text
+float base = 5;  // Set the base of the rectangle
+float yH = 20;  // Set the height of the rectangle
+PFont font;
 
 void setup() {
   size(1500, 900, P3D);
   myClient = new Client(this, "127.0.0.1", 54321);
+  activeClient = new Client(this, "127.0.0.1", 13524);
   surface.setResizable(true);
+  
+  font = createFont("Monospaced", 50);
 
   cols = w /scl;
   rows = h / scl;
   terrain = new float[cols][rows];
-  logo = loadImage("./GUI_resources/LogoMIP-iPad.jpg");
-
   Line.Info lineInfo = new Line.Info(SourceDataLine.class);
   Line line = null;
   try {
     line = AudioSystem.getLine(lineInfo);
     line.open();
-    
+
     // Get the volume control for the line
     control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
   } catch (LineUnavailableException ex) {
@@ -61,82 +78,25 @@ void setup() {
 }
 
 void draw(){
-  // print(active);
   if(active){
-    // Get the current volume level as a float value between 0.0 and 1.0
-    float volume = getSystemVolume(); 
-  
-    // Define the speed of the propagation, is update every time the function draw() is called
-    flying -= 0.05;
-    
-    // If the client is not writing anything on the buffer it is not necessary to read from it
-    if(myClient.available() > 0){
-      receiveMessageHandler(myClient.readString());
-    }
-    
-    // Define the amplitude of the waveform
-    for(int i = 0; i < cols; i++){
-        terrain[i][0] = 500*volume*amplitude[i];
-        terrain[i][0] += 10*sin(flying);
-    }
-    
-    propagate();
-      
-    background(BACKGROUND);
-    image(logo, width/2 - logoLength/2, 50, logoLength, logoHeight);
-    stroke(255);
-    noFill();
-  
-    // Create the blue structure
-    translate(width/2, height/2);
-    rotateX(PI/3);
-    translate(-w/2, -h/7);                               // Change the position of the terrain
-    for(int y = 0; y < rows-1; y++){
-      beginShape(TRIANGLE_STRIP);
-      for(int x=0; x<cols; x++){
-        fill(BLUE);
-        vertex(x*scl, y*scl, terrain[x][y]);
-        vertex(x*scl, (y+1)*scl, terrain[x][y+1]);
-      }
-      endShape();
-    }
+    loadingDone();
+    mainPage();
   }
   else{
-    // Display loading message
-    background(255);
-    textAlign(CENTER);
-    textSize(32);
-    fill(0);
-    text("Loading...", width/2, height/2 - 20);
-  
-    // Draw spinning circle
-    translate(width/2, height/2);
-    rotate(frameCount * 0.1);
-    stroke(10);
-    noFill();
-    ellipse(0, 0, 80, 80);
-  
-    // Check if loading is done
-    if (loadingDone()) {
-      // Loading is done, switch to main page
-      switchToMainPage();
-    }
+    loadingDone();
+    loadingPage();
   }
 }
-
 
 // Reader of the messages from the server
 void receiveMessageHandler(String fromServerMessage) {
-  println(fromServerMessage);
-    String inputString = fromServerMessage; // input string containing float values
-    inputString = inputString.replaceAll("\\[|\\]|\\s", ""); // remove square brackets and spaces
-    String[] stringArray = inputString.split(","); // split the string into an array of strings
-    for (int i = 0; i < amplitude.length-1; i++) {
-      amplitude[i] = float(stringArray[i]); // convert each string to a float and store it in the array
-    }
+  String inputString = fromServerMessage; // input string containing float values
+  inputString = inputString.replaceAll("\\[|\\]|\\s", ""); // remove square brackets and spaces
+  String[] stringArray = inputString.split(","); // split the string into an array of strings
+  for (int i = 0; i < amplitude.length-1; i++) {
+    amplitude[i] = float(stringArray[i]); // convert each string to a float and store it in the array
+  }
 }
-
-
 // Function to shift each line backwards
 void propagate(){
   for(int y = rows-1; y > 0; y--) {
@@ -169,12 +129,102 @@ float getSystemVolume() {
   return 0;
 }
 
-boolean loadingDone() {
-  // Check if loading is done
-  return true; // Replace with your own loading condition
+void loadingDone(){
+  if(activeClient.available()>0){
+    String inputString = activeClient.readString(); // input string containing float values
+    println("LOADING...");
+    println(inputString);
+    if(inputString.equals("START")){
+      active = true;
+    }
+    if(inputString.equals("STOP")){
+      active = false;
+    }
+  }
 }
 
-void switchToMainPage() {
-  // Switch to main page
-  // Replace with your own code
+void mainPage(){
+  // Get the current volume level as a float value between 0.0 and 1.0
+    float volume = getSystemVolume();
+
+    // Define the speed of the propagation, is update every time the function draw() is called
+    flying -= 0.05;
+
+    // If the client is not writing anything on the buffer it is not necessary to read from it
+    if(myClient.available() > 0){
+      receiveMessageHandler(myClient.readString());
+    }
+    // Define the amplitude of the waveform
+    for(int i = 0; i < cols; i++){
+        terrain[i][0] = 500*volume*amplitude[i];
+        terrain[i][0] += 10*sin(flying);
+    }
+
+    propagate();
+
+    background(BACKGROUND);
+    fill(YELLOW, 70);
+    stroke(YELLOW);
+    rect(width/2 - logoLength/2, 50, logoLength, logoHeight);
+    
+    
+    textSize(textSize);
+    textAlign(CENTER, CENTER);
+    textFont(font);
+    fill(YELLOW);
+    text("Music Is People", width/2 - logoLength/2, 50, logoLength, logoHeight);    stroke(255);
+    noFill();
+
+    // Create the blue structure
+    translate(width/2, height/2);
+    rotateX(PI/3);
+    translate(-w/2, -h/7);                               // Change the position of the terrain
+    for(int y = 0; y < rows-1; y++){
+      beginShape(TRIANGLE_STRIP);
+      for(int x=0; x<cols; x++){
+        fill(BLUE);
+        vertex(x*scl, y*scl, terrain[x][y]);
+        vertex(x*scl, (y+1)*scl, terrain[x][y+1]);
+      }
+      endShape();
+    }
+}
+
+void loadingPage() {
+  background(BACKGROUND);
+
+  // Draw the logo
+  fill(YELLOW, 70);
+  stroke(YELLOW);
+  rect(width/2 - logoLength/2, 50, logoLength, logoHeight);
+  textSize(textSize);
+  textAlign(CENTER, CENTER);
+  textFont(font);
+  fill(YELLOW);
+  text("Music Is People", width/2 - logoLength/2, 50, logoLength, logoHeight);
+  
+  // Draw the loading text
+  fill(AZURE);
+  textSize(30);
+  text("...loading...", width/2, height/2 - dotSpacing);
+
+  // Calculate the base opacity for fade-in fade-out effect
+  int baseOpacity = 200;
+
+  // Calculate the animation parameters
+  float phaseOffset = 0.02;
+  float light = 200.0;
+
+  // Draw the lines
+  for (int i = 0; i < numLines; i++) {
+    int dotX = width/2 - (numLines-1)*dotSpacing/2 + i*dotSpacing;
+    float phase = -phaseOffset * dotX;
+    int opacity = int(baseOpacity + sin(phase + frameCount * 0.05) * light);
+
+    // Set the color and opacity for the line
+    stroke(AZURE, opacity);
+    
+    // Draw the line
+    line(dotX, height/2 + 5*dotSpacing, dotX, height/2 + 7*dotSpacing + yH);
+  }
 }

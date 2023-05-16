@@ -18,6 +18,12 @@ client_visualizer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Create 
 client_visualizer.bind((client_visualizer_ip, client_visualizer_port))
 client_visualizer.listen(1)
 
+client_startstop_ip = "127.0.0.1"
+client_startstop_port = 13524
+client_startstop = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Create visualizer client
+client_startstop.bind((client_startstop_ip, client_startstop_port))
+client_startstop.listen(1)
+
 server_ip = "127.0.0.1"
 server_port = 55055
 
@@ -84,6 +90,7 @@ out_stream = pa.open(
 nn.initialized_model()
 print("Connecting to visualizer...")
 conn, address = client_visualizer.accept()
+active, address = client_startstop.accept()
 print("Connected to visualizer")
 
 dispatcher = Dispatcher()
@@ -96,6 +103,10 @@ server = BlockingOSCUDPServer((server_ip, server_port), dispatcher)
 print("Waiting for controller...")
 audio_frames, stft_audio_frames = process_wav("./resources/TroppoFra16Bit.wav", chunk_size, None)
 print("Playing...")
+# time.sleep(3)
+active.sendall("START".encode())
 play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
+print("END")
+active.sendall("STOP".encode())
 print("Starting Server...")
 # server.serve_forever()  # Blocks forever
