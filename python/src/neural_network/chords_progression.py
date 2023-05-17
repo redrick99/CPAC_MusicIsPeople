@@ -1,6 +1,6 @@
 import random
 
-gradi = {
+grades = {
     'I': 0,
     'II': 1,
     'III': 2,
@@ -21,6 +21,22 @@ dance_chords = [["Imaj7", "IVmaj7", "V7", "IVmaj7"], ["Imaj7", "IV6", "V7", "VIm
 not_dance_chords = [["I7", "VII", "VIm7", "V7"], ["I6", "VIm7", "III7", "VII"], [
     "Imaj7", "VII", "VIm", "IV7"], ["VIm", "IVmaj7", "Imaj7", "V9"], ["VIm", "IVmaj7", "Imaj7", "V79"], ["IV", "Imaj7", "V7", "VIm7"]]
 
+# TODO have different chord progressions for each mood
+MOOD_CHORD_DICT = {
+    'excited': happy_chords,
+    'delighted': happy_chords,
+    'happy': happy_chords,
+    'content': happy_chords,
+    'relaxed': not_dance_chords,
+    'calm': not_dance_chords,
+    'tired': sad_chords,
+    'bored': sad_chords,
+    'depressed': sad_chords,
+    'frustrated': sad_chords,
+    'angry': sad_chords,
+    'tense': sad_chords,
+}
+
 
 def build_scale(key):
     ind = notes.index(key)
@@ -29,22 +45,15 @@ def build_scale(key):
     return major_scale
 
 
-def choose_chords(va_value,key: str):
+def choose_chords(va_value: str, key: str):
+    moods = list(MOOD_CHORD_DICT.keys())
 
-    if va_value is None:
-        va_value = random.choice(['happy','sad','excited','relaxed'])
-    #TODO type EXCITED,DELIGHTED,HAPPY,CONTENT,RELAXED,CALM,TIRED,BORED,DEPRESSED,FRUSTRATED,ANGTY,TENSE
-    if va_value == 'happy':
-        chords = random.choice(happy_chords)
-    elif va_value == 'sad':
-        chords = random.choice(sad_chords)
-    elif va_value == 'excited':
-        chords = random.choice(dance_chords)
-    elif va_value == 'relaxed':
-        chords = random.choice(not_dance_chords)
+    if va_value not in moods:
+        va_value = random.choice(moods)
+    chords = random.choice(MOOD_CHORD_DICT[va_value])
 
     if key is None:
-        key =random.choice(notes)
+        key = random.choice(notes)
     scale = build_scale(key)
     new_chords = []
     for seq in chords:
@@ -58,6 +67,6 @@ def choose_chords(va_value,key: str):
         else:
             removed_element = ''
 
-        new_chords.append(scale[gradi[removed]]+removed_element)
+        new_chords.append(scale[grades[removed]]+removed_element)
 
-    return new_chords,key
+    return new_chords, key

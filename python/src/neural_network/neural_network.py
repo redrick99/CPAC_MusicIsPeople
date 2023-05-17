@@ -2,6 +2,8 @@ print('Importing magenta modules...')
 from magenta.models.music_vae import configs
 from magenta.models.music_vae import TrainedModel
 from note_seq.sequences_lib import concatenate_sequences
+import os
+import logging
 import note_seq as mm
 import numpy as np
 import tensorflow._api.v2.compat.v1 as tf
@@ -9,6 +11,9 @@ import pretty_midi
 from neural_network import chords_progression as cp
 
 tf.disable_v2_behavior()
+# Removes Tensorflow logs and warnings
+tf.keras.utils.disable_interactive_logging()
+tf.get_logger().setLevel(logging.ERROR)
 print('Done!')
 
 BATCH_SIZE = 4
@@ -18,11 +23,13 @@ BAR_SECONDS = 2.0
 CHORD_DEPTH = 49
 
 SAMPLE_RATE = 44100
-SF2_PATH = './neural_network/models/SGM-v2.01-Sal-Guit-Bass-V1.3.sf2'
+SF2_PATH = 'neural_network/models/SGM-v2.01-Sal-Guit-Bass-V1.3.sf2'
 CONFIG = None
 MODEL =None
+MODEL_PATH = 'neural_network/models/MusicVAE/model_chords_fb64.ckpt'
 CONFIG_INTERP = None
 MODEL_INTERP = None
+MODEL_INTERP_PATH = 'neural_network/models/MusicVAE/model_fb256.ckpt'
 PREC_SONG = None
 KEY = None
 
@@ -81,11 +88,11 @@ def to_midi(note_sequence):
     return mm.sequence_proto_to_pretty_midi(note_sequence)
 
 
-def generate_sequence(va_value:str):
+def generate_sequence(va_value: str):
     global KEY
     global MODEL
     
-    chords,KEY = cp.choose_chords(va_value,KEY)
+    chords, KEY = cp.choose_chords(va_value, KEY)
     print(chords)
 
     num_bars = 24  # @param {type:"slider", min:4, max:64, step:4}
@@ -108,24 +115,33 @@ def generate_sequence(va_value:str):
 
     return prog_interp_ns, KEY
 
-def initialized_model():
+
+def initialize_model(main_path: str):
     global CONFIG
     global MODEL
+    global MODEL_PATH
     global CONFIG_INTERP
     global MODEL_INTERP
+    global MODEL_INTERP_PATH
+    global SF2_PATH
+
+    SF2_PATH = os.path.join(main_path, SF2_PATH)
+    MODEL_PATH = os.path.join(main_path, MODEL_PATH)
+    MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)
 
     # INITIALIZE MODEL FOR CREATE SONG
     CONFIG = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med_chords']
     MODEL = TrainedModel(
         CONFIG, batch_size=BATCH_SIZE,
-        checkpoint_dir_or_path=r"C:\Users\Utente\OneDrive - Politecnico di Milano\Immagini\Documenti\Development\Python\MIP\CPAC_MusicIsPeople\python\src\neural_network\models\MusicVAE\model_chords_fb64.ckpt")
+        checkpoint_dir_or_path=MODEL_PATH)
 
     #INITIALIZE MODEL FOR INTERPOLATE SONGS
     CONFIG_INTERP = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med']
     MODEL_INTERP = TrainedModel(
         CONFIG_INTERP, batch_size=BATCH_SIZE,
-        checkpoint_dir_or_path=r"C:\Users\Utente\OneDrive - Politecnico di Milano\Immagini\Documenti\Development\Python\MIP\CPAC_MusicIsPeople\python\src\neural_network\models\MusicVAE\model_fb256.ckpt")
+        checkpoint_dir_or_path=MODEL_INTERP_PATH)
     MODEL_INTERP._config.data_converter._max_tensors_per_input = None
+
 
 def interpolate_songs(va_value:str):
     global MODEL_INTERP
@@ -166,7 +182,7 @@ def interpolate_songs(va_value:str):
     PREC_SONG = to_midi(recon_interp_ns)
     
 
-def create_song(va_value:str,liked:bool):
+def create_song(va_value: str, liked: bool):
     global MODEL
     global PREC_SONG
     global KEY
@@ -182,5 +198,6 @@ def create_song(va_value:str,liked:bool):
 
 
 def create_wav(midi:pretty_midi.PrettyMIDI):
-    wav = midi.fluidsynth(fs=44100.0, sf2_path=r'C:\Users\Utente\OneDrive - Politecnico di Milano\Immagini\Documenti\Development\Python\MIP\CPAC_MusicIsPeople\python\src\neural_network\models\SGM-v2.01-Sal-Guit-Bass-V1.3.sf2')
-    return wav
+    global SF2_PATH
+    wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
+    return wav.astype(dtype=np.float32)
