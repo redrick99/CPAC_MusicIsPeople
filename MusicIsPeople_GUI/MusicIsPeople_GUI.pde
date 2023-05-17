@@ -37,7 +37,7 @@ float logoLength = 975;
 float logoHeight = 100;
 float rumor;
 int count=1;
-Boolean active = false;
+int active = 0;
 
 float xOff = 0;
 float yOff = 0;
@@ -79,17 +79,16 @@ void setup() {
 }
 
 void draw(){
-  if(active){
-    loadingDone();
+  loadingDone();
+  if(active == 2){
     mainPage();
   }
-  else{
-    loadingDone();
-     if(frameCount <= 400){
-       loadingPage();
-     }
-     else buildingPage();
-  }
+  else if(active == 1){
+       buildingPage();
+   }
+   else{
+     loadingPage();
+   }
 }
 
 // Reader of the messages from the server
@@ -141,10 +140,13 @@ void loadingDone(){
     println("LOADING...");
     println(inputString);
     if(inputString.equals("START")){
-      active = true;
+      active = 2;
+    }
+    if(inputString.equals("CREATING")){
+      active = 1;
     }
     if(inputString.equals("STOP")){
-      active = false;
+      active = 0;
     }
   }
 }
