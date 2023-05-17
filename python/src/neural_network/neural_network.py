@@ -25,7 +25,7 @@ CHORD_DEPTH = 49
 SAMPLE_RATE = 44100
 SF2_PATH = 'neural_network/models/SGM-v2.01-Sal-Guit-Bass-V1.3.sf2'
 CONFIG = None
-MODEL =None
+MODEL = None
 MODEL_PATH = 'neural_network/models/MusicVAE/model_chords_fb64.ckpt'
 CONFIG_INTERP = None
 MODEL_INTERP = None
@@ -34,13 +34,31 @@ PREC_SONG = None
 KEY = None
 
 
-# Play sequence using SoundFont.
-def play(note_sequences):
-    if not isinstance(note_sequences, list):
-        note_sequences = [note_sequences]
-    for ns in note_sequences:
-        mm.play_sequence(ns, synth=mm.fluidsynth,
-                         sf2_path=SF2_PATH, sample_rate=44100.0)
+def initialize_model(main_path: str):
+    global CONFIG
+    global MODEL
+    global MODEL_PATH
+    global CONFIG_INTERP
+    global MODEL_INTERP
+    global MODEL_INTERP_PATH
+    global SF2_PATH
+
+    SF2_PATH = os.path.join(main_path, SF2_PATH)
+    MODEL_PATH = os.path.join(main_path, MODEL_PATH)
+    MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)
+
+    # INITIALIZE MODEL FOR CREATE SONG
+    CONFIG = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med_chords']
+    MODEL = TrainedModel(
+        CONFIG, batch_size=BATCH_SIZE,
+        checkpoint_dir_or_path=MODEL_PATH)
+
+    #INITIALIZE MODEL FOR INTERPOLATE SONGS
+    CONFIG_INTERP = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med']
+    MODEL_INTERP = TrainedModel(
+        CONFIG_INTERP, batch_size=BATCH_SIZE,
+        checkpoint_dir_or_path=MODEL_INTERP_PATH)
+    MODEL_INTERP._config.data_converter._max_tensors_per_input = None
 
 
 # Spherical linear interpolation.
@@ -108,7 +126,6 @@ def generate_sequence(va_value: str):
                      c_input=chord_encoding(chords[i % 4]))[0]
         for i in range(num_bars)
     ]
-    # print(time.time()-start_time)
     trim_sequences(seqs)
     fix_instruments_for_concatenation(seqs)
     prog_interp_ns = concatenate_sequences(seqs)
@@ -116,43 +133,16 @@ def generate_sequence(va_value: str):
     return prog_interp_ns, KEY
 
 
-def initialize_model(main_path: str):
-    global CONFIG
-    global MODEL
-    global MODEL_PATH
-    global CONFIG_INTERP
-    global MODEL_INTERP
-    global MODEL_INTERP_PATH
-    global SF2_PATH
-
-    SF2_PATH = os.path.join(main_path, SF2_PATH)
-    MODEL_PATH = os.path.join(main_path, MODEL_PATH)
-    MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)
-
-    # INITIALIZE MODEL FOR CREATE SONG
-    CONFIG = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med_chords']
-    MODEL = TrainedModel(
-        CONFIG, batch_size=BATCH_SIZE,
-        checkpoint_dir_or_path=MODEL_PATH)
-
-    #INITIALIZE MODEL FOR INTERPOLATE SONGS
-    CONFIG_INTERP = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med']
-    MODEL_INTERP = TrainedModel(
-        CONFIG_INTERP, batch_size=BATCH_SIZE,
-        checkpoint_dir_or_path=MODEL_INTERP_PATH)
-    MODEL_INTERP._config.data_converter._max_tensors_per_input = None
-
-
-def interpolate_songs(va_value:str):
+def interpolate_songs(va_value: str):
     global MODEL_INTERP
     global MODEL
     global PREC_SONG
     global KEY
 
     seqs = []
-    new_song,_ = generate_sequence(va_value)
+    new_song, _ = generate_sequence(va_value)
     new_song = to_midi(new_song)
-    new_song = mm.midi_to_sequence_proto(PREC_SONG)
+    new_song = mm.midi_to_sequence_proto(new_song)
     seqs.append(mm.midi_to_sequence_proto(PREC_SONG))
     seqs.append(new_song)
     
@@ -197,7 +187,7 @@ def create_song(va_value: str, liked: bool):
     return PREC_SONG
 
 
-def create_wav(midi:pretty_midi.PrettyMIDI):
+def create_wav(midi: pretty_midi.PrettyMIDI):
     global SF2_PATH
     wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
     return wav.astype(dtype=np.float32)

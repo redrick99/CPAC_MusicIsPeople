@@ -1,5 +1,22 @@
+CLIENT_CONTROLLER_IP = "127.0.0.1"
+CLIENT_CONTROLLER_PORT = 12345
+
+CLIENT_VISUALIZER_IP = "127.0.0.1"
+CLIENT_VISUALIZER_PORT = 54321
+
+CLIENT_STARTSTOP_IP = "127.0.0.1"
+CLIENT_STARTSTOP_PORT = 13524
+
+SERVER_IP = "127.0.0.1"
+SERVER_PORT = 55055
+
+CHUNK_SIZE = 2048
+CHANNELS = 1
+SAMPLE_RATE = 44100
+
+
 class BColors:
-    """Colors used to print and debug
+    """ Colors used to print and debug
     """
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -27,13 +44,14 @@ def print_info(string, flush=True):
         print(BColors.OKBLUE + "[INFO] " + BColors.UNDERLINE + str(string) + BColors.ENDC, flush=flush)
 
 
-def print_data(channel, data, flush=True):
+def print_data(data, flush=True):
     if __PRINTING_DATA_ACTIVE:
-        print(BColors.OKCYAN + "[DATA - Channel " + str(channel) + "] ", data, BColors.ENDC, flush=flush)
+        print(BColors.OKCYAN + "[DATA] ", data, BColors.ENDC, flush=flush)
 
-def print_data_alt_color(channel, data, flush=True):
+
+def print_data_alt_color(data, flush=True):
     if __PRINTING_DATA_ACTIVE:
-        print(BColors.HEADER + "[DATA - Channel " + str(channel) + "] ", data, BColors.ENDC, flush=flush)
+        print(BColors.HEADER + "[DATA] ", data, BColors.ENDC, flush=flush)
 
 
 def print_warning(string, flush=True):
