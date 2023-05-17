@@ -20,6 +20,7 @@ final color GREEN = #457604;
 final color RED = #FF5C5C;
 final color GRAY = #212E2F;
 final color AZURE = #84B7BD;
+final color LAVENDER = #E6E6FA;
 
 int cols, rows;
 int scl = 8;
@@ -84,7 +85,10 @@ void draw(){
   }
   else{
     loadingDone();
-    loadingPage();
+     if(frameCount <= 400){
+       loadingPage();
+     }
+     else buildingPage();
   }
 }
 
@@ -123,6 +127,8 @@ float getSystemVolume() {
         return volume;
       } catch (LineUnavailableException ex) {
         ex.printStackTrace();
+      } catch (Exception e){
+        return 1.0;
       }
     }
   }
@@ -192,6 +198,9 @@ void mainPage(){
 
 void loadingPage() {
   background(BACKGROUND);
+  fill(BACKGROUND);
+  stroke(AZURE);
+  rect(width/2 - (numLines-1)*dotSpacing/2, height/2 + 3*dotSpacing, (numLines-1)*dotSpacing, 6*dotSpacing + yH);
 
   // Draw the logo
   fill(YELLOW, 70);
@@ -209,7 +218,7 @@ void loadingPage() {
   text("...loading...", width/2, height/2 - dotSpacing);
 
   // Calculate the base opacity for fade-in fade-out effect
-  int baseOpacity = 200;
+  int baseOpacity = 300;
 
   // Calculate the animation parameters
   float phaseOffset = 0.02;
@@ -227,4 +236,58 @@ void loadingPage() {
     // Draw the line
     line(dotX, height/2 + 5*dotSpacing, dotX, height/2 + 7*dotSpacing + yH);
   }
+}
+
+void buildingPage() {
+    background(BACKGROUND);
+    fill(BACKGROUND);
+    stroke(LAVENDER);
+    rect(width/2 - (numLines-1)*dotSpacing/2, height/2 + 3*dotSpacing, (numLines-1)*dotSpacing, 6*dotSpacing + yH);
+
+    // Draw the logo
+    fill(YELLOW, 70);
+    stroke(YELLOW);
+    rect(width/2 - logoLength/2, 50, logoLength, logoHeight);
+    textSize(textSize);
+    textAlign(CENTER, CENTER);
+    textFont(font);
+    fill(YELLOW);
+    text("Music Is People", width/2 - logoLength/2, 50, logoLength, logoHeight);
+
+    // Draw the loading text
+    fill(LAVENDER);
+    textSize(30);
+    text("...creating...", width/2, height/2 - dotSpacing);
+
+    // Calculate the base opacity for fade-in fade-out effect
+    int baseOpacity = 200;
+
+    // Calculate the animation parameters
+    float phaseOffset = 0.02;
+    float light = 200.0;
+
+    // Calculate the stretch parameters
+    float stretchAmount = 15.0; // Adjust the stretch amount here
+
+    // Draw the lines
+    for (int i = 0; i < numLines; i++) {
+        int dotX = width/2 - (numLines-1)*dotSpacing/2 + i*dotSpacing;
+        float phase = -phaseOffset * dotX;
+        int opacity = int(baseOpacity + sin(phase + frameCount * 0.05) * light);
+
+        // Set the color and opacity for the line
+        stroke(LAVENDER);
+
+        // Calculate the line coordinates
+        float startY = height/2 + 5*dotSpacing;
+        float endY = height/2 + 7*dotSpacing + yH;
+        
+        // Calculate the stretched end position based on the dotX
+        float stretchedEndY = endY + (sin((frameCount - dotX) * 0.05) * stretchAmount);
+        float stretchedStartY = startY + (sin((frameCount - dotX) * 0.05) * stretchAmount);
+        
+        // Draw the line
+        line(dotX, stretchedStartY, dotX, stretchedEndY);
+    }
+    
 }
