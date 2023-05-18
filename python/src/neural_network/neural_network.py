@@ -8,7 +8,8 @@ import note_seq as mm
 import numpy as np
 import tensorflow._api.v2.compat.v1 as tf
 import pretty_midi
-from neural_network import chords_progression as cp
+# from neural_network import chords_progression as cp
+from neural_network.chords_progression import ChordsMarkovChain
 
 tf.disable_v2_behavior()
 # Removes Tensorflow logs and warnings
@@ -21,6 +22,7 @@ Z_SIZE = 512
 TOTAL_STEPS = 512
 BAR_SECONDS = 2.0
 CHORD_DEPTH = 49
+CHORDS_PER_BAR = 4
 
 SAMPLE_RATE = 44100
 SF2_PATH = 'neural_network/models/SGM-v2.01-Sal-Guit-Bass-V1.3.sf2'
@@ -30,8 +32,10 @@ MODEL_PATH = 'neural_network/models/MusicVAE/model_chords_fb64.ckpt'
 CONFIG_INTERP = None
 MODEL_INTERP = None
 MODEL_INTERP_PATH = 'neural_network/models/MusicVAE/model_fb256.ckpt'
-PREC_SONG = None
-KEY = None
+
+PREV_SONG = None
+
+chords_markov_chain = ChordsMarkovChain()
 
 
 def initialize_model(main_path: str):
@@ -106,15 +110,14 @@ def to_midi(note_sequence):
     return mm.sequence_proto_to_pretty_midi(note_sequence)
 
 
-def generate_sequence(va_value: str):
-    global KEY
+def generate_sequence(va_mood: str, liked: bool):
     global MODEL
     
-    chords, KEY = cp.choose_chords(va_value, KEY)
+    chords = chords_markov_chain.get_next_chord_progression(va_mood, CHORDS_PER_BAR, not liked)
     print(chords)
 
-    num_bars = 24  # @param {type:"slider", min:4, max:64, step:4}
-    temperature = 0.1  # @param {type:"slider", min:0.01, max:1.5, step:0.01}
+    num_bars = 24
+    temperature = 0.1
 
     z1 = np.random.normal(size=[Z_SIZE])
     z2 = np.random.normal(size=[Z_SIZE])
@@ -130,24 +133,23 @@ def generate_sequence(va_value: str):
     fix_instruments_for_concatenation(seqs)
     prog_interp_ns = concatenate_sequences(seqs)
 
-    return prog_interp_ns, KEY
+    return prog_interp_ns
 
 
-def interpolate_songs(va_value: str):
+def interpolate_songs(va_value: str, liked: bool):
     global MODEL_INTERP
     global MODEL
-    global PREC_SONG
-    global KEY
+    global PREV_SONG
 
     seqs = []
-    new_song, _ = generate_sequence(va_value)
+    new_song, _ = generate_sequence(va_value, not liked)
     new_song = to_midi(new_song)
     new_song = mm.midi_to_sequence_proto(new_song)
-    seqs.append(mm.midi_to_sequence_proto(PREC_SONG))
+    seqs.append(mm.midi_to_sequence_proto(PREV_SONG))
     seqs.append(new_song)
-    
+
+    uploaded_seqs = []
     for seq in seqs:
-        uploaded_seqs = []
         _, tensors, _, _ = MODEL_INTERP._config.data_converter.to_tensors(seq)
         uploaded_seqs.extend(MODEL_INTERP._config.data_converter.from_tensors(tensors))
 
@@ -169,22 +171,21 @@ def interpolate_songs(va_value: str):
     trim_sequences(seqs)
     fix_instruments_for_concatenation(seqs)
     recon_interp_ns = concatenate_sequences(seqs)
-    PREC_SONG = to_midi(recon_interp_ns)
+    PREV_SONG = to_midi(recon_interp_ns)
     
 
-def create_song(va_value: str, liked: bool):
+def create_song(va_mood: str, liked: bool):
     global MODEL
-    global PREC_SONG
-    global KEY
+    global PREV_SONG
 
-    if not liked or PREC_SONG is None:
+    if not liked or PREV_SONG is None:
     # CHOOSE CHORDS AND RUN
-        [prog_interp_ns, KEY] = generate_sequence(va_value)
-        PREC_SONG = to_midi(prog_interp_ns)
-        return PREC_SONG
+        prog_interp_ns = generate_sequence(va_mood, liked)
+        PREV_SONG = to_midi(prog_interp_ns)
+        return PREV_SONG
     
-    interpolate_songs(va_value)
-    return PREC_SONG
+    interpolate_songs(va_mood, liked)
+    return PREV_SONG
 
 
 def create_wav(midi: pretty_midi.PrettyMIDI):
