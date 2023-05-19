@@ -84,7 +84,7 @@ def feedback_handler(address, fixed_args, *args):
         if radar_mood_string not in list(MOOD_CHORD_DICT.keys()):  # Checks if the mood can be used to generate the song
             raise NotImplementedError("Couldn't recognize mood, was: "+radar_mood_string)
 
-        mid = nn.create_song(va_value=radar_mood_string, liked=liked_the_song)  # Creates the song as a midi from the nn
+        mid = nn.create_song(va_mood=radar_mood_string, liked=liked_the_song)  # Creates the song as a midi from the nn
         wav = nn.create_wav(mid)  # Converts the PrettyMIDI object into a wav file
         print_success("Created midi and wav files")
 
@@ -94,8 +94,9 @@ def feedback_handler(address, fixed_args, *args):
 
     except NotImplementedError as nie:
         print_error(nie)
-    except Exception:
+    except Exception as e:
         print_error("Something went wrong while handling feedback")
+        raise e
 
     finally:
         waiting_for_feedback = True

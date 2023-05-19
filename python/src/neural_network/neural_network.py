@@ -3,11 +3,13 @@ from magenta.models.music_vae import configs
 from magenta.models.music_vae import TrainedModel
 from note_seq.sequences_lib import concatenate_sequences
 import os
+import copy
 import logging
 import note_seq as mm
 import numpy as np
 import tensorflow._api.v2.compat.v1 as tf
 import pretty_midi
+from note_seq.protobuf import music_pb2
 # from neural_network import chords_progression as cp
 from neural_network.chords_progression import ChordsMarkovChain
 
@@ -106,17 +108,43 @@ def fix_instruments_for_concatenation(note_sequences):
                 note.instrument = 9
 
 
-def to_midi(note_sequence):
+def to_midi(note_sequence, bpm):
+    note_sequence = change_tempo(note_sequence, bpm)
+    print(note_sequence.tempos, flush=True)
     return mm.sequence_proto_to_pretty_midi(note_sequence)
 
 
-def generate_sequence(va_mood: str, liked: bool):
+def change_tempo(note_sequence, new_tempo):
+    new_sequence = copy.deepcopy(note_sequence)
+    ratio = note_sequence.tempos[0].qpm / float(new_tempo)
+    for note in new_sequence.notes:
+        note.start_time = note.start_time * ratio
+        note.end_time = note.end_time * ratio
+    new_sequence.tempos[0].qpm = new_tempo
+    return new_sequence
+
+
+def get_bpm_and_num_bars(mood: str, max_duration: float):
+    bpm = 120
+    if mood == 'exciting' or mood == 'anxious':
+        bpm = 120
+    if mood == 'happy' or mood == 'angry':
+        bpm = 90
+    if mood == 'serene' or mood == 'sad':
+        bpm = 60
+    if mood == 'relaxing' or mood == 'bored':
+        bpm = 30
+    num_bars = int(max_duration * bpm / CHORDS_PER_BAR)
+    return bpm, num_bars
+
+
+def generate_sequence(va_mood: str, liked: bool, num_bars: int):
     global MODEL
     
     chords = chords_markov_chain.get_next_chord_progression(va_mood, CHORDS_PER_BAR, not liked)
     print(chords)
 
-    num_bars = 24
+    # num_bars = 24
     temperature = 0.1
 
     z1 = np.random.normal(size=[Z_SIZE])
@@ -136,14 +164,14 @@ def generate_sequence(va_mood: str, liked: bool):
     return prog_interp_ns
 
 
-def interpolate_songs(va_value: str, liked: bool):
+def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
     global MODEL_INTERP
     global MODEL
     global PREV_SONG
 
     seqs = []
-    new_song, _ = generate_sequence(va_value, not liked)
-    new_song = to_midi(new_song)
+    new_song = generate_sequence(va_value, not liked, num_bars)
+    new_song = to_midi(new_song, bpm)
     new_song = mm.midi_to_sequence_proto(new_song)
     seqs.append(mm.midi_to_sequence_proto(PREV_SONG))
     seqs.append(new_song)
@@ -158,7 +186,7 @@ def interpolate_songs(va_value: str, liked: bool):
     index_1 = 0 
     index_2 = 1 
 
-    num_bars = 32 
+    #num_bars = 32
     temperature = 0.2 
 
     z1, _, _ = MODEL_INTERP.encode([uploaded_seqs[index_1]])
@@ -171,20 +199,22 @@ def interpolate_songs(va_value: str, liked: bool):
     trim_sequences(seqs)
     fix_instruments_for_concatenation(seqs)
     recon_interp_ns = concatenate_sequences(seqs)
-    PREV_SONG = to_midi(recon_interp_ns)
-    
+    return recon_interp_ns
+
 
 def create_song(va_mood: str, liked: bool):
     global MODEL
     global PREV_SONG
 
-    if not liked or PREV_SONG is None:
+    bpm, num_bars = get_bpm_and_num_bars(va_mood, 1.0)
+
     # CHOOSE CHORDS AND RUN
-        prog_interp_ns = generate_sequence(va_mood, liked)
-        PREV_SONG = to_midi(prog_interp_ns)
-        return PREV_SONG
-    
-    interpolate_songs(va_mood, liked)
+    if not liked or PREV_SONG is None:
+        prog_interp_ns = generate_sequence(va_mood, liked, num_bars)
+    else:
+        prog_interp_ns = interpolate_songs(va_mood, liked, num_bars, bpm)
+
+    PREV_SONG = to_midi(prog_interp_ns, bpm)
     return PREV_SONG
 
 
@@ -192,3 +222,5 @@ def create_wav(midi: pretty_midi.PrettyMIDI):
     global SF2_PATH
     wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
     return wav.astype(dtype=np.float32)
+
+

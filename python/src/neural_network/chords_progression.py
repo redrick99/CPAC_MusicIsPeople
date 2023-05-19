@@ -81,7 +81,7 @@ class ChordsMarkovChain:
         self._mood_chords_dict = {
             'happy': 'Imaj7 IImin7 IIImin7 IVmaj7 V7 VImin7 II7 III7'.split(' '),
             'exciting': [],
-            'relaxing': [],
+            'relaxing': 'I6 IImin7 IIImin7 IV6 V6 VImin7 VIb IVmaj7 IIIb'.split(' '),
             'serene': [],
             'bored': [],
             'sad': 'Imaj7 IImin7 IIImin7 IVmaj7 V7 VImin7 VIImin7 IVmin7 III7'.split(' '),
@@ -100,7 +100,15 @@ class ChordsMarkovChain:
                                [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00],
                                [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00]]),
             'exciting': np.array([[]]),
-            'relaxing': np.array([[]]),
+            'relaxing': np.array([[0.00, 0.08, 0.16, 0.37, 0.08, 0.16, 0.08, 0.00, 0.08],
+                                  [0.00, 0.00, 0.00, 0.25, 0.75, 0.00, 0.00, 0.00, 0.00],
+                                  [0.00, 0.00, 0.00, 0.33, 0.33, 0.34, 0.00, 0.00, 0.00],
+                                  [0.30, 0.10, 0.10, 0.10, 0.40, 0.00, 0.00, 0.00, 0.00],
+                                  [0.25, 0.00, 0.00, 0.00, 0.50, 0.25, 0.00, 0.00, 0.00],
+                                  [0.00, 0.20, 0.00, 0.60, 0.20, 0.00, 0.00, 0.00, 0.00],
+                                  [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+                                  [0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00],
+                                  [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00]]),
             'serene': np.array([[]]),
             'bored': np.array([[]]),
             'sad': np.array([[0.00, 0.00, 0.00, 0.00, 0.67, 0.33, 0.00, 0.00, 0.00],
@@ -122,9 +130,18 @@ class ChordsMarkovChain:
                                [0.50, 0.00, 0.00, 0.00, 0.50, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
                                [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
                                [0.00, 0.17, 0.17, 0.50, 0.00, 0.17, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [],
-                               []]),
+                               [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+                               [0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]]),
         }
+
+        """
+        for matrix in self._mood_matrix_dict.values():
+            for i in range(len(matrix)):
+                if np.sum(matrix[i]) != 1.0:
+                    print(np.sum(matrix[i]))
+                    raise ValueError("Probabilities don't sum to 1!")
+        """
+
 
     def set_random_key(self):
         self.set_key(random.choice(notes))
@@ -187,6 +204,7 @@ class ChordsMarkovChain:
                        notes[(ind + 7) % 12], notes[(ind + 9) % 12], notes[(ind + 11) % 12], notes[ind]]
         return major_scale
 
+"""
 mark = ChordsMarkovChain()
 print(mark.get_next_chord_progression('happy', 4))
 print(mark.get_next_chord_progression('sad', 4))
@@ -194,3 +212,4 @@ mark.set_key('C#')
 print('')
 print(mark.get_next_chord_progression('happy', 4))
 print(mark.get_next_chord_progression('sad', 4))
+"""
