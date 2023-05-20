@@ -1,23 +1,28 @@
-print('Importing magenta modules...')
-from magenta.models.music_vae import configs
-from magenta.models.music_vae import TrainedModel
-from note_seq.sequences_lib import concatenate_sequences
+import warnings
+import logging
 import os
 import copy
-import logging
-import note_seq as mm
+from utilities import *
+
+with warnings.catch_warnings():
+    print_info('Importing magenta modules...')
+    warnings.simplefilter("ignore")
+    from magenta.models.music_vae import configs
+    from magenta.models.music_vae import TrainedModel
+    from note_seq.sequences_lib import concatenate_sequences
+    import note_seq as mm
+    import tensorflow._api.v2.compat.v1 as tf
+    # Removes Tensorflow logs and warnings
+    tf.keras.utils.disable_interactive_logging()
+    tf.get_logger().setLevel(logging.ERROR)
+    tf.disable_v2_behavior()
+    print_success('Imported magenta!')
+
 import numpy as np
-import tensorflow._api.v2.compat.v1 as tf
 import pretty_midi
 from note_seq.protobuf import music_pb2
-# from neural_network import chords_progression as cp
 from neural_network.chords_progression import ChordsMarkovChain
 
-tf.disable_v2_behavior()
-# Removes Tensorflow logs and warnings
-tf.keras.utils.disable_interactive_logging()
-tf.get_logger().setLevel(logging.ERROR)
-print('Done!')
 
 BATCH_SIZE = 4
 Z_SIZE = 512
@@ -53,18 +58,22 @@ def initialize_model(main_path: str):
     MODEL_PATH = os.path.join(main_path, MODEL_PATH)
     MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)
 
-    # INITIALIZE MODEL FOR CREATE SONG
-    CONFIG = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med_chords']
-    MODEL = TrainedModel(
-        CONFIG, batch_size=BATCH_SIZE,
-        checkpoint_dir_or_path=MODEL_PATH)
+    with warnings.catch_warnings():
+        print_info('Initializing NN models...')
+        warnings.simplefilter("ignore")
+        # INITIALIZE MODEL FOR CREATE SONG
+        CONFIG = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med_chords']
+        MODEL = TrainedModel(
+            CONFIG, batch_size=BATCH_SIZE,
+            checkpoint_dir_or_path=MODEL_PATH)
 
-    #INITIALIZE MODEL FOR INTERPOLATE SONGS
-    CONFIG_INTERP = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med']
-    MODEL_INTERP = TrainedModel(
-        CONFIG_INTERP, batch_size=BATCH_SIZE,
-        checkpoint_dir_or_path=MODEL_INTERP_PATH)
-    MODEL_INTERP._config.data_converter._max_tensors_per_input = None
+        #INITIALIZE MODEL FOR INTERPOLATE SONGS
+        CONFIG_INTERP = configs.CONFIG_MAP['hier-multiperf_vel_1bar_med']
+        MODEL_INTERP = TrainedModel(
+            CONFIG_INTERP, batch_size=BATCH_SIZE,
+            checkpoint_dir_or_path=MODEL_INTERP_PATH)
+        MODEL_INTERP._config.data_converter._max_tensors_per_input = None
+        print_success('Models initialized!')
 
 
 # Spherical linear interpolation.
@@ -110,7 +119,6 @@ def fix_instruments_for_concatenation(note_sequences):
 
 def to_midi(note_sequence, bpm):
     note_sequence = change_tempo(note_sequence, bpm)
-    print(note_sequence.tempos, flush=True)
     return mm.sequence_proto_to_pretty_midi(note_sequence)
 
 
@@ -222,5 +230,3 @@ def create_wav(midi: pretty_midi.PrettyMIDI):
     global SF2_PATH
     wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
     return wav.astype(dtype=np.float32)
-
-

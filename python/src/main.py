@@ -4,7 +4,7 @@ from pythonosc.osc_server import BlockingOSCUDPServer
 from pythonosc.udp_client import SimpleUDPClient
 from audio_handling import *
 from utilities import *
-from neural_network.chords_progression import MOOD_CHORD_DICT
+from neural_network.chords_progression import moods
 import neural_network.neural_network as nn
 
 waiting_for_feedback = False
@@ -81,7 +81,7 @@ def feedback_handler(address, fixed_args, *args):
 
         print_data_alt_color("Feedback: "+str(liked_the_song)+" "+str(radar_mood_string))
 
-        if radar_mood_string not in list(MOOD_CHORD_DICT.keys()):  # Checks if the mood can be used to generate the song
+        if radar_mood_string not in moods:  # Checks if the mood can be used to generate the song
             raise NotImplementedError("Couldn't recognize mood, was: "+radar_mood_string)
 
         mid = nn.create_song(va_mood=radar_mood_string, liked=liked_the_song)  # Creates the song as a midi from the nn
@@ -96,7 +96,7 @@ def feedback_handler(address, fixed_args, *args):
         print_error(nie)
     except Exception as e:
         print_error("Something went wrong while handling feedback")
-        raise e
+        print_dbg(e)
 
     finally:
         waiting_for_feedback = True
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     print_info("Connecting to visualizer...")
     conn, address = client_visualizer.accept()
     active, address_active = client_startstop.accept()
-    print_success("Connected to visualizer")
+    print_success("Connected to visualizer!")
 
     dispatcher = Dispatcher()
     dispatcher.map("/Controller/Ping", ping_handler, client_controller)

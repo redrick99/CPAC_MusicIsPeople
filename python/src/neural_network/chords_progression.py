@@ -1,74 +1,10 @@
 import random
 import numpy as np
 
-grades = {
-    'I': 0,
-    'II': 1,
-    'III': 2,
-    'IV': 3,
-    'V': 4,
-    'VI': 5,
-    'VII': 6
-}
-
 grades = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']
-
 notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+moods = ['happy', 'exciting', 'relaxing', 'serene', 'bored', 'sad', 'anxious', 'angry']
 
-happy_chords = [["Imaj7", "IVmaj7", "V7", "IVmaj7"], ["Imaj7", "IVmaj7", "V7", "VIm"], ["Imaj7", "V7", "VIm", "IVmaj7"], ["Imaj7", "V7", "VIm", "IVmaj7"], [
-    "Imaj7", "VIm", "IVmaj7", "V7"], ["IV", "Imaj7", "V7", "VIm7"], ["IV", "V7", "Imaj7", "VIm6"], ["IV", "VIm", "Imaj7", "V7"]]
-sad_chords = [["VIm", "IVmaj7", "Imaj7", "V7"], ["VIm", "IVmaj7", "Imaj7", "V9"], ["Imaj7", "VII", "VIm", "V7"], [
-    "Imaj7", "VIm", "IIIm", "VII"], ["Imaj7", "VII", "VIm", "IVmaj7"], ["Imaj7", "VIm", "IIIm", "IVmaj7"]]
-dance_chords = [["Imaj7", "IVmaj7", "V7", "IVmaj7"], ["Imaj7", "IV6", "V7", "VIm6"], ["Imaj7", "VIm", "IVmaj7", "V7"], [
-    "IIm7", "V7", "Imaj7", "Imaj7"], ["IVmaj7", "V7", "Imaj7", "VIm6"], ["V7", "VIm7", "IV7", "V7"], ["VIm", "IVmaj7", "Imaj7", "V7"]]
-not_dance_chords = [["I7", "VII", "VIm7", "V7"], ["I6", "VIm7", "III7", "VII"], [
-    "Imaj7", "VII", "VIm", "IV7"], ["VIm", "IVmaj7", "Imaj7", "V9"], ["VIm", "IVmaj7", "Imaj7", "V79"], ["IV", "Imaj7", "V7", "VIm7"]]
-
-# TODO have different chord progressions for each mood
-MOOD_CHORD_DICT = {
-    'happy': happy_chords,
-    'exciting': dance_chords,
-    'relaxing': not_dance_chords,
-    'serene': not_dance_chords,
-    'bored': not_dance_chords,
-    'sad': sad_chords,
-    'anxious': sad_chords,
-    'angry': sad_chords,
-}
-
-
-def build_scale(key):
-    ind = notes.index(key)
-    major_scale = [notes[ind], notes[(ind + 2) % 12], notes[(ind + 4) % 12], notes[(
-        ind + 5) % 12], notes[(ind + 7) % 12], notes[(ind + 9) % 12], notes[(ind + 11) % 12], notes[ind]]
-    return major_scale
-
-
-def choose_chords(va_value: str, key: str):
-    moods = list(MOOD_CHORD_DICT.keys())
-
-    if va_value not in moods:
-        va_value = random.choice(moods)
-    chords = random.choice(MOOD_CHORD_DICT[va_value])
-
-    if key is None:
-        key = random.choice(notes)
-    scale = build_scale(key)
-    new_chords = []
-    for seq in chords:
-        removed = seq.replace('7', '').replace('a', '').replace(
-            '6', '').replace('9', '').replace('b', '').replace('m', '').replace('j', '').replace('5', '')
-        if (removed != seq):
-            removed_element = ""
-            for lettera in seq:
-                if lettera not in removed:
-                    removed_element += lettera
-        else:
-            removed_element = ''
-
-        new_chords.append(scale[grades[removed]]+removed_element)
-
-    return new_chords, key
 
 class ChordsMarkovChain:
 
@@ -134,15 +70,6 @@ class ChordsMarkovChain:
                                [0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]]),
         }
 
-        """
-        for matrix in self._mood_matrix_dict.values():
-            for i in range(len(matrix)):
-                if np.sum(matrix[i]) != 1.0:
-                    print(np.sum(matrix[i]))
-                    raise ValueError("Probabilities don't sum to 1!")
-        """
-
-
     def set_random_key(self):
         self.set_key(random.choice(notes))
 
@@ -185,6 +112,7 @@ class ChordsMarkovChain:
 
     def _get_chord_from_symbol(self, symbol: str):
         separators = ['I', 'V']
+        down_sharp_alt = '#b'
         split_symbol = ''
         for c in reversed(range(len(symbol))):
             if symbol[c] in separators:
@@ -196,6 +124,9 @@ class ChordsMarkovChain:
             raise ValueError("Incorrect symbol found, was "+symbol)
 
         chord = str(self.__scale[grades.index(split_symbol[0])] + split_symbol[1])
+        if down_sharp_alt in chord:
+            chord = chord.replace(down_sharp_alt, '')
+
         return chord
 
     def _build_scale(self, key: str):
@@ -203,13 +134,3 @@ class ChordsMarkovChain:
         major_scale = [notes[ind], notes[(ind + 2) % 12], notes[(ind + 4) % 12], notes[(ind + 5) % 12],
                        notes[(ind + 7) % 12], notes[(ind + 9) % 12], notes[(ind + 11) % 12], notes[ind]]
         return major_scale
-
-"""
-mark = ChordsMarkovChain()
-print(mark.get_next_chord_progression('happy', 4))
-print(mark.get_next_chord_progression('sad', 4))
-mark.set_key('C#')
-print('')
-print(mark.get_next_chord_progression('happy', 4))
-print(mark.get_next_chord_progression('sad', 4))
-"""
