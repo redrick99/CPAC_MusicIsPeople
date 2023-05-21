@@ -42,10 +42,11 @@ MODEL_INTERP_PATH = 'neural_network/models/MusicVAE/model_fb256.ckpt'
 
 PREV_SONG = None
 
-chords_markov_chain = ChordsMarkovChain()
+chords_markov_chain = None
 
 
 def initialize_model(main_path: str):
+    global chords_markov_chain
     global CONFIG
     global MODEL
     global MODEL_PATH
@@ -54,6 +55,7 @@ def initialize_model(main_path: str):
     global MODEL_INTERP_PATH
     global SF2_PATH
 
+    chords_markov_chain = ChordsMarkovChain(main_path)
     SF2_PATH = os.path.join(main_path, SF2_PATH)
     MODEL_PATH = os.path.join(main_path, MODEL_PATH)
     MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)

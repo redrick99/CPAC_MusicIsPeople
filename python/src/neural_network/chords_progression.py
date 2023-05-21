@@ -1,5 +1,7 @@
+import os
 import random
 import numpy as np
+import pandas as pd
 
 grades = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']
 notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
@@ -8,66 +10,35 @@ moods = ['happy', 'exciting', 'relaxing', 'serene', 'bored', 'sad', 'anxious', '
 
 class ChordsMarkovChain:
 
-    def __init__(self):
+    def __init__(self, main_path: str):
         self.__key = random.choice(notes)
         self.__scale = self._build_scale(self.__key)
         self.__prev_chords = []
 
+        path_to_csv_chords = os.path.join(main_path, "resources", "mood_chords_symbols")
+        path_to_csv_arrays = os.path.join(main_path, "resources", "mood_transition_arrays")
         # TODO fill with possible chord symbols for every mood, ordered from left to right
         self._mood_chords_dict = {
-            'happy': 'Imaj7 IImin7 IIImin7 IVmaj7 V7 VImin7 II7 III7'.split(' '),
-            'exciting': [],
-            'relaxing': 'I6 IImin7 IIImin7 IV6 V6 VImin7 VIb IVmaj7 IIIb'.split(' '),
-            'serene': [],
-            'bored': [],
-            'sad': 'Imaj7 IImin7 IIImin7 IVmaj7 V7 VImin7 VIImin7 IVmin7 III7'.split(' '),
-            'anxious': [],
-            'angry': 'Imaj7 IImin7 IIImin7 IVmaj7 V7 VImin7 VIImin7 VIIo7 V6 III7 I7'.split(' '),
+            'happy': pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'exciting': pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'relaxing': pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'serene': pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'bored': pd.read_csv(os.path.join(path_to_csv_chords, "sad_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'sad': pd.read_csv(os.path.join(path_to_csv_chords, "sad_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'anxious': pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'angry': pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0],
         }
 
         # TODO fill with the transition matrix for every mood
         self._mood_matrix_dict = {
-            'happy': np.array([[0.00, 0.13, 0.00, 0.13, 0.42, 0.13, 0.13, 0.06],
-                               [0.00, 0.00, 0.00, 0.25, 0.75, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00],
-                               [0.27, 0.09, 0.09, 0.00, 0.55, 0.00, 0.00, 0.00],
-                               [0.16, 0.00, 0.00, 0.34, 0.16, 0.34, 0.00, 0.00],
-                               [0.16, 0.16, 0.00, 0.52, 0.00, 0.00, 0.16, 0.00],
-                               [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00]]),
-            'exciting': np.array([[]]),
-            'relaxing': np.array([[0.00, 0.08, 0.16, 0.37, 0.08, 0.16, 0.08, 0.00, 0.08],
-                                  [0.00, 0.00, 0.00, 0.25, 0.75, 0.00, 0.00, 0.00, 0.00],
-                                  [0.00, 0.00, 0.00, 0.33, 0.33, 0.34, 0.00, 0.00, 0.00],
-                                  [0.30, 0.10, 0.10, 0.10, 0.40, 0.00, 0.00, 0.00, 0.00],
-                                  [0.25, 0.00, 0.00, 0.00, 0.50, 0.25, 0.00, 0.00, 0.00],
-                                  [0.00, 0.20, 0.00, 0.60, 0.20, 0.00, 0.00, 0.00, 0.00],
-                                  [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                                  [0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00],
-                                  [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00]]),
-            'serene': np.array([[]]),
-            'bored': np.array([[]]),
-            'sad': np.array([[0.00, 0.00, 0.00, 0.00, 0.67, 0.33, 0.00, 0.00, 0.00],
-                             [0.25, 0.25, 0.00, 0.00, 0.25, 0.00, 0.00, 0.25, 0.00],
-                             [0.25, 0.00, 0.25, 0.25, 0.00, 0.00, 0.25, 0.00, 0.00],
-                             [0.17, 0.00, 0.00, 0.00, 0.00, 0.50, 0.00, 0.00, 0.33],
-                             [0.11, 0.11, 0.22, 0.34, 0.00, 0.22, 0.00, 0.00, 0.00],
-                             [0.10, 0.20, 0.10, 0.20, 0.30, 0.10, 0.00, 0.00, 0.00],
-                             [0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00],
-                             [1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                             [0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00]]),
-            'anxious': np.array([[]]),
-            'angry': np.array([[0.00, 0.00, 0.33, 0.33, 0.00, 0.00, 0.00, 0.00, 0.34, 0.00, 0.00],
-                               [0.50, 0.00, 0.00, 0.00, 0.50, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.20, 0.20, 0.20, 0.40, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.78, 0.11, 0.11, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.50, 0.50, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.11, 0.00, 0.11, 0.22, 0.00, 0.00, 0.00, 0.11, 0.23, 0.11, 0.11],
-                               [0.50, 0.00, 0.00, 0.00, 0.50, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.17, 0.17, 0.50, 0.00, 0.17, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-                               [0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]]),
+            'happy': pd.read_csv(os.path.join(path_to_csv_arrays, "happy_tm.csv"), index_col=False).to_numpy(),
+            'exciting': pd.read_csv(os.path.join(path_to_csv_arrays, "happy_tm.csv"), index_col=False).to_numpy(),
+            'relaxing': pd.read_csv(os.path.join(path_to_csv_arrays, "relaxing_tm.csv"), index_col=False).to_numpy(),
+            'serene': pd.read_csv(os.path.join(path_to_csv_arrays, "relaxing_tm.csv"), index_col=False).to_numpy(),
+            'bored': pd.read_csv(os.path.join(path_to_csv_arrays, "sad_tm.csv"), index_col=False).to_numpy(),
+            'sad': pd.read_csv(os.path.join(path_to_csv_arrays, "sad_tm.csv"), index_col=False).to_numpy(),
+            'anxious': pd.read_csv(os.path.join(path_to_csv_arrays, "angry_tm.csv"), index_col=False).to_numpy(),
+            'angry': pd.read_csv(os.path.join(path_to_csv_arrays, "angry_tm.csv"), index_col=False).to_numpy(),
         }
 
     def set_random_key(self):
