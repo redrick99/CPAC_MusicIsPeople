@@ -1,4 +1,5 @@
 import os
+from multiprocessing import Process, Event, Queue
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 from pythonosc.udp_client import SimpleUDPClient
@@ -30,7 +31,6 @@ def controller_connected_handler(address, fixed_args, *args):
     :return:
     """
     global controller_connected
-    # if not controller_connected:
     controller_connected = True
     _client_controller = fixed_args[0]
     _client_controller.send_message("/Controller/Connected", True)
@@ -47,8 +47,9 @@ def ping_handler(address, fixed_args, *args):
     :return:
     """
     is_voting = args[0]
+    feedback_event = fixed_args[1]
     print_info("User is voting: "+str(is_voting))
-    if not is_voting and waiting_for_feedback:
+    if not is_voting and not feedback_event.is_set():
         _client_controller = fixed_args[0]
         _client_controller.send_message("/Controller/VoteStart", True)
 
@@ -63,45 +64,43 @@ def feedback_handler(address, fixed_args, *args):
     :param args: arguments of the incoming osc message
     :return:
     """
-    global waiting_for_feedback
-    waiting_for_feedback = False
+    feed_queue = fixed_args[0]
+    feed_event = fixed_args[1]
 
-    _out_stream = fixed_args[0]
-    client_connection = fixed_args[1]
-    client_connection_startstop = fixed_args[2]
-    _client_controller = fixed_args[3]
+    if not feed_event.is_set():
+        try:
+            feedback = []
+            feedback.append(args[0])
+            feedback.append(float(args[1]))
+            feedback.append(float(args[2]))
+            feedback.append(str(args[3]).lower())
+            if feedback[3] not in moods:  # Checks if the mood can be used to generate the song
+                raise NotImplementedError("Couldn't recognize mood, was: " + radar_mood_string)
 
-    client_connection_startstop.sendall("CREATING".encode())
+            print_data_alt_color("Feedback: " + str(feedback[0]) + " " + str(feedback[3]))
+            feed_queue.put(feedback)
 
-    try:
-        liked_the_song = bool(args[0])
-        radar_value_x = float(args[1])
-        radar_value_y = float(args[2])
-        radar_mood_string = str(args[3]).lower()
+        except NotImplementedError as nie:
+            print_error(nie)
+        except ValueError as ve:
+            print_error(ve)
+        except Exception:
+            print_error("Couldn't read incoming feedback (Broad Exception)")
+        finally:
+            return
 
-        print_data_alt_color("Feedback: "+str(liked_the_song)+" "+str(radar_mood_string))
+    print_warning("Received feedback while producing song")
 
-        if radar_mood_string not in moods:  # Checks if the mood can be used to generate the song
-            raise NotImplementedError("Couldn't recognize mood, was: "+radar_mood_string)
 
-        mid = nn.create_song(va_mood=radar_mood_string, liked=liked_the_song)  # Creates the song as a midi from the nn
-        wav = nn.create_wav(mid)  # Converts the PrettyMIDI object into a wav file
-        print_success("Created midi and wav files")
+def server_worker(queue, event, client_controller):
+    dispatcher = Dispatcher()
+    dispatcher.map("/Controller/Ping", ping_handler, client_controller, event)
+    dispatcher.map("/Controller/Feedback", feedback_handler, queue, event)
+    dispatcher.map("/Controller/Connected/Confirm", controller_connected_handler, client_controller)
+    dispatcher.set_default_handler(default_handler)
+    server = BlockingOSCUDPServer((SERVER_IP, SERVER_PORT), dispatcher)
 
-        audio_frames, stft_audio_frames = get_audio_frames(wav, CHUNK_SIZE)  # Splits song in frames for playback and visualization
-        client_connection_startstop.sendall("START".encode())
-        play_send_audio(audio_frames, stft_audio_frames, _out_stream, client_connection)
-
-    except NotImplementedError as nie:
-        print_error(nie)
-    except Exception as e:
-        print_error("Something went wrong while handling feedback")
-        print_dbg(e)
-
-    finally:
-        waiting_for_feedback = True
-        client_connection_startstop.sendall("STOP".encode())
-        _client_controller.send_message("/Controller/VoteStart", True)
+    server.serve_forever()  # Blocks forever
 
 
 if __name__ == "__main__":
@@ -132,11 +131,35 @@ if __name__ == "__main__":
     active, address_active = client_startstop.accept()
     print_success("Connected to visualizer!")
 
-    dispatcher = Dispatcher()
-    dispatcher.map("/Controller/Ping", ping_handler, client_controller)
-    dispatcher.map("/Controller/Feedback", feedback_handler, out_stream, conn, active, client_controller)
-    dispatcher.map("/Controller/Connected/Confirm", controller_connected_handler, client_controller)
-    dispatcher.set_default_handler(default_handler)
-    server = BlockingOSCUDPServer((SERVER_IP, SERVER_PORT), dispatcher)
+    feedback_event = Event()
+    feedback_queue = Queue()
+    server_process = Process(target=server_worker, args=(feedback_queue, feedback_event, client_controller,))
+    server_process.start()
 
-    server.serve_forever()  # Blocks forever
+    while True:
+        feedback = feedback_queue.get()
+        feedback_event.set()
+        active.sendall("CREATING".encode())
+        try:
+            liked_the_song = feedback[0]
+            radar_value_x = feedback[1]
+            radar_value_y = feedback[2]
+            radar_mood_string = feedback[3]
+
+            mid = nn.create_song(va_mood=radar_mood_string,
+                                 liked=liked_the_song)  # Creates the song as a midi from the nn
+            wav = nn.create_wav(mid)  # Converts the PrettyMIDI object into a wav file
+            print_success("Created midi and wav files")
+
+            audio_frames, stft_audio_frames = get_audio_frames(wav,
+                                                               CHUNK_SIZE)  # Splits song in frames for playback and visualization
+            active.sendall("START".encode())
+            play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
+
+        except Exception as e:
+            print_error(e)
+
+        finally:
+            waiting_for_feedback = True
+            active.sendall("STOP".encode())
+            feedback_event.clear()

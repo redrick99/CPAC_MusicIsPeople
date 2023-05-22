@@ -19,14 +19,14 @@ class ChordsMarkovChain:
         path_to_csv_arrays = os.path.join(main_path, "resources", "mood_transition_arrays")
         # TODO fill with possible chord symbols for every mood, ordered from left to right
         self._mood_chords_dict = {
-            'happy': pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'exciting': pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'relaxing': pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'serene': pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'bored': pd.read_csv(os.path.join(path_to_csv_chords, "sad_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'sad': pd.read_csv(os.path.join(path_to_csv_chords, "sad_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'anxious': pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0],
-            'angry': pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0],
+            'happy': pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'exciting': pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'relaxing': pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'serene': pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'bored': pd.read_csv(os.path.join(path_to_csv_chords, "sad_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'sad': pd.read_csv(os.path.join(path_to_csv_chords, "sad_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'anxious': pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
+            'angry': pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
         }
 
         # TODO fill with the transition matrix for every mood
