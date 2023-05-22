@@ -55,9 +55,8 @@ def ping_handler(address, fixed_args, *args):
 
 
 def feedback_handler(address, fixed_args, *args):
-    """ Handler for a feedback osc message. Called when feedback is received from the osc controller, it creates
-    a new song based on the feedback in the form of midi and wav, then plays the songs and sends the audio data
-    over to the visualizer
+    """ Handler for a feedback osc message. Called when feedback is received from the osc controller, it parses the
+    message into readable values and puts them in a multiprocessing queue for the main thread to start processing
 
     :param address: osc address assigned to this function
     :param fixed_args: arguments that are passed down from the python script and as such are fixed
@@ -93,6 +92,13 @@ def feedback_handler(address, fixed_args, *args):
 
 
 def server_worker(queue, event, client_controller):
+    """ Creates a new server and blocks the thread
+
+    :param queue:
+    :param event:
+    :param client_controller:
+    :return:
+    """
     dispatcher = Dispatcher()
     dispatcher.map("/Controller/Ping", ping_handler, client_controller, event)
     dispatcher.map("/Controller/Feedback", feedback_handler, queue, event)
@@ -104,6 +110,7 @@ def server_worker(queue, event, client_controller):
 
 
 if __name__ == "__main__":
+    # Connections setup
     client_controller = SimpleUDPClient(CLIENT_CONTROLLER_IP, CLIENT_CONTROLLER_PORT)  # Create controller client
 
     client_visualizer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Create visualizer client
@@ -114,13 +121,16 @@ if __name__ == "__main__":
     client_startstop.bind((CLIENT_STARTSTOP_IP, CLIENT_STARTSTOP_PORT))
     client_startstop.listen(1)
 
+    # Output device setup
+    out_device_index = choose_sound_card_index()
     pa = pyaudio.PyAudio()
     out_stream = pa.open(
         rate=SAMPLE_RATE,
         channels=CHANNELS,
         format=pyaudio.paFloat32,
         frames_per_buffer=CHUNK_SIZE,
-        output=True
+        output=True,
+        output_device_index=out_device_index,
     )
 
     main_path = os.path.dirname(__file__)

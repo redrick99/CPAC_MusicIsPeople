@@ -3,7 +3,7 @@ import numpy as np
 import pyaudio
 import socket
 import sys
-from utilities import *
+from utilities import print_data
 np.set_printoptions(threshold=sys.maxsize, suppress=True)
 
 
@@ -36,8 +36,6 @@ def get_audio_frames(audio_array: np.ndarray, chunk_size: int = 2048):
         stft_audio_frames.append(stft_frame)
         counter += 1
 
-    print("audio_frames: " + str(len(audio_frames)))
-    print("stft_audio_frames: " + str(len(stft_audio_frames)))
     return audio_frames, stft_audio_frames
 
 
@@ -58,20 +56,20 @@ def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pya
             client.sendall(message.encode())
 
 
-def normalize(frame: np.array, type: str):
+def normalize(frame: np.array, norm_type: str):
     """ Normalizes a given array with a method specified as a string
 
     :param frame: Array to normalize
-    :param type: Normalization type to apply
+    :param norm_type: Normalization type to apply
     :return: The normalized array
     """
     _min = np.min(np.abs(frame))
     _max = np.max(np.abs(frame))
-    if type == "minmax":
+    if norm_type == "minmax":
         return (frame - _min) / (_max - _min)
-    if type == "peak":
+    if norm_type == "peak":
         return frame / _max
-    if type == "mean":
+    if norm_type == "mean":
         return frame - np.mean(frame)
 
 
