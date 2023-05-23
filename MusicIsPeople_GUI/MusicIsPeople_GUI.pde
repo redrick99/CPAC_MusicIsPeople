@@ -24,6 +24,7 @@ final color LAVENDER = #E6E6FA;
 
 int cols, rows;
 int scl = 8;
+
 // Change the dimension of the terrain
 int w = 1025;
 int h = 900;
@@ -37,7 +38,7 @@ float logoLength = 975;
 float logoHeight = 100;
 float rumor;
 int count=1;
-int active = 0;
+int active = 1;
 
 float xOff = 0;
 float yOff = 0;
@@ -54,6 +55,17 @@ float base = 5;  // Set the base of the rectangle
 float yH = 20;  // Set the height of the rectangle
 PFont font;
 
+ArrayList<Sentence> database;
+int phraseIndex = 0;
+int prevIndex;
+
+Boolean ctrl = true;
+int dTime;
+float startAngle = -HALF_PI;
+float endAngle = 0;
+int startTime;
+int duration = 7000;
+
 void setup() {
   size(1500, 900, P3D);
   myClient = new Client(this, "127.0.0.1", 54321);
@@ -67,6 +79,7 @@ void setup() {
   terrain = new float[cols][rows];
   Line.Info lineInfo = new Line.Info(SourceDataLine.class);
   Line line = null;
+  database = Sentence.createSentenceDatabase();
   try {
     line = AudioSystem.getLine(lineInfo);
     line.open();
@@ -84,10 +97,21 @@ void draw(){
     mainPage();
   }
   else if(active == 1){
-       buildingPage();
+    if(ctrl){
+      prevIndex = phraseIndex;
+      phraseIndex = floor(random(database.size()));
+      while(prevIndex == phraseIndex) phraseIndex = floor(random(database.size()));
+      ctrl = false;
+      dTime = millis();
+    }
+    if(millis() - dTime >= duration){
+      ctrl = true;
+    }
+     buildingPage();
    }
    else{
      loadingPage();
+     ctrl = true;
    }
 }
 
@@ -220,7 +244,7 @@ void loadingPage() {
   text("...loading...", width/2, height/2 - dotSpacing);
 
   // Calculate the base opacity for fade-in fade-out effect
-  int baseOpacity = 300;
+  int baseOpacity = 200;
 
   // Calculate the animation parameters
   float phaseOffset = 0.02;
@@ -262,11 +286,11 @@ void buildingPage() {
     text("...creating...", width/2, height/2 - dotSpacing);
 
     // Calculate the base opacity for fade-in fade-out effect
-    int baseOpacity = 200;
+    // int baseOpacity = 200;
 
     // Calculate the animation parameters
-    float phaseOffset = 0.02;
-    float light = 200.0;
+    // float phaseOffset = 0.02;
+    // float light = 200.0;
 
     // Calculate the stretch parameters
     float stretchAmount = 15.0; // Adjust the stretch amount here
@@ -274,8 +298,8 @@ void buildingPage() {
     // Draw the lines
     for (int i = 0; i < numLines; i++) {
         int dotX = width/2 - (numLines-1)*dotSpacing/2 + i*dotSpacing;
-        float phase = -phaseOffset * dotX;
-        int opacity = int(baseOpacity + sin(phase + frameCount * 0.05) * light);
+        // float phase = -phaseOffset * dotX;
+        // int opacity = int(baseOpacity + sin(phase + frameCount * 0.05) * light);
 
         // Set the color and opacity for the line
         stroke(LAVENDER);
@@ -292,4 +316,47 @@ void buildingPage() {
         line(dotX, stretchedStartY, dotX, stretchedEndY);
     }
     
+    // Draw the loading text
+    fill(255);
+    textSize(20);
+   
+
+    if(database.get(phraseIndex).text.length() > 100){
+      int index = 100;
+      for(index = 100; index < database.get(phraseIndex).text.length(); index++){
+        if(database.get(phraseIndex).text.charAt(index) == ' ') break;
+      }
+      text(database.get(phraseIndex).text.substring(0, index), width/2, height/2 + height/3);
+      text(database.get(phraseIndex).text.substring(index), width/2, height/2 + height/3 + 50);
+    }
+    else text(database.get(phraseIndex).text, width/2, height/2 + height/3);
+     
+    draw_circle();
+}
+
+void draw_circle(){
+  int elapsedTime = millis() - dTime;
+  
+  // Calculate the start and end angles of the circular crown based on elapsed time
+  startAngle = -HALF_PI;
+  endAngle = map(elapsedTime, 0, duration, startAngle, TWO_PI-HALF_PI);
+  
+  // Set up the circular crown properties
+  fill(LAVENDER, 80);
+  noStroke();
+  translate(width/2, height/2 + height/4);
+  
+  
+  // Draw the circular crown
+  float crownSize = 40;
+  float crownRadius = crownSize*0.8;
+  arc(0, 0, crownSize, crownSize, startAngle, endAngle, PIE);
+  fill(BACKGROUND);
+  arc(0, 0, crownRadius, crownRadius, startAngle, endAngle, PIE);
+  
+  // Check if the loading is complete
+  if (elapsedTime >= duration) {
+    // Reset the start time
+    startTime = millis();
+  }
 }
