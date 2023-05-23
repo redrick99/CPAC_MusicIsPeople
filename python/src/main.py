@@ -53,6 +53,10 @@ def ping_handler(address, fixed_args, *args):
         _client_controller = fixed_args[0]
         _client_controller.send_message("/Controller/VoteStart", True)
 
+    elif is_voting and feedback_event.is_set():
+        _client_controller = fixed_args[0]
+        _client_controller.send_message("/Controller/VoteStop", True)
+
 
 def feedback_handler(address, fixed_args, *args):
     """ Handler for a feedback osc message. Called when feedback is received from the osc controller, it parses the
@@ -69,7 +73,7 @@ def feedback_handler(address, fixed_args, *args):
     if not feed_event.is_set():
         try:
             feedback = []
-            feedback.append(args[0])
+            feedback.append(bool(args[0]))
             feedback.append(float(args[1]))
             feedback.append(float(args[2]))
             feedback.append(str(args[3]).lower())
@@ -83,7 +87,8 @@ def feedback_handler(address, fixed_args, *args):
             print_error(nie)
         except ValueError as ve:
             print_error(ve)
-        except Exception:
+        except Exception as e:
+            raise(e)
             print_error("Couldn't read incoming feedback (Broad Exception)")
         finally:
             return

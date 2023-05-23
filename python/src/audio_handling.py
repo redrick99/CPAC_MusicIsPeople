@@ -50,7 +50,6 @@ def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pya
     """
     for i in range(len(audio_frames) - 1):
         out_stream.write(audio_frames[i].tobytes(), exception_on_underflow=False)
-        print_data("Sending frame " + str(i) + " of " + str(len(audio_frames) - 1))
         message = np.array2string(stft_audio_frames[i], precision=3, separator=',', suppress_small=True)
         if client is not None:
             client.sendall(message.encode())

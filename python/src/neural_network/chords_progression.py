@@ -27,14 +27,12 @@ class ChordsMarkovChain:
 
         happy_chords_symbols = [
             pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
-            # pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs2.csv"), index_col=False).to_numpy().transpose()[0].tolist()
-            []
+            pd.read_csv(os.path.join(path_to_csv_chords, "happy_cs2.csv"), index_col=False).to_numpy().transpose()[0].tolist()
         ]
 
         relaxing_chords_symbols = [
             pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
-            # pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs2.csv"), index_col=False).to_numpy().transpose()[0].tolist()
-            []
+            pd.read_csv(os.path.join(path_to_csv_chords, "relaxing_cs2.csv"), index_col=False).to_numpy().transpose()[0].tolist()
         ]
 
         sad_chords_symbols = [
@@ -44,20 +42,17 @@ class ChordsMarkovChain:
 
         angry_chords_symbols = [
             pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs.csv"), index_col=False).to_numpy().transpose()[0].tolist(),
-            # pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs2.csv"), index_col=False).to_numpy().transpose()[0].tolist()
-            []
+            pd.read_csv(os.path.join(path_to_csv_chords, "angry_cs2.csv"), index_col=False).to_numpy().transpose()[0].tolist()
         ]
 
         happy_chords_tms = [
             pd.read_csv(os.path.join(path_to_csv_arrays, "happy_tm.csv"), index_col=False).to_numpy(),
-            # pd.read_csv(os.path.join(path_to_csv_arrays, "happy_tm2.csv"), index_col=False).to_numpy()
-            []
+            pd.read_csv(os.path.join(path_to_csv_arrays, "happy_tm2.csv"), index_col=False).to_numpy()
         ]
 
         relaxing_chords_tms = [
             pd.read_csv(os.path.join(path_to_csv_arrays, "relaxing_tm.csv"), index_col=False).to_numpy(),
-            # pd.read_csv(os.path.join(path_to_csv_arrays, "relaxing_tm2.csv"), index_col=False).to_numpy()
-            []
+            pd.read_csv(os.path.join(path_to_csv_arrays, "relaxing_tm2.csv"), index_col=False).to_numpy()
         ]
 
         sad_chords_tms = [
@@ -67,8 +62,7 @@ class ChordsMarkovChain:
 
         angry_chords_tms = [
             pd.read_csv(os.path.join(path_to_csv_arrays, "angry_tm.csv"), index_col=False).to_numpy(),
-            # pd.read_csv(os.path.join(path_to_csv_arrays, "angry_tm2.csv"), index_col=False).to_numpy()
-            []
+            pd.read_csv(os.path.join(path_to_csv_arrays, "angry_tm2.csv"), index_col=False).to_numpy()
         ]
 
         # Contains first and second order chord symbols associated with the transitional arrays, divided by mood
