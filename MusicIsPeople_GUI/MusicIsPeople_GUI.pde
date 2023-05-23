@@ -38,7 +38,7 @@ float logoLength = 975;
 float logoHeight = 100;
 float rumor;
 int count=1;
-int active = 1;
+int active = 0;
 
 float xOff = 0;
 float yOff = 0;
