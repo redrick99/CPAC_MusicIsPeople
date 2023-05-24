@@ -193,11 +193,11 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
 
     z1 = []
     z2 = []
-    for i in range(len(uploaded_seqs)//2):
+    seq_length = len(uploaded_seqs)
+    for i in range(seq_length // 2):
         r1, _, _ = MODEL_INTERP.encode([uploaded_seqs[i]])
         z1.append(r1)
-    for j in range(len(uploaded_seqs)//2+1,len(uploaded_seqs)):
-        r2, _, _ = MODEL_INTERP.encode([uploaded_seqs[j]])
+        r2, _, _ = MODEL_INTERP.encode([uploaded_seqs[i + seq_length // 2]])
         z2.append(r2)
 
     #num_bars = 32
@@ -205,11 +205,9 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
     z = []
     for r_z1,r_z2 in zip(z1,z2):
         z.append(np.array([slerp(np.squeeze(r_z1), np.squeeze(r_z2), t)
-            for t in np.linspace(0, 1, num_bars)]))
+            for t in np.linspace(0, 1, 4)]))
 
-    seqs_dec = []
-    for zi in z:
-        seqs_dec.append(MODEL_INTERP.decode(length=TOTAL_STEPS, z=zi, temperature=temperature))
+    seqs_dec = [MODEL_INTERP.decode(length=TOTAL_STEPS, z=zi, temperature=temperature) for zi in z]
 
     recon_interp_ns = []
     for s in seqs_dec:
