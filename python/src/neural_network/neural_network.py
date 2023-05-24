@@ -191,24 +191,35 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
         _, tensors, _, _ = MODEL_INTERP._config.data_converter.to_tensors(seq)
         uploaded_seqs.extend(MODEL_INTERP._config.data_converter.from_tensors(tensors))
 
-    trim_sequences(uploaded_seqs)
-    
-    index_1 = 0 
-    index_2 = 1 
+    z1 = []
+    z2 = []
+    for i in range(len(uploaded_seqs)//2):
+        r1, _, _ = MODEL_INTERP.encode([uploaded_seqs[i]])
+        z1.append(r1)
+    for j in range(len(uploaded_seqs)//2+1,len(uploaded_seqs)):
+        r2, _, _ = MODEL_INTERP.encode([uploaded_seqs[j]])
+        z2.append(r2)
 
     #num_bars = 32
     temperature = 0.2 
+    z = []
+    for r_z1,r_z2 in zip(z1,z2):
+        z.append(np.array([slerp(np.squeeze(r_z1), np.squeeze(r_z2), t)
+            for t in np.linspace(0, 1, num_bars)]))
 
-    z1, _, _ = MODEL_INTERP.encode([uploaded_seqs[index_1]])
-    z2, _, _ = MODEL_INTERP.encode([uploaded_seqs[index_2]])
-    z = np.array([slerp(np.squeeze(z1), np.squeeze(z2), t)
-                for t in np.linspace(0, 1, num_bars)])
+    seqs_dec = []
+    for zi in z:
+        seqs_dec.append(MODEL_INTERP.decode(length=TOTAL_STEPS, z=zi, temperature=temperature))
 
-    seqs = MODEL_INTERP.decode(length=TOTAL_STEPS, z=z, temperature=temperature)
-
-    trim_sequences(seqs)
-    fix_instruments_for_concatenation(seqs)
-    recon_interp_ns = concatenate_sequences(seqs)
+    recon_interp_ns = []
+    for s in seqs_dec:
+        trim_sequences(s)
+        fix_instruments_for_concatenation(s)
+        recon_interp_ns.append(concatenate_sequences(s))    
+    
+    trim_sequences(recon_interp_ns)
+    fix_instruments_for_concatenation(recon_interp_ns)
+    recon_interp_ns = concatenate_sequences(recon_interp_ns)
     return recon_interp_ns
 
 
