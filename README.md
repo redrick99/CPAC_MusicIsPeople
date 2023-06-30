@@ -1,4 +1,9 @@
 # Music Is People
+
+<a align="center" href="https://redrick99.github.io/ACTAM-OFFICIAL-2022/" target="_blank">
+  <img src="./Documentation/Music_Is_People.png" width="100%" />
+</a>
+
 Music Is People is a creative application that harnesses the power of collective creativity to compose unique musical pieces. The project revolves around a neural network architecture that generates music based on user feedback. By actively involving users in the composition process, Music Is People aims to emphasize the idea that small individual actions can collectively create something magnificent and inspiring.
 
 Through an intuitive user interface, participants have the opportunity to listen to a previously generated song and provide feedback on their experience. This feedback is then fed back into the neural network, which analyzes and interprets the input to generate a new composition. The newly created song is played for the next user, creating an iterative and collaborative musical journey.
