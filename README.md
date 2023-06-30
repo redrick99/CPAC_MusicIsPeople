@@ -36,24 +36,24 @@ To run Music Is People in its entirety, you need three distinct softwares:
 - [TouchOSC](https://hexler.net/touchosc) (version 2.0 from their website)
 
 ### Step 0 - Download the Repo
-To run the various components of the application, you first need to download the github repo on your local machine. In order to do that, you can simply go on the main branch of the GitHub repo and press ´Code -> Download ZIP´. You then need to extract the zip file and put it somewhere inside your system.
+To run the various components of the application, you first need to download the github repo on your local machine. In order to do that, you can simply go on the main branch of the GitHub repo and press `Code -> Download ZIP`. You then need to extract the zip file and put it somewhere inside your system.
 
 ### Step 1 - Python Script
 We will assume that you extracted the zip file containing the repo to the following path:
 
-´´´
+```
 /Users/Pippo/Documents/CPAC_MusicIsPeople
-´´´
+```
 
 To run the python script, open your terminal and run the following commands, one by one:
 
-´´´
+```
 cd /Users/Pippo/Documents/CPAC_MusicIsPeople/python   [1]
 python3 -m venv venv                                  [2]
 source ./venv/bin/activate                            [3]
 python3 -m pip install -r ./requirements.txt          [4]
 python3 ./src/main.py                                 [5]
-´´´
+```
 
 These will, in order:
 
@@ -63,19 +63,19 @@ These will, in order:
 4. Install all module requirements inside your freshly activated virtual environment.
 5. Run the python script.
 
-If everythin works correctly, the program should run and then wait for the visualizer to connect (you should see a text saying ´Connecting to visualizer...´.
+If everythin works correctly, the program should run and then wait for the visualizer to connect (you should see a text saying `Connecting to visualizer...`.
 
 ### Step 2 - Processing Script
-To run the Processing script, simply open the processing application, select ´File->Open´ from the app's menu and open the file named ´MusicIsPeople_GUI.pde´ located in ´/MusicIsPeople_GUI´
+To run the Processing script, simply open the processing application, select `File->Open` from the app's menu and open the file named `MusicIsPeople_GUI.pde` located in `/MusicIsPeople_GUI`
 
 ### Step 3 - TouchOSC Script
-To run the TouchOSC script, again simply run the application, select file ´MusicIsPeople.tosc´ and once open click on the grey button on the top right of your screen to run the script.
+To run the TouchOSC script, again simply run the application, select file `MusicIsPeople.tosc` and once open click on the grey button on the top right of your screen to run the script.
 
 ### Step 4 - Enjoy!
 At this point you should be able to use the application however you like by interacting with the TouchOSC script. Enjoy! :) 
 
 ## Other Info
-For more informations about the project's implementation or other doubts, please consult either the code documentation or the full pdf report of the project. You can find them both inside this repo, under ´Documentation´.
+For more informations about the project's implementation or other doubts, please consult either the code documentation or the full pdf report of the project. You can find them both inside this repo, under `Documentation`.
 
 ## The Team
 Music Is People was made by students at Politecnico di Milano:
