@@ -13,22 +13,27 @@ controller_connected = False
 
 
 def default_handler(address, *args):
-    """ Default osc message handler. Called only when a message has a generic, unrecognized osc address
+    """ Default osc message handler. Called only when a message has a generic, unrecognized osc address.
 
-    :param address: osc address assigned to this function
-    :param args: arguments of the incoming osc message
-    :return:
+    **Args:**
+
+    ´address´: osc address assigned to this function.
+
+    ´args´: arguments of the incoming osc message.
     """
     print_warning("Received message with unrecognized OSC address: "+str(address))
 
 
 def controller_connected_handler(address, fixed_args, *args):
-    """ Default osc message handler. Called only when a message has a generic, unrecognized osc address
+    """ Default osc message handler. Called only when a message has a generic, unrecognized osc address.
 
-    :param address: osc address assigned to this function
-    :param fixed_args: arguments that are passed down from the python script and as such are fixed
-    :param args: arguments of the incoming osc message
-    :return:
+    **Args:**
+
+    ´address´: osc address assigned to this function.
+
+    ´fixed_args´: arguments that are passed down from the python script and as such are fixed.
+
+    ´args´: arguments of the incoming osc message.
     """
     global controller_connected
     controller_connected = True
@@ -39,12 +44,15 @@ def controller_connected_handler(address, fixed_args, *args):
 
 def ping_handler(address, fixed_args, *args):
     """ Handler for a ping osc message. Called to check if the osc controller is still connected and to check if
-    for some reason it is blocked in a wrong state (loading, ...)
+    for some reason it is blocked in a wrong state (loading, ...).
 
-    :param address: osc address assigned to this function
-    :param fixed_args: arguments that are passed down from the python script and as such are fixed
-    :param args: arguments of the incoming osc message
-    :return:
+    **Args:**
+
+    ´address´: osc address assigned to this function.
+
+    ´fixed_args´: arguments that are passed down from the python script and as such are fixed.
+
+    ´args´: arguments of the incoming osc message.
     """
     is_voting = args[0]
     feedback_event = fixed_args[1]
@@ -60,12 +68,15 @@ def ping_handler(address, fixed_args, *args):
 
 def feedback_handler(address, fixed_args, *args):
     """ Handler for a feedback osc message. Called when feedback is received from the osc controller, it parses the
-    message into readable values and puts them in a multiprocessing queue for the main thread to start processing
+    message into readable values and puts them in a multiprocessing queue for the main thread to start processing.
 
-    :param address: osc address assigned to this function
-    :param fixed_args: arguments that are passed down from the python script and as such are fixed
-    :param args: arguments of the incoming osc message
-    :return:
+    **Args:**
+
+    ´address´: osc address assigned to this function.
+
+    ´fixed_args´: arguments that are passed down from the python script and as such are fixed.
+
+    ´args´: arguments of the incoming osc message.
     """
     feed_queue = fixed_args[0]
     feed_event = fixed_args[1]
@@ -97,12 +108,15 @@ def feedback_handler(address, fixed_args, *args):
 
 
 def server_worker(queue, event, client_controller):
-    """ Creates a new server and blocks the thread
+    """ Creates a new OSC server and blocks the thread until an OSC message is received.
 
-    :param queue:
-    :param event:
-    :param client_controller:
-    :return:
+    **Args:**
+
+    ´queue´: Multiprocessing queue used to send parsed feedback from the OSC external controller.
+
+    ´event´: Multiprocessing event used to know if the program is currently running or if it is waiting for a feedback.
+
+    ´client_controller´: OSC client used to send messages to the external OSC controller.
     """
     dispatcher = Dispatcher()
     dispatcher.map("/Controller/Ping", ping_handler, client_controller, event)
@@ -138,23 +152,26 @@ if __name__ == "__main__":
         output_device_index=out_device_index,
     )
 
+    # Gets the absolute path up to the main file and initializes the neural network model
     main_path = os.path.dirname(__file__)
     nn.initialize_model(main_path)
 
+    # Waits for connection to the visualizer
     print_info("Connecting to visualizer...")
     conn, address = client_visualizer.accept()
     active, address_active = client_startstop.accept()
     print_success("Connected to visualizer!")
 
+    # Creates multiprocessing objects
     feedback_event = Event()
     feedback_queue = Queue()
     server_process = Process(target=server_worker, args=(feedback_queue, feedback_event, client_controller,))
     server_process.start()
 
     while True:
-        feedback = feedback_queue.get()
-        feedback_event.set()
-        active.sendall("CREATING".encode())
+        feedback = feedback_queue.get()  # Get feedback from OSC message
+        feedback_event.set()  # Set running to true
+        active.sendall("CREATING".encode())  # Send message to visualizer
         try:
             liked_the_song = feedback[0]
             radar_value_x = feedback[1]
@@ -167,7 +184,8 @@ if __name__ == "__main__":
             print_success("Created midi and wav files")
 
             audio_frames, stft_audio_frames = get_audio_frames(wav,
-                                                               CHUNK_SIZE)  # Splits song in frames for playback and visualization
+                                                               CHUNK_SIZE)  # Splits song in frames for playback and
+            # visualization
             active.sendall("START".encode())
             play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
 
@@ -175,6 +193,7 @@ if __name__ == "__main__":
             print_error(e)
 
         finally:
+            # Once done, prepare to receive another message
             waiting_for_feedback = True
             active.sendall("STOP".encode())
             feedback_event.clear()

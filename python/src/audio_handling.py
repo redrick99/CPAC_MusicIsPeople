@@ -3,17 +3,22 @@ import numpy as np
 import pyaudio
 import socket
 import sys
-from utilities import print_data
 np.set_printoptions(threshold=sys.maxsize, suppress=True)
 
 
 def get_audio_frames(audio_array: np.ndarray, chunk_size: int = 2048):
     """ Performs a stft and splits the audio and obtained spectrum into smaller pieces ready to be played
-    and visualized
+    and visualized.
 
-    :param audio_array: Array containing the song's signal
-    :param chunk_size: Defines the length of the frames and the parameters of the stft
-    :return: `tuple` containing the audio and the stft of the audio split in frames
+    **Args:**
+
+    ´audio_array´: Array containing the song's signal.
+
+    ´chunk_size´: Defines the length of the frames and the parameters of the stft.
+
+    **Returns:**
+
+    `tuple` containing the audio and the stft of the audio split in frames.
     """
     audio_frames = []
     stft_audio_frames = []
@@ -40,13 +45,18 @@ def get_audio_frames(audio_array: np.ndarray, chunk_size: int = 2048):
 
 
 def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pyaudio.Stream, client: socket.socket):
-    """ Plays the generated song frame by frame while simultaneously sending data to the client socket for visualization
+    """ Plays the generated song frame by frame while simultaneously sending data to the client socket for
+    visualization.
 
-    :param audio_frames: Audio to be played split in frames
-    :param stft_audio_frames: Stft of the audio to be played split in frames
-    :param out_stream: Output stream used to play the song as output audio
-    :param client: socket through which to send the visualization data
-    :return:
+    **Args:**
+
+    ´audio_frames´ Audio to be played split in frames.
+
+    ´stft_audio_frames´: Stft of the audio to be played split in frames.
+
+    ´out_stream´: Output stream used to play the song as output audio.
+
+    ´client´: socket through which to send the visualization data.
     """
     for i in range(len(audio_frames) - 1):
         out_stream.write(audio_frames[i].tobytes(), exception_on_underflow=False)
@@ -56,11 +66,17 @@ def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pya
 
 
 def normalize(frame: np.array, norm_type: str):
-    """ Normalizes a given array with a method specified as a string
+    """ Normalizes a given array with a method specified as a string.
 
-    :param frame: Array to normalize
-    :param norm_type: Normalization type to apply
-    :return: The normalized array
+    **Args:**
+
+    ´frame´: Array to normalize.
+
+    ´norm_type´: Normalization type to apply.
+
+    **Returns:**
+
+    The normalized array.
     """
     _min = np.min(np.abs(frame))
     _max = np.max(np.abs(frame))
@@ -73,10 +89,15 @@ def normalize(frame: np.array, norm_type: str):
 
 
 def to_float32(array: np.array):
-    """ Converts a given array to its `float32` representation
+    """ Converts a given array to its `float32` representation.
 
-    :param array: Array to be converted
-    :return: The converted array
+    **Args:**
+
+    ´array´: Array to be converted.
+
+    **Returns:**
+
+    The converted array.
     """
     array_float32 = array.astype(dtype=np.float32, order='C')
     if array.dtype == np.int32:

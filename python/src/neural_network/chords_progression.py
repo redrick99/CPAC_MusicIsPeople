@@ -9,13 +9,15 @@ moods = ['happy', 'exciting', 'relaxing', 'serene', 'bored', 'sad', 'anxious', '
 
 
 class ChordsMarkovChain:
-    """ Implements a second order markov chain used to get the next chord progression to feed to the neural network """
+    """ Implements a second order markov chain used to get the next chord progression to feed to the neural network. """
 
     def __init__(self, main_path: str):
         """ Constructor for ChordsMarkovChain class. It reads first and second order transitional arrays along with
          their associated chord symbols from csv files given the path of the src folder.
 
-        :param main_path: Path of the src folder passed down from the main script
+        **Args:**
+
+        ´main_path´: Path of the src folder passed down from the main script.
         """
         self.__key = random.choice(notes)
         self.__scale = self._build_scale(self.__key)
@@ -90,29 +92,35 @@ class ChordsMarkovChain:
         }
 
     def set_random_key(self):
-        """ Sets a random key for the chord progression
-
-        :return:
+        """ Sets a random key for the chord progression.
         """
         self.set_key(random.choice(notes))
 
     def set_key(self, key: str):
-        """ Sets the key for the chord progression
+        """ Sets the key for the chord progression.
 
-        :param key: New key to be set
-        :return:
+        **Args:**
+
+        ´key´: New key to be set.
         """
         self.__key = key
         self.__scale = self._build_scale(key)
 
     def get_next_chord_progression(self, mood: str, chords_in_bar: int, new_song: bool):
         """ Generates a new chord progression either based on the previous or from scratch depending on
-        if the user liked the previous song played by the application
+        if the user liked the previous song played by the application.
 
-        :param mood: Mood of the progression to be generated
-        :param chords_in_bar: Length of the chord progression in chords
-        :param new_song: True if the user did not like the previous song
-        :return: A new chord progression
+        **Args:**
+
+        ´mood´: Mood of the progression to be generated.
+
+        ´chords_in_bar´: Length of the chord progression in chords.
+
+        ´new_song´: True if the user did not like the previous song.
+
+        **Returns:**
+
+        A new chord progression.
         """
         new_chord_progression = []
 
@@ -144,10 +152,17 @@ class ChordsMarkovChain:
         This function i recursive, as if an entry wasn't found in the second order transitional array for the two
         previous chords, the function is recalled with order=1.
 
-        :param mood: Mood of the chords progression
-        :param prev_chords: List containing the two previous chords
-        :param order: Order of the markov chain to use
-        :return: The next chord of the progression
+        **Args:**
+
+        ´mood´: Mood of the chords progression.
+
+        ´prev_chords´: List containing the two previous chords.
+
+        ´order´: Order of the markov chain to use.
+
+        **Returns:**
+
+        The next chord of the progression.
         """
         if order == 2:
             prev_chord_symbol = prev_chords[0] + self.__prev_chords_separator + prev_chords[1]
@@ -169,8 +184,13 @@ class ChordsMarkovChain:
     def _get_chord_from_symbol(self, symbol: str):
         """ Converts the chord's symbol from grades to notes depending on the current chords progression key.
 
-        :param symbol: Symbol of the chord to convert in grades
-        :return: Symbol of the chord in its note representation
+        **Args:**
+
+        ´symbol´: Symbol of the chord to convert in grades.
+
+        **Returns:**
+
+        Symbol of the chord in its note representation.
         """
         separators = ['I', 'V']
         down_sharp_alt = '#b'
@@ -193,8 +213,13 @@ class ChordsMarkovChain:
     def _build_scale(self, key: str):
         """ Builds a new major scale based on the given key.
 
-        :param key: Key from which to build the new scale
-        :return: A list containing the major scale's notes
+        **Args:**
+
+        ´key´: Key from which to build the new scale.
+
+        **Returns:**
+
+        A list containing the major scale's notes.
         """
         ind = notes.index(key)
         major_scale = [notes[ind], notes[(ind + 2) % 12], notes[(ind + 4) % 12], notes[(ind + 5) % 12],

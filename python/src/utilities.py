@@ -20,7 +20,9 @@ SAMPLE_RATE = 44100
 def choose_sound_card_index() -> int:
     """Gets the sound card index for live audio from user input.
 
-    :returns: the index of the chosen sound card (depends on the number of available sound cards)
+    **Returns:**
+
+    The index of the chosen sound card (depends on the number of available sound cards).
     """
 
     pa = pyaudio.PyAudio()
@@ -50,7 +52,7 @@ def choose_sound_card_index() -> int:
 
 
 class BColors:
-    """ Colors used to print and debug
+    """ Colors used to print and debug.
     """
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -69,77 +71,91 @@ __PRINTING_DATA_ACTIVE = True
 
 
 def print_success(string, flush=True):
-    """ Prints with [OK] and green color signature
+    """ Prints with [OK] and green color signature.
 
-    :param string: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.OKGREEN + "[OK] " + str(string) + BColors.ENDC, flush=flush)
 
 
 def print_info(string, flush=True):
-    """ Prints with [INFO] and blue color signature
+    """ Prints with [INFO] and blue color signature.
 
-    :param string: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.OKBLUE + "[INFO] " + BColors.UNDERLINE + str(string) + BColors.ENDC, flush=flush)
 
 
 def print_data(data, flush=True):
-    """ Prints with [DATA] and cyan color signature
+    """ Prints with [DATA] and cyan color signature.
 
-    :param data: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_DATA_ACTIVE:
         print(BColors.OKCYAN + "[DATA] ", data, BColors.ENDC, flush=flush)
 
 
 def print_data_alt_color(data, flush=True):
-    """ Prints with [DATA] and magenta color signature
+    """ Prints with [DATA] and magenta color signature.
 
-    :param data: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_DATA_ACTIVE:
         print(BColors.HEADER + "[DATA] ", data, BColors.ENDC, flush=flush)
 
 
 def print_warning(string, flush=True):
-    """ Prints with [WARNING] and yellow color signature
+    """ Prints with [WARNING] and yellow color signature.
 
-    :param string: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.WARNING + BColors.BOLD + "[WARNING] " + str(string) + BColors.ENDC, flush=flush)
 
 
 def print_error(string, flush=True):
-    """ Prints with [ERROR] and red color signature
+    """ Prints with [ERROR] and red color signature.
 
-    :param string: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.FAIL + BColors.BOLD + "[ERROR] " + str(string) + BColors.ENDC, flush=flush)
 
 
 def print_dbg(string, flush=True):
-    """ Prints with [DBG] and green color signature
+    """ Prints with [DBG] and green color signature.
 
-    :param string: String to print
-    :param flush: Standard print's flush parameter
-    :return:
+    **Args:**
+
+    ´string´: String to print.
+
+    ´flush´: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE and __DEBUGGER_ACTIVE:
         print(BColors.OKGREEN + "[DBG] " + str(string) + BColors.ENDC, flush=flush)
