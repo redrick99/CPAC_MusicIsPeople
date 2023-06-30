@@ -64,8 +64,16 @@ If everythin works correctly, the program should run and then wait for the visua
 To run the Processing script, simply open the processing application, select ´File->Open´ from the app's menu and open the file named ´MusicIsPeople_GUI.pde´ located in ´/MusicIsPeople_GUI´
 
 ### Step 3 - TouchOSC Script
-To run the TouchOSC script, again simply run the application, select file ´MusicIsPeople.tosc´ and once open click on the grey button on the top right of your screen to run the scritp.
+To run the TouchOSC script, again simply run the application, select file ´MusicIsPeople.tosc´ and once open click on the grey button on the top right of your screen to run the script.
 
 ### Step 4 - Enjoy!
 At this point you should be able to use the application however you like by interacting with the TouchOSC script. Enjoy! :) 
 
+## Other Info
+For more informations about the project's implementation or other doubts, please consult either the code documentation or the full pdf report of the project. You can find them both inside this repo, under ´Documentation´.
+
+## The Team
+Music Is People was made by students at Politecnico di Milano:
+- Francesco Piferi (francesco.pifer@mail.polimi.it)
+- Riccardo Rossi (riccardo18.rossi@mail.polimi.it)
+- Ferdinando Terminiello (ferdinando.terminiello@mail.polimi.it)
