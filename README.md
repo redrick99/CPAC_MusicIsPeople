@@ -19,3 +19,19 @@ At the core of Music Is People lies an artistic message that seeks to evoke a re
 Music Is People draws inspiration from the concept of crowdsourcing and collective intelligence. The project is motivated by the idea that diverse perspectives and individual input can contribute to the creation of exceptional artistic expressions. The project team also acknowledges the transformative power of technology in enabling collaborative endeavors and aims to explore its application in the realm of music composition.
 
 By building on the advancements in neural network architectures and interactive interfaces, Music Is People seeks to provide a platform for users to actively engage in the creative process and witness the tangible results of their input. The project aims to demonstrate that art can transcend boundaries, unite people, and create a profound emotional impact when rooted in collective action.
+
+## How to use Music Is People
+You can follow this tutorial to run the application on your own machine.
+
+### Requirements
+To run Music Is People in its entirety, you need three distinct softwares:
+
+- [Python](https://www.python.org) (from version 3.9 or higher)
+- [Processing](https://processing.org) (latest available version)
+- [TouchOSC](https://hexler.net/touchosc) (version 2.0 from their website)
+
+### Step 0 - Download the Repo
+To run the various components of the application, you first need to download the github repo on your local machine. In order to do that, you can simply go on the main branch of the GitHub repo and press ´Code -> Download ZIP´. You then need to extract the zip file and put it somewhere inside your system.
+
+### Step 1 - Python Script
+
