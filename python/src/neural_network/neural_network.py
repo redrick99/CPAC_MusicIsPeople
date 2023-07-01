@@ -201,7 +201,7 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
         z2.append(r2)
 
     #num_bars = 32
-    temperature = 0.2 
+    temperature = 0.4 
     z = []
     for r_z1,r_z2 in zip(z1,z2):
         z.append(np.array([slerp(np.squeeze(r_z1), np.squeeze(r_z2), t)
