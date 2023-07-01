@@ -23,6 +23,7 @@ import pretty_midi
 from note_seq.protobuf import music_pb2
 from neural_network.chords_progression import ChordsMarkovChain
 
+# DEFINITION PARAMETERS AND GLOBAL VARIABLES
 
 BATCH_SIZE = 4
 Z_SIZE = 512
@@ -44,8 +45,18 @@ PREV_SONG = None
 
 chords_markov_chain = None
 
+##--------------------------------------------------------------------
 
 def initialize_model(main_path: str):
+    """Initialize the models used for generation and interpolation importing the configuration of Google Magenta API.
+
+    **Args:**
+    
+    `main_path`: Path of the src folder passed down from the main script.
+
+    **Returns:**
+
+    """
     global chords_markov_chain
     global CONFIG
     global MODEL
@@ -78,17 +89,40 @@ def initialize_model(main_path: str):
         print_success('Models initialized!')
 
 
-# Spherical linear interpolation.
 def slerp(p0, p1, t):
-    """Spherical linear interpolation."""
+    """Spherical linear interpolation.
+
+    **Args:**
+
+    `p0`: The starting point of the interpolation.
+
+    `p1`: The ending point of the interpolation.
+
+    `t`: Evenly spaced samples, calculated over the interval [0, 1].
+
+    **Returns:**
+
+    The interpolated value between p0 and p1 at the given parameter value t.
+
+    """
     omega = np.arccos(np.dot(np.squeeze(p0 / np.linalg.norm(p0)),
                       np.squeeze(p1 / np.linalg.norm(p1))))
     so = np.sin(omega)
     return np.sin((1.0 - t) * omega) / so * p0 + np.sin(t * omega) / so * p1
 
 
-# Chord encoding tensor.
 def chord_encoding(chord):
+    """Encode a chord as a one-hot vector.
+
+    **Args:**
+
+    `chord`: The chord to be encoded
+
+    **Returns:**
+
+    The one-hot encoding of the chord.
+
+    """
     index = mm.TriadChordOneHotEncoding().encode_event(chord)
     c = np.zeros([TOTAL_STEPS, CHORD_DEPTH])
     c[0, 0] = 1.0
@@ -96,15 +130,33 @@ def chord_encoding(chord):
     return c
 
 
-# Trim sequences to exactly one bar.
 def trim_sequences(seqs, num_seconds=BAR_SECONDS):
+    """Trim the sequences to a specified duration.
+
+    **Args:**
+
+    `seqs`: List of music sequences to be trimmed.
+
+    `num_seconds`: Duration in seconds to trim the sequences to. Default is BAR_SECONDS.
+
+    **Returns:**
+
+    """
     for i in range(len(seqs)):
         seqs[i] = mm.extract_subsequence(seqs[i], 0.0, num_seconds)
         seqs[i].total_time = num_seconds
 
 
-# Consolidate instrument numbers by MIDI program.
 def fix_instruments_for_concatenation(note_sequences):
+    """Fixes instrument assignments for concatenation of note sequences.
+
+    **Args:**
+
+    `note_sequences`: List of note sequences to fix instrument assignments.
+
+    **Returns:**
+
+    """
     instruments = {}
     for i in range(len(note_sequences)):
         for note in note_sequences[i].notes:
@@ -120,11 +172,35 @@ def fix_instruments_for_concatenation(note_sequences):
 
 
 def to_midi(note_sequence, bpm):
+    """Converts a NoteSequence to a MIDI file.
+
+    **Args:**
+
+    `note_sequence`: The NoteSequence to convert to MIDI.
+
+    `bpm`: The tempo in beats per minute (BPM) for the resulting MIDI file.
+
+    **Returns:**
+    
+    The MIDI file representation of the NoteSequence.
+    """
     note_sequence = change_tempo(note_sequence, bpm)
     return mm.sequence_proto_to_pretty_midi(note_sequence)
 
 
 def change_tempo(note_sequence, new_tempo):
+    """Change the tempo of a NoteSequence to a new tempo.
+
+    **Args:**
+
+    `note_sequence`: The NoteSequence to change the tempo of.
+
+    `new_tempo`: The new tempo in beats per minute (BPM).
+
+    **Returns:**
+
+     The NoteSequence with the tempo changed.
+    """
     new_sequence = copy.deepcopy(note_sequence)
     ratio = note_sequence.tempos[0].qpm / float(new_tempo)
     for note in new_sequence.notes:
@@ -135,6 +211,19 @@ def change_tempo(note_sequence, new_tempo):
 
 
 def get_bpm_and_num_bars(mood: str, max_duration: float):
+    """Get the BPM (beats per minute) and the number of bars based on the mood. 
+
+    **Args:**
+
+    `mood`: The mood category.
+
+    `max_duration`: The maximum duration in seconds.
+
+    **Returns:**
+
+    A tuple containing the BPM and the number of bars.
+
+    """
     bpm = 120
     if mood == 'exciting' or mood == 'anxious':
         bpm = 120
@@ -149,6 +238,22 @@ def get_bpm_and_num_bars(mood: str, max_duration: float):
 
 
 def generate_sequence(va_mood: str, liked: bool, num_bars: int):
+    """ Generate a music sequence based on the specified mood, user preference, and number of bars
+
+    **Args:**
+
+    `va_mood`: The mood category.
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    `num_bars`: The number of bars to generate.
+
+    **Returns:**
+    
+    The generated music sequence.
+
+    """
+
     global MODEL
     
     chords = chords_markov_chain.get_next_chord_progression(va_mood, CHORDS_PER_BAR, not liked)
@@ -175,6 +280,23 @@ def generate_sequence(va_mood: str, liked: bool, num_bars: int):
 
 
 def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
+    """Interpolate between songs based on the specified mood, user preference, number of bars, and BPM. 
+
+    **Args:**
+
+    `va_value`: The mood used for the generation of new song.
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    `num_bars`: The number of bars to generate.
+
+    `bpm`: The tempo in beats per minute (BPM) for the resulting interpolation.
+
+    **Returns:**
+
+    The interpolated music sequence.
+    
+    """
     global MODEL_INTERP
     global MODEL
     global PREV_SONG
@@ -222,6 +344,19 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
 
 
 def create_song(va_mood: str, liked: bool):
+    """ Create a complete song based on the specified mood and user preference.
+
+    **Args:**
+
+    `va_mood`: The mood category choosen by the user
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    **Returns:*
+
+    The generated MIDI file representing the complete song.
+    
+    """
     global MODEL
     global PREV_SONG
 
@@ -238,6 +373,16 @@ def create_song(va_mood: str, liked: bool):
 
 
 def create_wav(midi: pretty_midi.PrettyMIDI):
+    """ Create a WAV audio file from a MIDI file using the specified SoundFont.
+
+    **Args:**
+
+    `midi`: The MIDI file to convert
+
+    **Returns:*
+
+    The audio waveform as a floating-point numpy array.
+    """
     global SF2_PATH
     wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
     return wav.astype(dtype=np.float32)
