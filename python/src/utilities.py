@@ -75,9 +75,9 @@ def print_success(string, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.OKGREEN + "[OK] " + str(string) + BColors.ENDC, flush=flush)
@@ -88,9 +88,9 @@ def print_info(string, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.OKBLUE + "[INFO] " + BColors.UNDERLINE + str(string) + BColors.ENDC, flush=flush)
@@ -101,9 +101,9 @@ def print_data(data, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_DATA_ACTIVE:
         print(BColors.OKCYAN + "[DATA] ", data, BColors.ENDC, flush=flush)
@@ -114,9 +114,9 @@ def print_data_alt_color(data, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_DATA_ACTIVE:
         print(BColors.HEADER + "[DATA] ", data, BColors.ENDC, flush=flush)
@@ -127,9 +127,9 @@ def print_warning(string, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.WARNING + BColors.BOLD + "[WARNING] " + str(string) + BColors.ENDC, flush=flush)
@@ -140,9 +140,9 @@ def print_error(string, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE:
         print(BColors.FAIL + BColors.BOLD + "[ERROR] " + str(string) + BColors.ENDC, flush=flush)
@@ -153,9 +153,9 @@ def print_dbg(string, flush=True):
 
     **Args:**
 
-    ´string´: String to print.
+    `string`: String to print.
 
-    ´flush´: Standard print's flush parameter.
+    `flush`: Standard print's flush parameter.
     """
     if __PRINTING_ACTIVE and __DEBUGGER_ACTIVE:
         print(BColors.OKGREEN + "[DBG] " + str(string) + BColors.ENDC, flush=flush)

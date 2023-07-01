@@ -53,9 +53,6 @@ def initialize_model(main_path: str):
     **Args:**
     
     `main_path`: Path of the src folder passed down from the main script.
-
-    **Returns:**
-
     """
     global chords_markov_chain
     global CONFIG
@@ -103,7 +100,6 @@ def slerp(p0, p1, t):
     **Returns:**
 
     The interpolated value between p0 and p1 at the given parameter value t.
-
     """
     omega = np.arccos(np.dot(np.squeeze(p0 / np.linalg.norm(p0)),
                       np.squeeze(p1 / np.linalg.norm(p1))))
@@ -121,7 +117,6 @@ def chord_encoding(chord):
     **Returns:**
 
     The one-hot encoding of the chord.
-
     """
     index = mm.TriadChordOneHotEncoding().encode_event(chord)
     c = np.zeros([TOTAL_STEPS, CHORD_DEPTH])
@@ -138,9 +133,6 @@ def trim_sequences(seqs, num_seconds=BAR_SECONDS):
     `seqs`: List of music sequences to be trimmed.
 
     `num_seconds`: Duration in seconds to trim the sequences to. Default is BAR_SECONDS.
-
-    **Returns:**
-
     """
     for i in range(len(seqs)):
         seqs[i] = mm.extract_subsequence(seqs[i], 0.0, num_seconds)
@@ -153,9 +145,6 @@ def fix_instruments_for_concatenation(note_sequences):
     **Args:**
 
     `note_sequences`: List of note sequences to fix instrument assignments.
-
-    **Returns:**
-
     """
     instruments = {}
     for i in range(len(note_sequences)):
@@ -222,7 +211,6 @@ def get_bpm_and_num_bars(mood: str, max_duration: float):
     **Returns:**
 
     A tuple containing the BPM and the number of bars.
-
     """
     bpm = 120
     if mood == 'exciting' or mood == 'anxious':
@@ -251,7 +239,6 @@ def generate_sequence(va_mood: str, liked: bool, num_bars: int):
     **Returns:**
     
     The generated music sequence.
-
     """
 
     global MODEL
@@ -295,7 +282,6 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
     **Returns:**
 
     The interpolated music sequence.
-    
     """
     global MODEL_INTERP
     global MODEL
@@ -355,7 +341,6 @@ def create_song(va_mood: str, liked: bool):
     **Returns:*
 
     The generated MIDI file representing the complete song.
-    
     """
     global MODEL
     global PREV_SONG

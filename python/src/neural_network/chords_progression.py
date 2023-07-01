@@ -17,7 +17,7 @@ class ChordsMarkovChain:
 
         **Args:**
 
-        ´main_path´: Path of the src folder passed down from the main script.
+        `main_path`: Path of the src folder passed down from the main script.
         """
         self.__key = random.choice(notes)
         self.__scale = self._build_scale(self.__key)
@@ -101,7 +101,7 @@ class ChordsMarkovChain:
 
         **Args:**
 
-        ´key´: New key to be set.
+        `key`: New key to be set.
         """
         self.__key = key
         self.__scale = self._build_scale(key)
@@ -112,11 +112,11 @@ class ChordsMarkovChain:
 
         **Args:**
 
-        ´mood´: Mood of the progression to be generated.
+        `mood`: Mood of the progression to be generated.
 
-        ´chords_in_bar´: Length of the chord progression in chords.
+        `chords_in_bar`: Length of the chord progression in chords.
 
-        ´new_song´: True if the user did not like the previous song.
+        `new_song`: True if the user did not like the previous song.
 
         **Returns:**
 
@@ -154,11 +154,11 @@ class ChordsMarkovChain:
 
         **Args:**
 
-        ´mood´: Mood of the chords progression.
+        `mood`: Mood of the chords progression.
 
-        ´prev_chords´: List containing the two previous chords.
+        `prev_chords`: List containing the two previous chords.
 
-        ´order´: Order of the markov chain to use.
+        `order`: Order of the markov chain to use.
 
         **Returns:**
 
@@ -186,7 +186,7 @@ class ChordsMarkovChain:
 
         **Args:**
 
-        ´symbol´: Symbol of the chord to convert in grades.
+        `symbol`: Symbol of the chord to convert in grades.
 
         **Returns:**
 
@@ -215,7 +215,7 @@ class ChordsMarkovChain:
 
         **Args:**
 
-        ´key´: Key from which to build the new scale.
+        `key`: Key from which to build the new scale.
 
         **Returns:**
 

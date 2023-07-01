@@ -12,9 +12,9 @@ def get_audio_frames(audio_array: np.ndarray, chunk_size: int = 2048):
 
     **Args:**
 
-    ´audio_array´: Array containing the song's signal.
+    `audio_array`: Array containing the song's signal.
 
-    ´chunk_size´: Defines the length of the frames and the parameters of the stft.
+    `chunk_size`: Defines the length of the frames and the parameters of the stft.
 
     **Returns:**
 
@@ -50,13 +50,13 @@ def play_send_audio(audio_frames: list, stft_audio_frames: list, out_stream: pya
 
     **Args:**
 
-    ´audio_frames´ Audio to be played split in frames.
+    `audio_frames` Audio to be played split in frames.
 
-    ´stft_audio_frames´: Stft of the audio to be played split in frames.
+    `stft_audio_frames`: Stft of the audio to be played split in frames.
 
-    ´out_stream´: Output stream used to play the song as output audio.
+    `out_stream`: Output stream used to play the song as output audio.
 
-    ´client´: socket through which to send the visualization data.
+    `client`: socket through which to send the visualization data.
     """
     for i in range(len(audio_frames) - 1):
         out_stream.write(audio_frames[i].tobytes(), exception_on_underflow=False)
@@ -70,9 +70,9 @@ def normalize(frame: np.array, norm_type: str):
 
     **Args:**
 
-    ´frame´: Array to normalize.
+    `frame`: Array to normalize.
 
-    ´norm_type´: Normalization type to apply.
+    `norm_type`: Normalization type to apply.
 
     **Returns:**
 
@@ -93,7 +93,7 @@ def to_float32(array: np.array):
 
     **Args:**
 
-    ´array´: Array to be converted.
+    `array`: Array to be converted.
 
     **Returns:**
 

@@ -17,9 +17,9 @@ def default_handler(address, *args):
 
     **Args:**
 
-    ´address´: osc address assigned to this function.
+    `address`: osc address assigned to this function.
 
-    ´args´: arguments of the incoming osc message.
+    `args`: arguments of the incoming osc message.
     """
     print_warning("Received message with unrecognized OSC address: "+str(address))
 
@@ -29,11 +29,11 @@ def controller_connected_handler(address, fixed_args, *args):
 
     **Args:**
 
-    ´address´: osc address assigned to this function.
+    `address`: osc address assigned to this function.
 
-    ´fixed_args´: arguments that are passed down from the python script and as such are fixed.
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
 
-    ´args´: arguments of the incoming osc message.
+    `args`: arguments of the incoming osc message.
     """
     global controller_connected
     controller_connected = True
@@ -48,11 +48,11 @@ def ping_handler(address, fixed_args, *args):
 
     **Args:**
 
-    ´address´: osc address assigned to this function.
+    `address`: osc address assigned to this function.
 
-    ´fixed_args´: arguments that are passed down from the python script and as such are fixed.
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
 
-    ´args´: arguments of the incoming osc message.
+    `args`: arguments of the incoming osc message.
     """
     is_voting = args[0]
     feedback_event = fixed_args[1]
@@ -72,11 +72,11 @@ def feedback_handler(address, fixed_args, *args):
 
     **Args:**
 
-    ´address´: osc address assigned to this function.
+    `address`: osc address assigned to this function.
 
-    ´fixed_args´: arguments that are passed down from the python script and as such are fixed.
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
 
-    ´args´: arguments of the incoming osc message.
+    `args`: arguments of the incoming osc message.
     """
     feed_queue = fixed_args[0]
     feed_event = fixed_args[1]
@@ -112,11 +112,11 @@ def server_worker(queue, event, client_controller):
 
     **Args:**
 
-    ´queue´: Multiprocessing queue used to send parsed feedback from the OSC external controller.
+    `queue`: Multiprocessing queue used to send parsed feedback from the OSC external controller.
 
-    ´event´: Multiprocessing event used to know if the program is currently running or if it is waiting for a feedback.
+    `event`: Multiprocessing event used to know if the program is currently running or if it is waiting for a feedback.
 
-    ´client_controller´: OSC client used to send messages to the external OSC controller.
+    `client_controller`: OSC client used to send messages to the external OSC controller.
     """
     dispatcher = Dispatcher()
     dispatcher.map("/Controller/Ping", ping_handler, client_controller, event)
