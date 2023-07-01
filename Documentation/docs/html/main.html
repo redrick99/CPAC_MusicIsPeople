@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>main API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>main</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+from multiprocessing import Process, Event, Queue
+from pythonosc.dispatcher import Dispatcher
+from pythonosc.osc_server import BlockingOSCUDPServer
+from pythonosc.udp_client import SimpleUDPClient
+from audio_handling import *
+from utilities import *
+from neural_network.chords_progression import moods
+import neural_network.neural_network as nn
+
+waiting_for_feedback = False
+controller_connected = False
+
+
+def default_handler(address, *args):
+    &#34;&#34;&#34; Default osc message handler. Called only when a message has a generic, unrecognized osc address.
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    print_warning(&#34;Received message with unrecognized OSC address: &#34;+str(address))
+
+
+def controller_connected_handler(address, fixed_args, *args):
+    &#34;&#34;&#34; Default osc message handler. Called only when a message has a generic, unrecognized osc address.
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    global controller_connected
+    controller_connected = True
+    _client_controller = fixed_args[0]
+    _client_controller.send_message(&#34;/Controller/Connected&#34;, True)
+    print_info(&#34;Connected to osc controller&#34;)
+
+
+def ping_handler(address, fixed_args, *args):
+    &#34;&#34;&#34; Handler for a ping osc message. Called to check if the osc controller is still connected and to check if
+    for some reason it is blocked in a wrong state (loading, ...).
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    is_voting = args[0]
+    feedback_event = fixed_args[1]
+    print_info(&#34;User is voting: &#34;+str(is_voting))
+    if not is_voting and not feedback_event.is_set():
+        _client_controller = fixed_args[0]
+        _client_controller.send_message(&#34;/Controller/VoteStart&#34;, True)
+
+    elif is_voting and feedback_event.is_set():
+        _client_controller = fixed_args[0]
+        _client_controller.send_message(&#34;/Controller/VoteStop&#34;, True)
+
+
+def feedback_handler(address, fixed_args, *args):
+    &#34;&#34;&#34; Handler for a feedback osc message. Called when feedback is received from the osc controller, it parses the
+    message into readable values and puts them in a multiprocessing queue for the main thread to start processing.
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    feed_queue = fixed_args[0]
+    feed_event = fixed_args[1]
+
+    if not feed_event.is_set():
+        try:
+            feedback = []
+            feedback.append(bool(args[0]))
+            feedback.append(float(args[1]))
+            feedback.append(float(args[2]))
+            feedback.append(str(args[3]).lower())
+            if feedback[3] not in moods:  # Checks if the mood can be used to generate the song
+                raise NotImplementedError(&#34;Couldn&#39;t recognize mood, was: &#34; + radar_mood_string)
+
+            print_data_alt_color(&#34;Feedback: &#34; + str(feedback[0]) + &#34; &#34; + str(feedback[3]))
+            feed_queue.put(feedback)
+
+        except NotImplementedError as nie:
+            print_error(nie)
+        except ValueError as ve:
+            print_error(ve)
+        except Exception as e:
+            raise(e)
+            print_error(&#34;Couldn&#39;t read incoming feedback (Broad Exception)&#34;)
+        finally:
+            return
+
+    print_warning(&#34;Received feedback while producing song&#34;)
+
+
+def server_worker(queue, event, client_controller):
+    &#34;&#34;&#34; Creates a new OSC server and blocks the thread until an OSC message is received.
+
+    **Args:**
+
+    `queue`: Multiprocessing queue used to send parsed feedback from the OSC external controller.
+
+    `event`: Multiprocessing event used to know if the program is currently running or if it is waiting for a feedback.
+
+    `client_controller`: OSC client used to send messages to the external OSC controller.
+    &#34;&#34;&#34;
+    dispatcher = Dispatcher()
+    dispatcher.map(&#34;/Controller/Ping&#34;, ping_handler, client_controller, event)
+    dispatcher.map(&#34;/Controller/Feedback&#34;, feedback_handler, queue, event)
+    dispatcher.map(&#34;/Controller/Connected/Confirm&#34;, controller_connected_handler, client_controller)
+    dispatcher.set_default_handler(default_handler)
+    server = BlockingOSCUDPServer((SERVER_IP, SERVER_PORT), dispatcher)
+
+    server.serve_forever()  # Blocks forever
+
+
+if __name__ == &#34;__main__&#34;:
+    # Connections setup
+    client_controller = SimpleUDPClient(CLIENT_CONTROLLER_IP, CLIENT_CONTROLLER_PORT)  # Create controller client
+
+    client_visualizer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Create visualizer client
+    client_visualizer.bind((CLIENT_VISUALIZER_IP, CLIENT_VISUALIZER_PORT))
+    client_visualizer.listen(1)
+
+    client_startstop = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Create visualizer client
+    client_startstop.bind((CLIENT_STARTSTOP_IP, CLIENT_STARTSTOP_PORT))
+    client_startstop.listen(1)
+
+    # Output device setup
+    out_device_index = choose_sound_card_index()
+    pa = pyaudio.PyAudio()
+    out_stream = pa.open(
+        rate=SAMPLE_RATE,
+        channels=CHANNELS,
+        format=pyaudio.paFloat32,
+        frames_per_buffer=CHUNK_SIZE,
+        output=True,
+        output_device_index=out_device_index,
+    )
+
+    # Gets the absolute path up to the main file and initializes the neural network model
+    main_path = os.path.dirname(__file__)
+    nn.initialize_model(main_path)
+
+    # Waits for connection to the visualizer
+    print_info(&#34;Connecting to visualizer...&#34;)
+    conn, address = client_visualizer.accept()
+    active, address_active = client_startstop.accept()
+    print_success(&#34;Connected to visualizer!&#34;)
+
+    # Creates multiprocessing objects
+    feedback_event = Event()
+    feedback_queue = Queue()
+    server_process = Process(target=server_worker, args=(feedback_queue, feedback_event, client_controller,))
+    server_process.start()
+
+    while True:
+        feedback = feedback_queue.get()  # Get feedback from OSC message
+        feedback_event.set()  # Set running to true
+        active.sendall(&#34;CREATING&#34;.encode())  # Send message to visualizer
+        try:
+            liked_the_song = feedback[0]
+            radar_value_x = feedback[1]
+            radar_value_y = feedback[2]
+            radar_mood_string = feedback[3]
+
+            mid = nn.create_song(va_mood=radar_mood_string,
+                                 liked=liked_the_song)  # Creates the song as a midi from the nn
+            wav = nn.create_wav(mid)  # Converts the PrettyMIDI object into a wav file
+            print_success(&#34;Created midi and wav files&#34;)
+
+            audio_frames, stft_audio_frames = get_audio_frames(wav,
+                                                               CHUNK_SIZE)  # Splits song in frames for playback and
+            # visualization
+            active.sendall(&#34;START&#34;.encode())
+            play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
+
+        except Exception as e:
+            print_error(e)
+
+        finally:
+            # Once done, prepare to receive another message
+            waiting_for_feedback = True
+            active.sendall(&#34;STOP&#34;.encode())
+            feedback_event.clear()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="main.controller_connected_handler"><code class="name flex">
+<span>def <span class="ident">controller_connected_handler</span></span>(<span>address, fixed_args, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Default osc message handler. Called only when a message has a generic, unrecognized osc address.</p>
+<p><strong>Args:</strong></p>
+<p><code>address</code>: osc address assigned to this function.</p>
+<p><code>fixed_args</code>: arguments that are passed down from the python script and as such are fixed.</p>
+<p><code>args</code>: arguments of the incoming osc message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def controller_connected_handler(address, fixed_args, *args):
+    &#34;&#34;&#34; Default osc message handler. Called only when a message has a generic, unrecognized osc address.
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    global controller_connected
+    controller_connected = True
+    _client_controller = fixed_args[0]
+    _client_controller.send_message(&#34;/Controller/Connected&#34;, True)
+    print_info(&#34;Connected to osc controller&#34;)</code></pre>
+</details>
+</dd>
+<dt id="main.default_handler"><code class="name flex">
+<span>def <span class="ident">default_handler</span></span>(<span>address, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Default osc message handler. Called only when a message has a generic, unrecognized osc address.</p>
+<p><strong>Args:</strong></p>
+<p><code>address</code>: osc address assigned to this function.</p>
+<p><code>args</code>: arguments of the incoming osc message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def default_handler(address, *args):
+    &#34;&#34;&#34; Default osc message handler. Called only when a message has a generic, unrecognized osc address.
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    print_warning(&#34;Received message with unrecognized OSC address: &#34;+str(address))</code></pre>
+</details>
+</dd>
+<dt id="main.feedback_handler"><code class="name flex">
+<span>def <span class="ident">feedback_handler</span></span>(<span>address, fixed_args, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handler for a feedback osc message. Called when feedback is received from the osc controller, it parses the
+message into readable values and puts them in a multiprocessing queue for the main thread to start processing.</p>
+<p><strong>Args:</strong></p>
+<p><code>address</code>: osc address assigned to this function.</p>
+<p><code>fixed_args</code>: arguments that are passed down from the python script and as such are fixed.</p>
+<p><code>args</code>: arguments of the incoming osc message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def feedback_handler(address, fixed_args, *args):
+    &#34;&#34;&#34; Handler for a feedback osc message. Called when feedback is received from the osc controller, it parses the
+    message into readable values and puts them in a multiprocessing queue for the main thread to start processing.
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    feed_queue = fixed_args[0]
+    feed_event = fixed_args[1]
+
+    if not feed_event.is_set():
+        try:
+            feedback = []
+            feedback.append(bool(args[0]))
+            feedback.append(float(args[1]))
+            feedback.append(float(args[2]))
+            feedback.append(str(args[3]).lower())
+            if feedback[3] not in moods:  # Checks if the mood can be used to generate the song
+                raise NotImplementedError(&#34;Couldn&#39;t recognize mood, was: &#34; + radar_mood_string)
+
+            print_data_alt_color(&#34;Feedback: &#34; + str(feedback[0]) + &#34; &#34; + str(feedback[3]))
+            feed_queue.put(feedback)
+
+        except NotImplementedError as nie:
+            print_error(nie)
+        except ValueError as ve:
+            print_error(ve)
+        except Exception as e:
+            raise(e)
+            print_error(&#34;Couldn&#39;t read incoming feedback (Broad Exception)&#34;)
+        finally:
+            return
+
+    print_warning(&#34;Received feedback while producing song&#34;)</code></pre>
+</details>
+</dd>
+<dt id="main.ping_handler"><code class="name flex">
+<span>def <span class="ident">ping_handler</span></span>(<span>address, fixed_args, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handler for a ping osc message. Called to check if the osc controller is still connected and to check if
+for some reason it is blocked in a wrong state (loading, &hellip;).</p>
+<p><strong>Args:</strong></p>
+<p><code>address</code>: osc address assigned to this function.</p>
+<p><code>fixed_args</code>: arguments that are passed down from the python script and as such are fixed.</p>
+<p><code>args</code>: arguments of the incoming osc message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ping_handler(address, fixed_args, *args):
+    &#34;&#34;&#34; Handler for a ping osc message. Called to check if the osc controller is still connected and to check if
+    for some reason it is blocked in a wrong state (loading, ...).
+
+    **Args:**
+
+    `address`: osc address assigned to this function.
+
+    `fixed_args`: arguments that are passed down from the python script and as such are fixed.
+
+    `args`: arguments of the incoming osc message.
+    &#34;&#34;&#34;
+    is_voting = args[0]
+    feedback_event = fixed_args[1]
+    print_info(&#34;User is voting: &#34;+str(is_voting))
+    if not is_voting and not feedback_event.is_set():
+        _client_controller = fixed_args[0]
+        _client_controller.send_message(&#34;/Controller/VoteStart&#34;, True)
+
+    elif is_voting and feedback_event.is_set():
+        _client_controller = fixed_args[0]
+        _client_controller.send_message(&#34;/Controller/VoteStop&#34;, True)</code></pre>
+</details>
+</dd>
+<dt id="main.server_worker"><code class="name flex">
+<span>def <span class="ident">server_worker</span></span>(<span>queue, event, client_controller)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a new OSC server and blocks the thread until an OSC message is received.</p>
+<p><strong>Args:</strong></p>
+<p><code>queue</code>: Multiprocessing queue used to send parsed feedback from the OSC external controller.</p>
+<p><code>event</code>: Multiprocessing event used to know if the program is currently running or if it is waiting for a feedback.</p>
+<p><code>client_controller</code>: OSC client used to send messages to the external OSC controller.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def server_worker(queue, event, client_controller):
+    &#34;&#34;&#34; Creates a new OSC server and blocks the thread until an OSC message is received.
+
+    **Args:**
+
+    `queue`: Multiprocessing queue used to send parsed feedback from the OSC external controller.
+
+    `event`: Multiprocessing event used to know if the program is currently running or if it is waiting for a feedback.
+
+    `client_controller`: OSC client used to send messages to the external OSC controller.
+    &#34;&#34;&#34;
+    dispatcher = Dispatcher()
+    dispatcher.map(&#34;/Controller/Ping&#34;, ping_handler, client_controller, event)
+    dispatcher.map(&#34;/Controller/Feedback&#34;, feedback_handler, queue, event)
+    dispatcher.map(&#34;/Controller/Connected/Confirm&#34;, controller_connected_handler, client_controller)
+    dispatcher.set_default_handler(default_handler)
+    server = BlockingOSCUDPServer((SERVER_IP, SERVER_PORT), dispatcher)
+
+    server.serve_forever()  # Blocks forever</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="main.controller_connected_handler" href="#main.controller_connected_handler">controller_connected_handler</a></code></li>
+<li><code><a title="main.default_handler" href="#main.default_handler">default_handler</a></code></li>
+<li><code><a title="main.feedback_handler" href="#main.feedback_handler">feedback_handler</a></code></li>
+<li><code><a title="main.ping_handler" href="#main.ping_handler">ping_handler</a></code></li>
+<li><code><a title="main.server_worker" href="#main.server_worker">server_worker</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

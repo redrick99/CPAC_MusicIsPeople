@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>chords_progression API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chords_progression</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+import random
+import numpy as np
+import pandas as pd
+
+grades = [&#39;I&#39;, &#39;II&#39;, &#39;III&#39;, &#39;IV&#39;, &#39;V&#39;, &#39;VI&#39;, &#39;VII&#39;]
+notes = [&#34;C&#34;, &#34;C#&#34;, &#34;D&#34;, &#34;D#&#34;, &#34;E&#34;, &#34;F&#34;, &#34;F#&#34;, &#34;G&#34;, &#34;G#&#34;, &#34;A&#34;, &#34;A#&#34;, &#34;B&#34;]
+moods = [&#39;happy&#39;, &#39;exciting&#39;, &#39;relaxing&#39;, &#39;serene&#39;, &#39;bored&#39;, &#39;sad&#39;, &#39;anxious&#39;, &#39;angry&#39;]
+
+
+class ChordsMarkovChain:
+    &#34;&#34;&#34; Implements a second order markov chain used to get the next chord progression to feed to the neural network. &#34;&#34;&#34;
+
+    def __init__(self, main_path: str):
+        &#34;&#34;&#34; Constructor for ChordsMarkovChain class. It reads first and second order transitional arrays along with
+         their associated chord symbols from csv files given the path of the src folder.
+
+        **Args:**
+
+        `main_path`: Path of the src folder passed down from the main script.
+        &#34;&#34;&#34;
+        self.__key = random.choice(notes)
+        self.__scale = self._build_scale(self.__key)
+        self.__prev_chords = []
+        self.__prev_chords_separator = &#34;-&#34;
+
+        path_to_csv_chords = os.path.join(main_path, &#34;resources&#34;, &#34;mood_chords_symbols&#34;)
+        path_to_csv_arrays = os.path.join(main_path, &#34;resources&#34;, &#34;mood_transition_arrays&#34;)
+
+        happy_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;happy_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;happy_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        relaxing_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;relaxing_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;relaxing_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        sad_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;sad_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;sad_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        angry_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;angry_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;angry_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        happy_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;happy_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;happy_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        relaxing_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;relaxing_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;relaxing_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        sad_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;sad_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;sad_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        angry_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;angry_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;angry_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        # Contains first and second order chord symbols associated with the transitional arrays, divided by mood
+        self._mood_chords_dict = {
+            &#39;happy&#39;: happy_chords_symbols,
+            &#39;exciting&#39;: happy_chords_symbols,
+            &#39;relaxing&#39;: relaxing_chords_symbols,
+            &#39;serene&#39;: relaxing_chords_symbols,
+            &#39;bored&#39;: sad_chords_symbols,
+            &#39;sad&#39;: sad_chords_symbols,
+            &#39;anxious&#39;: angry_chords_symbols,
+            &#39;angry&#39;: angry_chords_symbols,
+        }
+
+        # Contains first and second order transitional arrays, divided by mood
+        self._mood_matrix_dict = {
+            &#39;happy&#39;: happy_chords_tms,
+            &#39;exciting&#39;: happy_chords_tms,
+            &#39;relaxing&#39;: relaxing_chords_tms,
+            &#39;serene&#39;: relaxing_chords_tms,
+            &#39;bored&#39;: sad_chords_tms,
+            &#39;sad&#39;: sad_chords_tms,
+            &#39;anxious&#39;: angry_chords_tms,
+            &#39;angry&#39;: angry_chords_tms,
+        }
+
+    def set_random_key(self):
+        &#34;&#34;&#34; Sets a random key for the chord progression.
+        &#34;&#34;&#34;
+        self.set_key(random.choice(notes))
+
+    def set_key(self, key: str):
+        &#34;&#34;&#34; Sets the key for the chord progression.
+
+        **Args:**
+
+        `key`: New key to be set.
+        &#34;&#34;&#34;
+        self.__key = key
+        self.__scale = self._build_scale(key)
+
+    def get_next_chord_progression(self, mood: str, chords_in_bar: int, new_song: bool):
+        &#34;&#34;&#34; Generates a new chord progression either based on the previous or from scratch depending on
+        if the user liked the previous song played by the application.
+
+        **Args:**
+
+        `mood`: Mood of the progression to be generated.
+
+        `chords_in_bar`: Length of the chord progression in chords.
+
+        `new_song`: True if the user did not like the previous song.
+
+        **Returns:**
+
+        A new chord progression.
+        &#34;&#34;&#34;
+        new_chord_progression = []
+
+        if new_song or len(self.__prev_chords) == 0:
+            self.set_random_key()
+            self.__prev_chords = []
+            self.__prev_chords.append(np.random.choice(self._mood_chords_dict[mood][0]))
+            self.__prev_chords.append(self._get_next_chord(mood, [&#39;&#39;, self.__prev_chords[-1]], order=1))
+
+        new_chord_progression.append(self._get_next_chord(mood, [self.__prev_chords[-2], self.__prev_chords[-1]]))
+        for i in range(1, chords_in_bar):
+            if i == 1:
+                prev_prev_chord = self.__prev_chords[-1]
+            else:
+                prev_prev_chord = new_chord_progression[i-2]
+            prev_chord = new_chord_progression[i-1]
+            next_chord = self._get_next_chord(mood, [prev_prev_chord, prev_chord])
+            new_chord_progression.append(next_chord)
+
+        self.__prev_chords = new_chord_progression.copy()
+        print(new_chord_progression)
+        for i in range(len(new_chord_progression)):
+            new_chord_progression[i] = self._get_chord_from_symbol(new_chord_progression[i])
+
+        return new_chord_progression
+
+    def _get_next_chord(self, mood: str, prev_chords: list, order=2):
+        &#34;&#34;&#34; Generates the next chord of the chord progression based on the previous chords.
+        This function i recursive, as if an entry wasn&#39;t found in the second order transitional array for the two
+        previous chords, the function is recalled with order=1.
+
+        **Args:**
+
+        `mood`: Mood of the chords progression.
+
+        `prev_chords`: List containing the two previous chords.
+
+        `order`: Order of the markov chain to use.
+
+        **Returns:**
+
+        The next chord of the progression.
+        &#34;&#34;&#34;
+        if order == 2:
+            prev_chord_symbol = prev_chords[0] + self.__prev_chords_separator + prev_chords[1]
+        elif order == 1:
+            prev_chord_symbol = prev_chords[1]
+        else:
+            raise NotImplementedError(&#34;Order has to be 1 or 2, was &#34;+str(order))
+        m_matrix = self._mood_matrix_dict[mood][order-1]
+        prev_possible_chords = self._mood_chords_dict[mood][order-1]
+        try:
+            next_possible_chords_index = prev_possible_chords.index(prev_chord_symbol)
+            return np.random.choice(self._mood_chords_dict[mood][0], p=m_matrix[next_possible_chords_index])
+        except ValueError:
+            if order &gt; 1:
+                return self._get_next_chord(mood, prev_chords, order-1)  # Recursive call with order=1
+            else:
+                return np.random.choice(prev_possible_chords)
+
+    def _get_chord_from_symbol(self, symbol: str):
+        &#34;&#34;&#34; Converts the chord&#39;s symbol from grades to notes depending on the current chords progression key.
+
+        **Args:**
+
+        `symbol`: Symbol of the chord to convert in grades.
+
+        **Returns:**
+
+        Symbol of the chord in its note representation.
+        &#34;&#34;&#34;
+        separators = [&#39;I&#39;, &#39;V&#39;]
+        down_sharp_alt = &#39;#b&#39;
+        split_symbol = &#39;&#39;
+        for c in reversed(range(len(symbol))):  # Separates grade from quality of the chord
+            if symbol[c] in separators:
+                split_symbol = symbol.rsplit(symbol[c], 1)
+                split_symbol[0] += symbol[c]
+                break
+
+        if split_symbol == &#39;&#39;:
+            raise ValueError(&#34;Incorrect symbol found, was &#34;+symbol)
+
+        chord = str(self.__scale[grades.index(split_symbol[0])] + split_symbol[1])
+        if down_sharp_alt in chord:
+            chord = chord.replace(down_sharp_alt, &#39;&#39;)
+
+        return chord
+
+    def _build_scale(self, key: str):
+        &#34;&#34;&#34; Builds a new major scale based on the given key.
+
+        **Args:**
+
+        `key`: Key from which to build the new scale.
+
+        **Returns:**
+
+        A list containing the major scale&#39;s notes.
+        &#34;&#34;&#34;
+        ind = notes.index(key)
+        major_scale = [notes[ind], notes[(ind + 2) % 12], notes[(ind + 4) % 12], notes[(ind + 5) % 12],
+                       notes[(ind + 7) % 12], notes[(ind + 9) % 12], notes[(ind + 11) % 12], notes[ind]]
+        return major_scale</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chords_progression.ChordsMarkovChain"><code class="flex name class">
+<span>class <span class="ident">ChordsMarkovChain</span></span>
+<span>(</span><span>main_path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implements a second order markov chain used to get the next chord progression to feed to the neural network. </p>
+<p>Constructor for ChordsMarkovChain class. It reads first and second order transitional arrays along with
+their associated chord symbols from csv files given the path of the src folder.</p>
+<p><strong>Args:</strong></p>
+<p><code>main_path</code>: Path of the src folder passed down from the main script.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChordsMarkovChain:
+    &#34;&#34;&#34; Implements a second order markov chain used to get the next chord progression to feed to the neural network. &#34;&#34;&#34;
+
+    def __init__(self, main_path: str):
+        &#34;&#34;&#34; Constructor for ChordsMarkovChain class. It reads first and second order transitional arrays along with
+         their associated chord symbols from csv files given the path of the src folder.
+
+        **Args:**
+
+        `main_path`: Path of the src folder passed down from the main script.
+        &#34;&#34;&#34;
+        self.__key = random.choice(notes)
+        self.__scale = self._build_scale(self.__key)
+        self.__prev_chords = []
+        self.__prev_chords_separator = &#34;-&#34;
+
+        path_to_csv_chords = os.path.join(main_path, &#34;resources&#34;, &#34;mood_chords_symbols&#34;)
+        path_to_csv_arrays = os.path.join(main_path, &#34;resources&#34;, &#34;mood_transition_arrays&#34;)
+
+        happy_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;happy_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;happy_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        relaxing_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;relaxing_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;relaxing_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        sad_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;sad_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;sad_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        angry_chords_symbols = [
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;angry_cs.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist(),
+            pd.read_csv(os.path.join(path_to_csv_chords, &#34;angry_cs2.csv&#34;), index_col=False).to_numpy().transpose()[0].tolist()
+        ]
+
+        happy_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;happy_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;happy_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        relaxing_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;relaxing_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;relaxing_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        sad_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;sad_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;sad_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        angry_chords_tms = [
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;angry_tm.csv&#34;), index_col=False).to_numpy(),
+            pd.read_csv(os.path.join(path_to_csv_arrays, &#34;angry_tm2.csv&#34;), index_col=False).to_numpy()
+        ]
+
+        # Contains first and second order chord symbols associated with the transitional arrays, divided by mood
+        self._mood_chords_dict = {
+            &#39;happy&#39;: happy_chords_symbols,
+            &#39;exciting&#39;: happy_chords_symbols,
+            &#39;relaxing&#39;: relaxing_chords_symbols,
+            &#39;serene&#39;: relaxing_chords_symbols,
+            &#39;bored&#39;: sad_chords_symbols,
+            &#39;sad&#39;: sad_chords_symbols,
+            &#39;anxious&#39;: angry_chords_symbols,
+            &#39;angry&#39;: angry_chords_symbols,
+        }
+
+        # Contains first and second order transitional arrays, divided by mood
+        self._mood_matrix_dict = {
+            &#39;happy&#39;: happy_chords_tms,
+            &#39;exciting&#39;: happy_chords_tms,
+            &#39;relaxing&#39;: relaxing_chords_tms,
+            &#39;serene&#39;: relaxing_chords_tms,
+            &#39;bored&#39;: sad_chords_tms,
+            &#39;sad&#39;: sad_chords_tms,
+            &#39;anxious&#39;: angry_chords_tms,
+            &#39;angry&#39;: angry_chords_tms,
+        }
+
+    def set_random_key(self):
+        &#34;&#34;&#34; Sets a random key for the chord progression.
+        &#34;&#34;&#34;
+        self.set_key(random.choice(notes))
+
+    def set_key(self, key: str):
+        &#34;&#34;&#34; Sets the key for the chord progression.
+
+        **Args:**
+
+        `key`: New key to be set.
+        &#34;&#34;&#34;
+        self.__key = key
+        self.__scale = self._build_scale(key)
+
+    def get_next_chord_progression(self, mood: str, chords_in_bar: int, new_song: bool):
+        &#34;&#34;&#34; Generates a new chord progression either based on the previous or from scratch depending on
+        if the user liked the previous song played by the application.
+
+        **Args:**
+
+        `mood`: Mood of the progression to be generated.
+
+        `chords_in_bar`: Length of the chord progression in chords.
+
+        `new_song`: True if the user did not like the previous song.
+
+        **Returns:**
+
+        A new chord progression.
+        &#34;&#34;&#34;
+        new_chord_progression = []
+
+        if new_song or len(self.__prev_chords) == 0:
+            self.set_random_key()
+            self.__prev_chords = []
+            self.__prev_chords.append(np.random.choice(self._mood_chords_dict[mood][0]))
+            self.__prev_chords.append(self._get_next_chord(mood, [&#39;&#39;, self.__prev_chords[-1]], order=1))
+
+        new_chord_progression.append(self._get_next_chord(mood, [self.__prev_chords[-2], self.__prev_chords[-1]]))
+        for i in range(1, chords_in_bar):
+            if i == 1:
+                prev_prev_chord = self.__prev_chords[-1]
+            else:
+                prev_prev_chord = new_chord_progression[i-2]
+            prev_chord = new_chord_progression[i-1]
+            next_chord = self._get_next_chord(mood, [prev_prev_chord, prev_chord])
+            new_chord_progression.append(next_chord)
+
+        self.__prev_chords = new_chord_progression.copy()
+        print(new_chord_progression)
+        for i in range(len(new_chord_progression)):
+            new_chord_progression[i] = self._get_chord_from_symbol(new_chord_progression[i])
+
+        return new_chord_progression
+
+    def _get_next_chord(self, mood: str, prev_chords: list, order=2):
+        &#34;&#34;&#34; Generates the next chord of the chord progression based on the previous chords.
+        This function i recursive, as if an entry wasn&#39;t found in the second order transitional array for the two
+        previous chords, the function is recalled with order=1.
+
+        **Args:**
+
+        `mood`: Mood of the chords progression.
+
+        `prev_chords`: List containing the two previous chords.
+
+        `order`: Order of the markov chain to use.
+
+        **Returns:**
+
+        The next chord of the progression.
+        &#34;&#34;&#34;
+        if order == 2:
+            prev_chord_symbol = prev_chords[0] + self.__prev_chords_separator + prev_chords[1]
+        elif order == 1:
+            prev_chord_symbol = prev_chords[1]
+        else:
+            raise NotImplementedError(&#34;Order has to be 1 or 2, was &#34;+str(order))
+        m_matrix = self._mood_matrix_dict[mood][order-1]
+        prev_possible_chords = self._mood_chords_dict[mood][order-1]
+        try:
+            next_possible_chords_index = prev_possible_chords.index(prev_chord_symbol)
+            return np.random.choice(self._mood_chords_dict[mood][0], p=m_matrix[next_possible_chords_index])
+        except ValueError:
+            if order &gt; 1:
+                return self._get_next_chord(mood, prev_chords, order-1)  # Recursive call with order=1
+            else:
+                return np.random.choice(prev_possible_chords)
+
+    def _get_chord_from_symbol(self, symbol: str):
+        &#34;&#34;&#34; Converts the chord&#39;s symbol from grades to notes depending on the current chords progression key.
+
+        **Args:**
+
+        `symbol`: Symbol of the chord to convert in grades.
+
+        **Returns:**
+
+        Symbol of the chord in its note representation.
+        &#34;&#34;&#34;
+        separators = [&#39;I&#39;, &#39;V&#39;]
+        down_sharp_alt = &#39;#b&#39;
+        split_symbol = &#39;&#39;
+        for c in reversed(range(len(symbol))):  # Separates grade from quality of the chord
+            if symbol[c] in separators:
+                split_symbol = symbol.rsplit(symbol[c], 1)
+                split_symbol[0] += symbol[c]
+                break
+
+        if split_symbol == &#39;&#39;:
+            raise ValueError(&#34;Incorrect symbol found, was &#34;+symbol)
+
+        chord = str(self.__scale[grades.index(split_symbol[0])] + split_symbol[1])
+        if down_sharp_alt in chord:
+            chord = chord.replace(down_sharp_alt, &#39;&#39;)
+
+        return chord
+
+    def _build_scale(self, key: str):
+        &#34;&#34;&#34; Builds a new major scale based on the given key.
+
+        **Args:**
+
+        `key`: Key from which to build the new scale.
+
+        **Returns:**
+
+        A list containing the major scale&#39;s notes.
+        &#34;&#34;&#34;
+        ind = notes.index(key)
+        major_scale = [notes[ind], notes[(ind + 2) % 12], notes[(ind + 4) % 12], notes[(ind + 5) % 12],
+                       notes[(ind + 7) % 12], notes[(ind + 9) % 12], notes[(ind + 11) % 12], notes[ind]]
+        return major_scale</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="chords_progression.ChordsMarkovChain.get_next_chord_progression"><code class="name flex">
+<span>def <span class="ident">get_next_chord_progression</span></span>(<span>self, mood: str, chords_in_bar: int, new_song: bool)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a new chord progression either based on the previous or from scratch depending on
+if the user liked the previous song played by the application.</p>
+<p><strong>Args:</strong></p>
+<p><code>mood</code>: Mood of the progression to be generated.</p>
+<p><code>chords_in_bar</code>: Length of the chord progression in chords.</p>
+<p><code>new_song</code>: True if the user did not like the previous song.</p>
+<p><strong>Returns:</strong></p>
+<p>A new chord progression.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_next_chord_progression(self, mood: str, chords_in_bar: int, new_song: bool):
+    &#34;&#34;&#34; Generates a new chord progression either based on the previous or from scratch depending on
+    if the user liked the previous song played by the application.
+
+    **Args:**
+
+    `mood`: Mood of the progression to be generated.
+
+    `chords_in_bar`: Length of the chord progression in chords.
+
+    `new_song`: True if the user did not like the previous song.
+
+    **Returns:**
+
+    A new chord progression.
+    &#34;&#34;&#34;
+    new_chord_progression = []
+
+    if new_song or len(self.__prev_chords) == 0:
+        self.set_random_key()
+        self.__prev_chords = []
+        self.__prev_chords.append(np.random.choice(self._mood_chords_dict[mood][0]))
+        self.__prev_chords.append(self._get_next_chord(mood, [&#39;&#39;, self.__prev_chords[-1]], order=1))
+
+    new_chord_progression.append(self._get_next_chord(mood, [self.__prev_chords[-2], self.__prev_chords[-1]]))
+    for i in range(1, chords_in_bar):
+        if i == 1:
+            prev_prev_chord = self.__prev_chords[-1]
+        else:
+            prev_prev_chord = new_chord_progression[i-2]
+        prev_chord = new_chord_progression[i-1]
+        next_chord = self._get_next_chord(mood, [prev_prev_chord, prev_chord])
+        new_chord_progression.append(next_chord)
+
+    self.__prev_chords = new_chord_progression.copy()
+    print(new_chord_progression)
+    for i in range(len(new_chord_progression)):
+        new_chord_progression[i] = self._get_chord_from_symbol(new_chord_progression[i])
+
+    return new_chord_progression</code></pre>
+</details>
+</dd>
+<dt id="chords_progression.ChordsMarkovChain.set_key"><code class="name flex">
+<span>def <span class="ident">set_key</span></span>(<span>self, key: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the key for the chord progression.</p>
+<p><strong>Args:</strong></p>
+<p><code>key</code>: New key to be set.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_key(self, key: str):
+    &#34;&#34;&#34; Sets the key for the chord progression.
+
+    **Args:**
+
+    `key`: New key to be set.
+    &#34;&#34;&#34;
+    self.__key = key
+    self.__scale = self._build_scale(key)</code></pre>
+</details>
+</dd>
+<dt id="chords_progression.ChordsMarkovChain.set_random_key"><code class="name flex">
+<span>def <span class="ident">set_random_key</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets a random key for the chord progression.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_random_key(self):
+    &#34;&#34;&#34; Sets a random key for the chord progression.
+    &#34;&#34;&#34;
+    self.set_key(random.choice(notes))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chords_progression.ChordsMarkovChain" href="#chords_progression.ChordsMarkovChain">ChordsMarkovChain</a></code></h4>
+<ul class="">
+<li><code><a title="chords_progression.ChordsMarkovChain.get_next_chord_progression" href="#chords_progression.ChordsMarkovChain.get_next_chord_progression">get_next_chord_progression</a></code></li>
+<li><code><a title="chords_progression.ChordsMarkovChain.set_key" href="#chords_progression.ChordsMarkovChain.set_key">set_key</a></code></li>
+<li><code><a title="chords_progression.ChordsMarkovChain.set_random_key" href="#chords_progression.ChordsMarkovChain.set_random_key">set_random_key</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

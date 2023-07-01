@@ -338,7 +338,7 @@ def create_song(va_mood: str, liked: bool):
 
     `liked`: Indicates whether the user liked the previous generated sequence.
 
-    **Returns:*
+    **Returns:**
 
     The generated MIDI file representing the complete song.
     """
@@ -364,7 +364,7 @@ def create_wav(midi: pretty_midi.PrettyMIDI):
 
     `midi`: The MIDI file to convert
 
-    **Returns:*
+    **Returns:**
 
     The audio waveform as a floating-point numpy array.
     """

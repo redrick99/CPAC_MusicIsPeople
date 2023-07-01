@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>neural_network API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>neural_network</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import warnings
+import logging
+import os
+import copy
+from utilities import *
+
+with warnings.catch_warnings():
+    print_info(&#39;Importing magenta modules...&#39;)
+    warnings.simplefilter(&#34;ignore&#34;)
+    from magenta.models.music_vae import configs
+    from magenta.models.music_vae import TrainedModel
+    from note_seq.sequences_lib import concatenate_sequences
+    import note_seq as mm
+    import tensorflow._api.v2.compat.v1 as tf
+    # Removes Tensorflow logs and warnings
+    tf.keras.utils.disable_interactive_logging()
+    tf.get_logger().setLevel(logging.ERROR)
+    tf.disable_v2_behavior()
+    print_success(&#39;Imported magenta!&#39;)
+
+import numpy as np
+import pretty_midi
+from note_seq.protobuf import music_pb2
+from chords_progression import ChordsMarkovChain
+
+# DEFINITION PARAMETERS AND GLOBAL VARIABLES
+
+BATCH_SIZE = 4
+Z_SIZE = 512
+TOTAL_STEPS = 512
+BAR_SECONDS = 2.0
+CHORD_DEPTH = 49
+CHORDS_PER_BAR = 4
+
+SAMPLE_RATE = 44100
+SF2_PATH = &#39;neural_network/models/SGM-v2.01-Sal-Guit-Bass-V1.3.sf2&#39;
+CONFIG = None
+MODEL = None
+MODEL_PATH = &#39;neural_network/models/MusicVAE/model_chords_fb64.ckpt&#39;
+CONFIG_INTERP = None
+MODEL_INTERP = None
+MODEL_INTERP_PATH = &#39;neural_network/models/MusicVAE/model_fb256.ckpt&#39;
+
+PREV_SONG = None
+
+chords_markov_chain = None
+
+##--------------------------------------------------------------------
+
+def initialize_model(main_path: str):
+    &#34;&#34;&#34;Initialize the models used for generation and interpolation importing the configuration of Google Magenta API.
+
+    **Args:**
+    
+    `main_path`: Path of the src folder passed down from the main script.
+    &#34;&#34;&#34;
+    global chords_markov_chain
+    global CONFIG
+    global MODEL
+    global MODEL_PATH
+    global CONFIG_INTERP
+    global MODEL_INTERP
+    global MODEL_INTERP_PATH
+    global SF2_PATH
+
+    chords_markov_chain = ChordsMarkovChain(main_path)
+    SF2_PATH = os.path.join(main_path, SF2_PATH)
+    MODEL_PATH = os.path.join(main_path, MODEL_PATH)
+    MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)
+
+    with warnings.catch_warnings():
+        print_info(&#39;Initializing NN models...&#39;)
+        warnings.simplefilter(&#34;ignore&#34;)
+        # INITIALIZE MODEL FOR CREATE SONG
+        CONFIG = configs.CONFIG_MAP[&#39;hier-multiperf_vel_1bar_med_chords&#39;]
+        MODEL = TrainedModel(
+            CONFIG, batch_size=BATCH_SIZE,
+            checkpoint_dir_or_path=MODEL_PATH)
+
+        #INITIALIZE MODEL FOR INTERPOLATE SONGS
+        CONFIG_INTERP = configs.CONFIG_MAP[&#39;hier-multiperf_vel_1bar_med&#39;]
+        MODEL_INTERP = TrainedModel(
+            CONFIG_INTERP, batch_size=BATCH_SIZE,
+            checkpoint_dir_or_path=MODEL_INTERP_PATH)
+        MODEL_INTERP._config.data_converter._max_tensors_per_input = None
+        print_success(&#39;Models initialized!&#39;)
+
+
+def slerp(p0, p1, t):
+    &#34;&#34;&#34;Spherical linear interpolation.
+
+    **Args:**
+
+    `p0`: The starting point of the interpolation.
+
+    `p1`: The ending point of the interpolation.
+
+    `t`: Evenly spaced samples, calculated over the interval [0, 1].
+
+    **Returns:**
+
+    The interpolated value between p0 and p1 at the given parameter value t.
+    &#34;&#34;&#34;
+    omega = np.arccos(np.dot(np.squeeze(p0 / np.linalg.norm(p0)),
+                      np.squeeze(p1 / np.linalg.norm(p1))))
+    so = np.sin(omega)
+    return np.sin((1.0 - t) * omega) / so * p0 + np.sin(t * omega) / so * p1
+
+
+def chord_encoding(chord):
+    &#34;&#34;&#34;Encode a chord as a one-hot vector.
+
+    **Args:**
+
+    `chord`: The chord to be encoded
+
+    **Returns:**
+
+    The one-hot encoding of the chord.
+    &#34;&#34;&#34;
+    index = mm.TriadChordOneHotEncoding().encode_event(chord)
+    c = np.zeros([TOTAL_STEPS, CHORD_DEPTH])
+    c[0, 0] = 1.0
+    c[1:, index] = 1.0
+    return c
+
+
+def trim_sequences(seqs, num_seconds=BAR_SECONDS):
+    &#34;&#34;&#34;Trim the sequences to a specified duration.
+
+    **Args:**
+
+    `seqs`: List of music sequences to be trimmed.
+
+    `num_seconds`: Duration in seconds to trim the sequences to. Default is BAR_SECONDS.
+    &#34;&#34;&#34;
+    for i in range(len(seqs)):
+        seqs[i] = mm.extract_subsequence(seqs[i], 0.0, num_seconds)
+        seqs[i].total_time = num_seconds
+
+
+def fix_instruments_for_concatenation(note_sequences):
+    &#34;&#34;&#34;Fixes instrument assignments for concatenation of note sequences.
+
+    **Args:**
+
+    `note_sequences`: List of note sequences to fix instrument assignments.
+    &#34;&#34;&#34;
+    instruments = {}
+    for i in range(len(note_sequences)):
+        for note in note_sequences[i].notes:
+            if not note.is_drum:
+                if note.program not in instruments:
+                    if len(instruments) &gt;= 8:
+                        instruments[note.program] = len(instruments) + 2
+                    else:
+                        instruments[note.program] = len(instruments) + 1
+                note.instrument = instruments[note.program]
+            else:
+                note.instrument = 9
+
+
+def to_midi(note_sequence, bpm):
+    &#34;&#34;&#34;Converts a NoteSequence to a MIDI file.
+
+    **Args:**
+
+    `note_sequence`: The NoteSequence to convert to MIDI.
+
+    `bpm`: The tempo in beats per minute (BPM) for the resulting MIDI file.
+
+    **Returns:**
+    
+    The MIDI file representation of the NoteSequence.
+    &#34;&#34;&#34;
+    note_sequence = change_tempo(note_sequence, bpm)
+    return mm.sequence_proto_to_pretty_midi(note_sequence)
+
+
+def change_tempo(note_sequence, new_tempo):
+    &#34;&#34;&#34;Change the tempo of a NoteSequence to a new tempo.
+
+    **Args:**
+
+    `note_sequence`: The NoteSequence to change the tempo of.
+
+    `new_tempo`: The new tempo in beats per minute (BPM).
+
+    **Returns:**
+
+     The NoteSequence with the tempo changed.
+    &#34;&#34;&#34;
+    new_sequence = copy.deepcopy(note_sequence)
+    ratio = note_sequence.tempos[0].qpm / float(new_tempo)
+    for note in new_sequence.notes:
+        note.start_time = note.start_time * ratio
+        note.end_time = note.end_time * ratio
+    new_sequence.tempos[0].qpm = new_tempo
+    return new_sequence
+
+
+def get_bpm_and_num_bars(mood: str, max_duration: float):
+    &#34;&#34;&#34;Get the BPM (beats per minute) and the number of bars based on the mood. 
+
+    **Args:**
+
+    `mood`: The mood category.
+
+    `max_duration`: The maximum duration in seconds.
+
+    **Returns:**
+
+    A tuple containing the BPM and the number of bars.
+    &#34;&#34;&#34;
+    bpm = 120
+    if mood == &#39;exciting&#39; or mood == &#39;anxious&#39;:
+        bpm = 120
+    if mood == &#39;happy&#39; or mood == &#39;angry&#39;:
+        bpm = 90
+    if mood == &#39;serene&#39; or mood == &#39;sad&#39;:
+        bpm = 60
+    if mood == &#39;relaxing&#39; or mood == &#39;bored&#39;:
+        bpm = 30
+    num_bars = int(max_duration * bpm / CHORDS_PER_BAR)
+    return bpm, num_bars
+
+
+def generate_sequence(va_mood: str, liked: bool, num_bars: int):
+    &#34;&#34;&#34; Generate a music sequence based on the specified mood, user preference, and number of bars
+
+    **Args:**
+
+    `va_mood`: The mood category.
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    `num_bars`: The number of bars to generate.
+
+    **Returns:**
+    
+    The generated music sequence.
+    &#34;&#34;&#34;
+
+    global MODEL
+    
+    chords = chords_markov_chain.get_next_chord_progression(va_mood, CHORDS_PER_BAR, not liked)
+    print(chords)
+
+    # num_bars = 24
+    temperature = 0.1
+
+    z1 = np.random.normal(size=[Z_SIZE])
+    z2 = np.random.normal(size=[Z_SIZE])
+    z = np.array([slerp(z1, z2, t)
+                  for t in np.linspace(0, 1, num_bars)])
+
+    seqs = [
+        MODEL.decode(length=TOTAL_STEPS, z=z[i:i+1, :], temperature=temperature,
+                     c_input=chord_encoding(chords[i % 4]))[0]
+        for i in range(num_bars)
+    ]
+    trim_sequences(seqs)
+    fix_instruments_for_concatenation(seqs)
+    prog_interp_ns = concatenate_sequences(seqs)
+
+    return prog_interp_ns
+
+
+def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
+    &#34;&#34;&#34;Interpolate between songs based on the specified mood, user preference, number of bars, and BPM. 
+
+    **Args:**
+
+    `va_value`: The mood used for the generation of new song.
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    `num_bars`: The number of bars to generate.
+
+    `bpm`: The tempo in beats per minute (BPM) for the resulting interpolation.
+
+    **Returns:**
+
+    The interpolated music sequence.
+    &#34;&#34;&#34;
+    global MODEL_INTERP
+    global MODEL
+    global PREV_SONG
+
+    seqs = []
+    new_song = generate_sequence(va_value, not liked, num_bars)
+    new_song = to_midi(new_song, bpm)
+    new_song = mm.midi_to_sequence_proto(new_song)
+    seqs.append(mm.midi_to_sequence_proto(PREV_SONG))
+    seqs.append(new_song)
+
+    uploaded_seqs = []
+    for seq in seqs:
+        _, tensors, _, _ = MODEL_INTERP._config.data_converter.to_tensors(seq)
+        uploaded_seqs.extend(MODEL_INTERP._config.data_converter.from_tensors(tensors))
+
+    z1 = []
+    z2 = []
+    seq_length = len(uploaded_seqs)
+    for i in range(seq_length // 2):
+        r1, _, _ = MODEL_INTERP.encode([uploaded_seqs[i]])
+        z1.append(r1)
+        r2, _, _ = MODEL_INTERP.encode([uploaded_seqs[i + seq_length // 2]])
+        z2.append(r2)
+
+    #num_bars = 32
+    temperature = 0.2 
+    z = []
+    for r_z1,r_z2 in zip(z1,z2):
+        z.append(np.array([slerp(np.squeeze(r_z1), np.squeeze(r_z2), t)
+            for t in np.linspace(0, 1, 4)]))
+
+    seqs_dec = [MODEL_INTERP.decode(length=TOTAL_STEPS, z=zi, temperature=temperature) for zi in z]
+
+    recon_interp_ns = []
+    for s in seqs_dec:
+        trim_sequences(s)
+        fix_instruments_for_concatenation(s)
+        recon_interp_ns.append(concatenate_sequences(s))    
+    
+    trim_sequences(recon_interp_ns)
+    fix_instruments_for_concatenation(recon_interp_ns)
+    recon_interp_ns = concatenate_sequences(recon_interp_ns)
+    return recon_interp_ns
+
+
+def create_song(va_mood: str, liked: bool):
+    &#34;&#34;&#34; Create a complete song based on the specified mood and user preference.
+
+    **Args:**
+
+    `va_mood`: The mood category choosen by the user
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    **Returns:**
+
+    The generated MIDI file representing the complete song.
+    &#34;&#34;&#34;
+    global MODEL
+    global PREV_SONG
+
+    bpm, num_bars = get_bpm_and_num_bars(va_mood, 1.0)
+
+    # CHOOSE CHORDS AND RUN
+    if not liked or PREV_SONG is None:
+        prog_interp_ns = generate_sequence(va_mood, liked, num_bars)
+    else:
+        prog_interp_ns = interpolate_songs(va_mood, liked, num_bars, bpm)
+
+    PREV_SONG = to_midi(prog_interp_ns, bpm)
+    return PREV_SONG
+
+
+def create_wav(midi: pretty_midi.PrettyMIDI):
+    &#34;&#34;&#34; Create a WAV audio file from a MIDI file using the specified SoundFont.
+
+    **Args:**
+
+    `midi`: The MIDI file to convert
+
+    **Returns:**
+
+    The audio waveform as a floating-point numpy array.
+    &#34;&#34;&#34;
+    global SF2_PATH
+    wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
+    return wav.astype(dtype=np.float32)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="neural_network.change_tempo"><code class="name flex">
+<span>def <span class="ident">change_tempo</span></span>(<span>note_sequence, new_tempo)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change the tempo of a NoteSequence to a new tempo.</p>
+<p><strong>Args:</strong></p>
+<p><code>note_sequence</code>: The NoteSequence to change the tempo of.</p>
+<p><code>new_tempo</code>: The new tempo in beats per minute (BPM).</p>
+<p><strong>Returns:</strong></p>
+<p>The NoteSequence with the tempo changed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def change_tempo(note_sequence, new_tempo):
+    &#34;&#34;&#34;Change the tempo of a NoteSequence to a new tempo.
+
+    **Args:**
+
+    `note_sequence`: The NoteSequence to change the tempo of.
+
+    `new_tempo`: The new tempo in beats per minute (BPM).
+
+    **Returns:**
+
+     The NoteSequence with the tempo changed.
+    &#34;&#34;&#34;
+    new_sequence = copy.deepcopy(note_sequence)
+    ratio = note_sequence.tempos[0].qpm / float(new_tempo)
+    for note in new_sequence.notes:
+        note.start_time = note.start_time * ratio
+        note.end_time = note.end_time * ratio
+    new_sequence.tempos[0].qpm = new_tempo
+    return new_sequence</code></pre>
+</details>
+</dd>
+<dt id="neural_network.chord_encoding"><code class="name flex">
+<span>def <span class="ident">chord_encoding</span></span>(<span>chord)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Encode a chord as a one-hot vector.</p>
+<p><strong>Args:</strong></p>
+<p><code>chord</code>: The chord to be encoded</p>
+<p><strong>Returns:</strong></p>
+<p>The one-hot encoding of the chord.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def chord_encoding(chord):
+    &#34;&#34;&#34;Encode a chord as a one-hot vector.
+
+    **Args:**
+
+    `chord`: The chord to be encoded
+
+    **Returns:**
+
+    The one-hot encoding of the chord.
+    &#34;&#34;&#34;
+    index = mm.TriadChordOneHotEncoding().encode_event(chord)
+    c = np.zeros([TOTAL_STEPS, CHORD_DEPTH])
+    c[0, 0] = 1.0
+    c[1:, index] = 1.0
+    return c</code></pre>
+</details>
+</dd>
+<dt id="neural_network.create_song"><code class="name flex">
+<span>def <span class="ident">create_song</span></span>(<span>va_mood: str, liked: bool)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a complete song based on the specified mood and user preference.</p>
+<p><strong>Args:</strong></p>
+<p><code>va_mood</code>: The mood category choosen by the user</p>
+<p><code>liked</code>: Indicates whether the user liked the previous generated sequence.</p>
+<p><strong>Returns:</strong></p>
+<p>The generated MIDI file representing the complete song.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_song(va_mood: str, liked: bool):
+    &#34;&#34;&#34; Create a complete song based on the specified mood and user preference.
+
+    **Args:**
+
+    `va_mood`: The mood category choosen by the user
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    **Returns:**
+
+    The generated MIDI file representing the complete song.
+    &#34;&#34;&#34;
+    global MODEL
+    global PREV_SONG
+
+    bpm, num_bars = get_bpm_and_num_bars(va_mood, 1.0)
+
+    # CHOOSE CHORDS AND RUN
+    if not liked or PREV_SONG is None:
+        prog_interp_ns = generate_sequence(va_mood, liked, num_bars)
+    else:
+        prog_interp_ns = interpolate_songs(va_mood, liked, num_bars, bpm)
+
+    PREV_SONG = to_midi(prog_interp_ns, bpm)
+    return PREV_SONG</code></pre>
+</details>
+</dd>
+<dt id="neural_network.create_wav"><code class="name flex">
+<span>def <span class="ident">create_wav</span></span>(<span>midi: pretty_midi.pretty_midi.PrettyMIDI)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a WAV audio file from a MIDI file using the specified SoundFont.</p>
+<p><strong>Args:</strong></p>
+<p><code>midi</code>: The MIDI file to convert</p>
+<p><strong>Returns:</strong></p>
+<p>The audio waveform as a floating-point numpy array.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_wav(midi: pretty_midi.PrettyMIDI):
+    &#34;&#34;&#34; Create a WAV audio file from a MIDI file using the specified SoundFont.
+
+    **Args:**
+
+    `midi`: The MIDI file to convert
+
+    **Returns:**
+
+    The audio waveform as a floating-point numpy array.
+    &#34;&#34;&#34;
+    global SF2_PATH
+    wav = midi.fluidsynth(fs=44100.0, sf2_path=SF2_PATH)
+    return wav.astype(dtype=np.float32)</code></pre>
+</details>
+</dd>
+<dt id="neural_network.fix_instruments_for_concatenation"><code class="name flex">
+<span>def <span class="ident">fix_instruments_for_concatenation</span></span>(<span>note_sequences)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixes instrument assignments for concatenation of note sequences.</p>
+<p><strong>Args:</strong></p>
+<p><code>note_sequences</code>: List of note sequences to fix instrument assignments.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fix_instruments_for_concatenation(note_sequences):
+    &#34;&#34;&#34;Fixes instrument assignments for concatenation of note sequences.
+
+    **Args:**
+
+    `note_sequences`: List of note sequences to fix instrument assignments.
+    &#34;&#34;&#34;
+    instruments = {}
+    for i in range(len(note_sequences)):
+        for note in note_sequences[i].notes:
+            if not note.is_drum:
+                if note.program not in instruments:
+                    if len(instruments) &gt;= 8:
+                        instruments[note.program] = len(instruments) + 2
+                    else:
+                        instruments[note.program] = len(instruments) + 1
+                note.instrument = instruments[note.program]
+            else:
+                note.instrument = 9</code></pre>
+</details>
+</dd>
+<dt id="neural_network.generate_sequence"><code class="name flex">
+<span>def <span class="ident">generate_sequence</span></span>(<span>va_mood: str, liked: bool, num_bars: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate a music sequence based on the specified mood, user preference, and number of bars</p>
+<p><strong>Args:</strong></p>
+<p><code>va_mood</code>: The mood category.</p>
+<p><code>liked</code>: Indicates whether the user liked the previous generated sequence.</p>
+<p><code>num_bars</code>: The number of bars to generate.</p>
+<p><strong>Returns:</strong></p>
+<p>The generated music sequence.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_sequence(va_mood: str, liked: bool, num_bars: int):
+    &#34;&#34;&#34; Generate a music sequence based on the specified mood, user preference, and number of bars
+
+    **Args:**
+
+    `va_mood`: The mood category.
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    `num_bars`: The number of bars to generate.
+
+    **Returns:**
+    
+    The generated music sequence.
+    &#34;&#34;&#34;
+
+    global MODEL
+    
+    chords = chords_markov_chain.get_next_chord_progression(va_mood, CHORDS_PER_BAR, not liked)
+    print(chords)
+
+    # num_bars = 24
+    temperature = 0.1
+
+    z1 = np.random.normal(size=[Z_SIZE])
+    z2 = np.random.normal(size=[Z_SIZE])
+    z = np.array([slerp(z1, z2, t)
+                  for t in np.linspace(0, 1, num_bars)])
+
+    seqs = [
+        MODEL.decode(length=TOTAL_STEPS, z=z[i:i+1, :], temperature=temperature,
+                     c_input=chord_encoding(chords[i % 4]))[0]
+        for i in range(num_bars)
+    ]
+    trim_sequences(seqs)
+    fix_instruments_for_concatenation(seqs)
+    prog_interp_ns = concatenate_sequences(seqs)
+
+    return prog_interp_ns</code></pre>
+</details>
+</dd>
+<dt id="neural_network.get_bpm_and_num_bars"><code class="name flex">
+<span>def <span class="ident">get_bpm_and_num_bars</span></span>(<span>mood: str, max_duration: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the BPM (beats per minute) and the number of bars based on the mood. </p>
+<p><strong>Args:</strong></p>
+<p><code>mood</code>: The mood category.</p>
+<p><code>max_duration</code>: The maximum duration in seconds.</p>
+<p><strong>Returns:</strong></p>
+<p>A tuple containing the BPM and the number of bars.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_bpm_and_num_bars(mood: str, max_duration: float):
+    &#34;&#34;&#34;Get the BPM (beats per minute) and the number of bars based on the mood. 
+
+    **Args:**
+
+    `mood`: The mood category.
+
+    `max_duration`: The maximum duration in seconds.
+
+    **Returns:**
+
+    A tuple containing the BPM and the number of bars.
+    &#34;&#34;&#34;
+    bpm = 120
+    if mood == &#39;exciting&#39; or mood == &#39;anxious&#39;:
+        bpm = 120
+    if mood == &#39;happy&#39; or mood == &#39;angry&#39;:
+        bpm = 90
+    if mood == &#39;serene&#39; or mood == &#39;sad&#39;:
+        bpm = 60
+    if mood == &#39;relaxing&#39; or mood == &#39;bored&#39;:
+        bpm = 30
+    num_bars = int(max_duration * bpm / CHORDS_PER_BAR)
+    return bpm, num_bars</code></pre>
+</details>
+</dd>
+<dt id="neural_network.initialize_model"><code class="name flex">
+<span>def <span class="ident">initialize_model</span></span>(<span>main_path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialize the models used for generation and interpolation importing the configuration of Google Magenta API.</p>
+<p><strong>Args:</strong></p>
+<p><code>main_path</code>: Path of the src folder passed down from the main script.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_model(main_path: str):
+    &#34;&#34;&#34;Initialize the models used for generation and interpolation importing the configuration of Google Magenta API.
+
+    **Args:**
+    
+    `main_path`: Path of the src folder passed down from the main script.
+    &#34;&#34;&#34;
+    global chords_markov_chain
+    global CONFIG
+    global MODEL
+    global MODEL_PATH
+    global CONFIG_INTERP
+    global MODEL_INTERP
+    global MODEL_INTERP_PATH
+    global SF2_PATH
+
+    chords_markov_chain = ChordsMarkovChain(main_path)
+    SF2_PATH = os.path.join(main_path, SF2_PATH)
+    MODEL_PATH = os.path.join(main_path, MODEL_PATH)
+    MODEL_INTERP_PATH = os.path.join(main_path, MODEL_INTERP_PATH)
+
+    with warnings.catch_warnings():
+        print_info(&#39;Initializing NN models...&#39;)
+        warnings.simplefilter(&#34;ignore&#34;)
+        # INITIALIZE MODEL FOR CREATE SONG
+        CONFIG = configs.CONFIG_MAP[&#39;hier-multiperf_vel_1bar_med_chords&#39;]
+        MODEL = TrainedModel(
+            CONFIG, batch_size=BATCH_SIZE,
+            checkpoint_dir_or_path=MODEL_PATH)
+
+        #INITIALIZE MODEL FOR INTERPOLATE SONGS
+        CONFIG_INTERP = configs.CONFIG_MAP[&#39;hier-multiperf_vel_1bar_med&#39;]
+        MODEL_INTERP = TrainedModel(
+            CONFIG_INTERP, batch_size=BATCH_SIZE,
+            checkpoint_dir_or_path=MODEL_INTERP_PATH)
+        MODEL_INTERP._config.data_converter._max_tensors_per_input = None
+        print_success(&#39;Models initialized!&#39;)</code></pre>
+</details>
+</dd>
+<dt id="neural_network.interpolate_songs"><code class="name flex">
+<span>def <span class="ident">interpolate_songs</span></span>(<span>va_value: str, liked: bool, num_bars: int, bpm)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Interpolate between songs based on the specified mood, user preference, number of bars, and BPM. </p>
+<p><strong>Args:</strong></p>
+<p><code>va_value</code>: The mood used for the generation of new song.</p>
+<p><code>liked</code>: Indicates whether the user liked the previous generated sequence.</p>
+<p><code>num_bars</code>: The number of bars to generate.</p>
+<p><code>bpm</code>: The tempo in beats per minute (BPM) for the resulting interpolation.</p>
+<p><strong>Returns:</strong></p>
+<p>The interpolated music sequence.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
+    &#34;&#34;&#34;Interpolate between songs based on the specified mood, user preference, number of bars, and BPM. 
+
+    **Args:**
+
+    `va_value`: The mood used for the generation of new song.
+
+    `liked`: Indicates whether the user liked the previous generated sequence.
+
+    `num_bars`: The number of bars to generate.
+
+    `bpm`: The tempo in beats per minute (BPM) for the resulting interpolation.
+
+    **Returns:**
+
+    The interpolated music sequence.
+    &#34;&#34;&#34;
+    global MODEL_INTERP
+    global MODEL
+    global PREV_SONG
+
+    seqs = []
+    new_song = generate_sequence(va_value, not liked, num_bars)
+    new_song = to_midi(new_song, bpm)
+    new_song = mm.midi_to_sequence_proto(new_song)
+    seqs.append(mm.midi_to_sequence_proto(PREV_SONG))
+    seqs.append(new_song)
+
+    uploaded_seqs = []
+    for seq in seqs:
+        _, tensors, _, _ = MODEL_INTERP._config.data_converter.to_tensors(seq)
+        uploaded_seqs.extend(MODEL_INTERP._config.data_converter.from_tensors(tensors))
+
+    z1 = []
+    z2 = []
+    seq_length = len(uploaded_seqs)
+    for i in range(seq_length // 2):
+        r1, _, _ = MODEL_INTERP.encode([uploaded_seqs[i]])
+        z1.append(r1)
+        r2, _, _ = MODEL_INTERP.encode([uploaded_seqs[i + seq_length // 2]])
+        z2.append(r2)
+
+    #num_bars = 32
+    temperature = 0.2 
+    z = []
+    for r_z1,r_z2 in zip(z1,z2):
+        z.append(np.array([slerp(np.squeeze(r_z1), np.squeeze(r_z2), t)
+            for t in np.linspace(0, 1, 4)]))
+
+    seqs_dec = [MODEL_INTERP.decode(length=TOTAL_STEPS, z=zi, temperature=temperature) for zi in z]
+
+    recon_interp_ns = []
+    for s in seqs_dec:
+        trim_sequences(s)
+        fix_instruments_for_concatenation(s)
+        recon_interp_ns.append(concatenate_sequences(s))    
+    
+    trim_sequences(recon_interp_ns)
+    fix_instruments_for_concatenation(recon_interp_ns)
+    recon_interp_ns = concatenate_sequences(recon_interp_ns)
+    return recon_interp_ns</code></pre>
+</details>
+</dd>
+<dt id="neural_network.slerp"><code class="name flex">
+<span>def <span class="ident">slerp</span></span>(<span>p0, p1, t)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spherical linear interpolation.</p>
+<p><strong>Args:</strong></p>
+<p><code>p0</code>: The starting point of the interpolation.</p>
+<p><code>p1</code>: The ending point of the interpolation.</p>
+<p><code>t</code>: Evenly spaced samples, calculated over the interval [0, 1].</p>
+<p><strong>Returns:</strong></p>
+<p>The interpolated value between p0 and p1 at the given parameter value t.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def slerp(p0, p1, t):
+    &#34;&#34;&#34;Spherical linear interpolation.
+
+    **Args:**
+
+    `p0`: The starting point of the interpolation.
+
+    `p1`: The ending point of the interpolation.
+
+    `t`: Evenly spaced samples, calculated over the interval [0, 1].
+
+    **Returns:**
+
+    The interpolated value between p0 and p1 at the given parameter value t.
+    &#34;&#34;&#34;
+    omega = np.arccos(np.dot(np.squeeze(p0 / np.linalg.norm(p0)),
+                      np.squeeze(p1 / np.linalg.norm(p1))))
+    so = np.sin(omega)
+    return np.sin((1.0 - t) * omega) / so * p0 + np.sin(t * omega) / so * p1</code></pre>
+</details>
+</dd>
+<dt id="neural_network.to_midi"><code class="name flex">
+<span>def <span class="ident">to_midi</span></span>(<span>note_sequence, bpm)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts a NoteSequence to a MIDI file.</p>
+<p><strong>Args:</strong></p>
+<p><code>note_sequence</code>: The NoteSequence to convert to MIDI.</p>
+<p><code>bpm</code>: The tempo in beats per minute (BPM) for the resulting MIDI file.</p>
+<p><strong>Returns:</strong></p>
+<p>The MIDI file representation of the NoteSequence.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_midi(note_sequence, bpm):
+    &#34;&#34;&#34;Converts a NoteSequence to a MIDI file.
+
+    **Args:**
+
+    `note_sequence`: The NoteSequence to convert to MIDI.
+
+    `bpm`: The tempo in beats per minute (BPM) for the resulting MIDI file.
+
+    **Returns:**
+    
+    The MIDI file representation of the NoteSequence.
+    &#34;&#34;&#34;
+    note_sequence = change_tempo(note_sequence, bpm)
+    return mm.sequence_proto_to_pretty_midi(note_sequence)</code></pre>
+</details>
+</dd>
+<dt id="neural_network.trim_sequences"><code class="name flex">
+<span>def <span class="ident">trim_sequences</span></span>(<span>seqs, num_seconds=2.0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trim the sequences to a specified duration.</p>
+<p><strong>Args:</strong></p>
+<p><code>seqs</code>: List of music sequences to be trimmed.</p>
+<p><code>num_seconds</code>: Duration in seconds to trim the sequences to. Default is BAR_SECONDS.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def trim_sequences(seqs, num_seconds=BAR_SECONDS):
+    &#34;&#34;&#34;Trim the sequences to a specified duration.
+
+    **Args:**
+
+    `seqs`: List of music sequences to be trimmed.
+
+    `num_seconds`: Duration in seconds to trim the sequences to. Default is BAR_SECONDS.
+    &#34;&#34;&#34;
+    for i in range(len(seqs)):
+        seqs[i] = mm.extract_subsequence(seqs[i], 0.0, num_seconds)
+        seqs[i].total_time = num_seconds</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="neural_network.change_tempo" href="#neural_network.change_tempo">change_tempo</a></code></li>
+<li><code><a title="neural_network.chord_encoding" href="#neural_network.chord_encoding">chord_encoding</a></code></li>
+<li><code><a title="neural_network.create_song" href="#neural_network.create_song">create_song</a></code></li>
+<li><code><a title="neural_network.create_wav" href="#neural_network.create_wav">create_wav</a></code></li>
+<li><code><a title="neural_network.fix_instruments_for_concatenation" href="#neural_network.fix_instruments_for_concatenation">fix_instruments_for_concatenation</a></code></li>
+<li><code><a title="neural_network.generate_sequence" href="#neural_network.generate_sequence">generate_sequence</a></code></li>
+<li><code><a title="neural_network.get_bpm_and_num_bars" href="#neural_network.get_bpm_and_num_bars">get_bpm_and_num_bars</a></code></li>
+<li><code><a title="neural_network.initialize_model" href="#neural_network.initialize_model">initialize_model</a></code></li>
+<li><code><a title="neural_network.interpolate_songs" href="#neural_network.interpolate_songs">interpolate_songs</a></code></li>
+<li><code><a title="neural_network.slerp" href="#neural_network.slerp">slerp</a></code></li>
+<li><code><a title="neural_network.to_midi" href="#neural_network.to_midi">to_midi</a></code></li>
+<li><code><a title="neural_network.trim_sequences" href="#neural_network.trim_sequences">trim_sequences</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
