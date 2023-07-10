@@ -1,15 +1,25 @@
 import os
 from multiprocessing import Process, Event, Queue
+from multiprocessing.managers import BaseManager
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 from pythonosc.udp_client import SimpleUDPClient
 from audio_handling import *
 from utilities import *
+from sound_source import SongsHandler
 from neural_network.chords_progression import moods
 import neural_network.neural_network as nn
 
+NUMBER_OF_CREATORS = 2
 waiting_for_feedback = False
 controller_connected = False
+
+
+class MyManager(BaseManager):
+    pass
+
+
+MyManager.register('SongsHandler', SongsHandler)
 
 
 def default_handler(address, *args):
@@ -128,6 +138,16 @@ def server_worker(queue, event, client_controller):
     server.serve_forever()  # Blocks forever
 
 
+def creator_worker(event, queue: Queue, songs_handler: SongsHandler):
+    while True:
+        mood = queue.get()
+        new_song_wav, new_song_midi = nn.create_new_song(mood)
+        songs_handler.assign_song_of_mood(mood, new_song_wav, new_song_midi)
+
+        if event.is_set():
+            return
+
+
 if __name__ == "__main__":
     # Connections setup
     client_controller = SimpleUDPClient(CLIENT_CONTROLLER_IP, CLIENT_CONTROLLER_PORT)  # Create controller client
@@ -162,38 +182,56 @@ if __name__ == "__main__":
     active, address_active = client_startstop.accept()
     print_success("Connected to visualizer!")
 
-    # Creates multiprocessing objects
-    feedback_event = Event()
-    feedback_queue = Queue()
-    server_process = Process(target=server_worker, args=(feedback_queue, feedback_event, client_controller,))
-    server_process.start()
+    prev_song = None
 
-    while True:
-        feedback = feedback_queue.get()  # Get feedback from OSC message
-        feedback_event.set()  # Set running to true
-        active.sendall("CREATING".encode())  # Send message to visualizer
-        try:
-            liked_the_song = feedback[0]
-            radar_value_x = feedback[1]
-            radar_value_y = feedback[2]
-            radar_mood_string = feedback[3]
+    with MyManager() as manager:
+        songs_handler = manager.SongsHandler(os.path.join(main_path, "resources", "song_file"), 5)
 
-            mid = nn.create_song(va_mood=radar_mood_string,
-                                 liked=liked_the_song)  # Creates the song as a midi from the nn
-            wav = nn.create_wav(mid)  # Converts the PrettyMIDI object into a wav file
-            print_success("Created midi and wav files")
+        # Creates multiprocessing objects
+        feedback_event = Event()
+        feedback_queue = Queue()
+        creator_queue = Queue()
 
-            audio_frames, stft_audio_frames = get_audio_frames(wav,
-                                                               CHUNK_SIZE)  # Splits song in frames for playback and
-            # visualization
-            active.sendall("START".encode())
-            play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
+        server_process = Process(target=server_worker, args=(feedback_queue, feedback_event, client_controller,))
+        server_process.start()
+        creator_processes = []
+        for i in range(NUMBER_OF_CREATORS):
+            creator_processes.append(Process(target=creator_worker, args=(feedback_event, creator_queue, songs_handler,)))
 
-        except Exception as e:
-            print_error(e)
+        while True:
+            feedback = feedback_queue.get()  # Get feedback from OSC message
+            feedback_event.set()  # Set running to true
+            active.sendall("CREATING".encode())  # Send message to visualizer
+            try:
+                liked_the_song = feedback[0]
+                radar_value_x = feedback[1]
+                radar_value_y = feedback[2]
+                radar_mood_string = feedback[3]
 
-        finally:
-            # Once done, prepare to receive another message
-            waiting_for_feedback = True
-            active.sendall("STOP".encode())
-            feedback_event.clear()
+                if radar_mood_string not in moods:
+                    continue
+
+                creator_queue.put(radar_mood_string)
+
+                if liked_the_song and prev_song is not None:
+                    _, mid = songs_handler.get_song_of_mood(radar_mood_string)
+                    wav, mid = nn.interpolate_songs(prev_song, mid)
+                else:
+                    wav, mid = songs_handler.get_song_of_mood(radar_mood_string)
+
+                prev_song = mid
+
+                audio_frames, stft_audio_frames = get_audio_frames(wav,
+                                                                   CHUNK_SIZE)  # Splits song in frames for playback and
+                # visualization
+                active.sendall("START".encode())
+                play_send_audio(audio_frames, stft_audio_frames, out_stream, conn)
+
+            except Exception as e:
+                print_error(e)
+
+            finally:
+                # Once done, prepare to receive another message
+                waiting_for_feedback = True
+                active.sendall("STOP".encode())
+                feedback_event.clear()

@@ -329,6 +329,50 @@ def interpolate_songs(va_value: str, liked: bool, num_bars: int, bpm):
     return recon_interp_ns
 
 
+def interpolate_songs(prev_song, new_song):
+    seqs = []
+    seqs.append(mm.midi_to_sequence_proto(prev_song))
+    seqs.append(mm.midi_to_sequence_proto(new_song))
+
+    uploaded_seqs = []
+    for seq in seqs:
+        _, tensors, _, _ = MODEL_INTERP._config.data_converter.to_tensors(seq)
+        uploaded_seqs.extend(MODEL_INTERP._config.data_converter.from_tensors(tensors))
+
+    z1 = []
+    z2 = []
+    seq_length = len(uploaded_seqs)
+    for i in range(seq_length // 2):
+        r1, _, _ = MODEL_INTERP.encode([uploaded_seqs[i]])
+        z1.append(r1)
+        r2, _, _ = MODEL_INTERP.encode([uploaded_seqs[i + seq_length // 2]])
+        z2.append(r2)
+
+    # num_bars = 32
+    temperature = 0.2
+    z = []
+    for r_z1, r_z2 in zip(z1, z2):
+        z.append(np.array([slerp(np.squeeze(r_z1), np.squeeze(r_z2), t)
+                           for t in np.linspace(0, 1, 4)]))
+
+    seqs_dec = [MODEL_INTERP.decode(length=TOTAL_STEPS, z=zi, temperature=temperature) for zi in z]
+
+    recon_interp_ns = []
+    for s in seqs_dec:
+        trim_sequences(s)
+        fix_instruments_for_concatenation(s)
+        recon_interp_ns.append(concatenate_sequences(s))
+
+    trim_sequences(recon_interp_ns)
+    fix_instruments_for_concatenation(recon_interp_ns)
+    recon_interp_ns = concatenate_sequences(recon_interp_ns)
+
+    midi = to_midi(recon_interp_ns)
+    wav = create_wav(midi)
+
+    return wav, midi
+
+
 def create_song(va_mood: str, liked: bool):
     """ Create a complete song based on the specified mood and user preference.
 
@@ -355,6 +399,15 @@ def create_song(va_mood: str, liked: bool):
 
     PREV_SONG = to_midi(prog_interp_ns, bpm)
     return PREV_SONG
+
+
+def create_new_song(va_mood: str):
+    bpm, num_bars = get_bpm_and_num_bars(va_mood, 1.0)
+    output = generate_sequence(va_mood, False, num_bars)
+    midi = to_midi(output, bpm)
+    wav = create_wav(midi)
+
+    return wav, midi
 
 
 def create_wav(midi: pretty_midi.PrettyMIDI):
